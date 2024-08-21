@@ -1,0 +1,21 @@
+{
+  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
+  "protocol": "ids-multipart",
+  "connectorId": "provider",
+  "assetId": "test-asset.txt",
+  "contractId": "3a75736e-001d-4364-8bd4-9888490edb58:6ea44620-0190-480c-a52b-eaeb15effe09",
+  "dataDestination": {
+    "properties": {
+      "type": "AmazonS3",
+      "region": "us-east-1",
+      "bucketName": "test-bucket2",
+      "assetName": "test-asset-2.txt",
+      "endpoint": "http://localhost:9000"
+    }
+  },
+  "managedResources": true,
+  "transferType": {
+    "contentType": "application/octet-stream",
+    "isFinite": true
+  }
+}

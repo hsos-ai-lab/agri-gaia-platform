@@ -1,0 +1,3612 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix gax-trust-framework: <http://w3id.org/gaia-x/gax-trust-framework#> .
+@prefix vcard: <https://www.w3.org/2006/vcard/ns#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix did: <https://www.w3.org/TR/did-core/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix gax-core: <http://w3id.org/gaia-x/core#> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix schema: <http://schema.org/> .
+@prefix cred: <https://www.w3.org/2018/credentials#> .
+
+
+gax-trust-framework: 
+a		voaf:Vocabulary, owl:Ontology ;
+rdfs:label		"Gaia-X gax-trust-framework Ontology"@en ;
+dct:title		"Gaia-X gax-trust-framework Ontology"@en ;
+dct:abstract		"todo" ;
+cc:license		<http://www.apache.org/licenses/LICENSE-2.0> ;
+dct:creator		"Working Group Service Characteristics" ;
+dct:contributor		"Akyürek, Haydar", "Bader, Sebastian", "Baum, Hannes", "Blanch, Josep", "Frömberg, Jan", "Gronlier, Pierre", "Hermsen, Felix", "Lange, Christoph", "Langkau, Jörg", "Leberecht, Markus", "Meinke, Kai", "Moosmann, Paul", "Niessen, Thomas", "Ogel, Frederic", "Ottradovetz, Klaus", "Qin, Chang", "Rubina, Alina", "Staginus, Judith", "Strunk, Anja", "Theissen-Lipp, Johannes" ;
+dct:created		"2021-10-18T12:00:00+01:00"^^xsd:dateTimeStamp ;
+owl:versionInfo		"22.04" ;
+vann:preferredNamespaceUri		"http://w3id.org/gaia-x/gax-trust-framework#" ;
+vann:preferredNamespacePrefix		"gax-trust-framework" ;
+void:vocabulary 		vann:, void:, voaf:, dct: ;
+dct:modified		"2023-06-28T12:40:30+02:00"^^xsd:dateTimeStamp ;
+.
+
+################## 
+##Backup
+##################
+
+gax-trust-framework:Backup
+	a		 owl:Class;
+	rdfs:label		 "Backup"@en ;
+. 
+
+gax-trust-framework:backupsSupported
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "backups supported"@en ;
+	rdfs:domain		 gax-trust-framework:Backup ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Check if service supports backups." ;
+. 
+
+gax-trust-framework:backupPointInTime
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "backup point in time"@en ;
+	rdfs:domain		 gax-trust-framework:Backup ;
+	rdfs:range		 gax-trust-framework:TimeMachineDetails ;
+	rdfs:comment		 "Request from service to go to this point in time to get the backup" ;
+. 
+
+################## 
+##Certificates
+##################
+
+gax-trust-framework:Certificates
+	a		 owl:Class;
+	rdfs:label		 "Certificates"@en ;
+. 
+
+gax-trust-framework:certificateName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "certificate name"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Relevant certificate for the service" ;
+. 
+
+gax-trust-framework:certificateType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "certificate type"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of the certificates" ;
+. 
+
+gax-trust-framework:descriptionOfTestScope
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description of test scope"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the scope of testing for this service" ;
+. 
+
+gax-trust-framework:certificateAuthority
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "certificate authority"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Certificate authority for this service or its certificate" ;
+. 
+
+gax-trust-framework:certificateDocument
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "certificate document"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Document that contains a certificate copy" ;
+. 
+
+gax-trust-framework:expirationDate
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "expiration date"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:date ;
+	rdfs:comment		 "Date on which the certificate expires" ;
+. 
+
+gax-trust-framework:regularAudits
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "regular audits"@en ;
+	rdfs:domain		 gax-trust-framework:Certificates ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the certificate regularly audited?" ;
+. 
+
+################## 
+##Checksum
+##################
+
+gax-trust-framework:Checksum
+	a		 owl:Class;
+	rdfs:label		 "Checksum"@en ;
+. 
+
+gax-trust-framework:value
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "value"@en ;
+	rdfs:domain		 gax-trust-framework:Checksum ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Value of check sum" ;
+. 
+
+gax-trust-framework:algorithm
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "algorithm"@en ;
+	rdfs:domain		 gax-trust-framework:Checksum ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Defines algorithm for generating check sum" ;
+. 
+
+################## 
+##CPU
+##################
+
+gax-trust-framework:CPU
+	a		 owl:Class;
+	rdfs:label		 "CPU"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:cpuArchitecture
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "cpu architecture"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Basic CPU architecture." ;
+. 
+
+gax-trust-framework:cpuGeneration
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "cpu generation"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "CPU instruction set generation. Determines basic feature set and migration compatibility." ;
+. 
+
+gax-trust-framework:cpuFlag
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "cpu flag"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "CPU flags as documented by lscpu and defined in https://github.com/torvalds/linux/blob/master/tools/arch/x86/include/asm/cpufeatures.h ." ;
+. 
+
+gax-trust-framework:smtIsEnabled
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "smt is enabled"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is simultaneous multithreading (SMT) or hyper threading (HT) active in this CPU? Default False." ;
+. 
+
+gax-trust-framework:numberOfSockets
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of sockets"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Number of CPU Sockets" ;
+. 
+
+gax-trust-framework:numberOfCores
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of cores"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Number of Cores of the CPU" ;
+. 
+
+gax-trust-framework:numberOfThreads
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of threads"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Number of Threads of the CPU" ;
+. 
+
+gax-trust-framework:baseFrequency
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "base frequency"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Frequency of the CPU" ;
+. 
+
+gax-trust-framework:boostFrequency
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "boost frequency"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Boost frequency of the CPU" ;
+. 
+
+gax-trust-framework:lastLevelCacheSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "last level cache size"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Last Level Cache size of the CPU" ;
+. 
+
+gax-trust-framework:socket
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "socket"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Socket the CPU fits into." ;
+. 
+
+gax-trust-framework:tdp
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "tdp"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "CPU Thermal Design Power - ref : https://en.wikipedia.org/wiki/Thermal_design_power" ;
+. 
+
+gax-trust-framework:defaultOverbookingRatio
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "default overbooking ratio"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "a dimensionless value larger or equal to 1.0 describing the default maximum number of workloads scheduled on this CPU simultaneously" ;
+. 
+
+gax-trust-framework:supportedOverbookingRatio
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "supported overbooking ratio"@en ;
+	rdfs:domain		 gax-trust-framework:CPU ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "several dimensionless values larger or equal to 1.0 describing the available scheduler settings for the numer of simultaneously scheduled workloads on this CPU" ;
+. 
+
+################## 
+##DataAccountExport
+##################
+
+gax-trust-framework:DataAccountExport
+	a		 owl:Class;
+	rdfs:label		 "Data Account Export"@en ;
+. 
+
+gax-trust-framework:requestType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "request type"@en ;
+	rdfs:domain		 gax-trust-framework:DataAccountExport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the mean to request data retrieval: API, email, webform, unregisteredLetter, registeredLetter, supportCenter." ;
+. 
+
+gax-trust-framework:accessType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "access type"@en ;
+	rdfs:domain		 gax-trust-framework:DataAccountExport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "type of data support: digital, physical." ;
+. 
+
+gax-trust-framework:formatType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "format type"@en ;
+	rdfs:domain		 gax-trust-framework:DataAccountExport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "type of Media Types (formerly known as MIME types) as defined by the IANA." ;
+. 
+
+################## 
+##Disk
+##################
+
+gax-trust-framework:Disk
+	a		 owl:Class;
+	rdfs:label		 "Disk"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:size
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "size"@en ;
+	rdfs:domain		 gax-trust-framework:Disk ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "The size of that hard drive." ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:Disk ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The type of that hard drive." ;
+. 
+
+gax-trust-framework:encryption
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "encryption"@en ;
+	rdfs:domain		 gax-trust-framework:Disk ;
+	rdfs:range		 gax-trust-framework:Encryption ;
+	rdfs:comment		 "Details of disk encryption." ;
+. 
+
+################## 
+##Encryption
+##################
+
+gax-trust-framework:Encryption
+	a		 owl:Class;
+	rdfs:label		 "Encryption"@en ;
+. 
+
+gax-trust-framework:encryptionAlgorithm
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "encryption algorithm"@en ;
+	rdfs:domain		 gax-trust-framework:Encryption ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Supported algorithm used to encrypt." ;
+. 
+
+gax-trust-framework:keyManagement
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "key management"@en ;
+	rdfs:domain		 gax-trust-framework:Encryption ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Define key management method. \"managed\": Keys are created by and stored in key manager of cloud. \"BYOK\": bring-your-own-key: Keys created by user and stored in key manager of cloud. \"HYOK\" hold-your-own-key Key created by user and kept by user" ;
+. 
+
+################## 
+##Endpoint
+##################
+
+gax-trust-framework:Endpoint
+	a		 owl:Class;
+	rdfs:label		 "Endpoint"@en ;
+. 
+
+gax-trust-framework:endpointURL
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "endpoint url"@en ;
+	rdfs:domain		 gax-trust-framework:Endpoint ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "The URL of the endpoint where it can be accessed" ;
+. 
+
+gax-trust-framework:standardConformity
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "standard conformity"@en ;
+	rdfs:domain		 gax-trust-framework:Endpoint ;
+	rdfs:range		 gax-trust-framework:Standard ;
+	rdfs:comment		 "Provides information about applied standards." ;
+. 
+
+gax-trust-framework:endpointDescription
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "endpoint description"@en ;
+	rdfs:domain		 gax-trust-framework:Endpoint ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "The Description (e.g. openAPI Description) of the endpoint" ;
+. 
+
+################## 
+##FPGA
+##################
+
+gax-trust-framework:FPGA
+	a		 owl:Class;
+	rdfs:label		 "FPGA"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:FPGA ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "FPGA generation." ;
+. 
+
+################## 
+##GPU
+##################
+
+gax-trust-framework:GPU
+	a		 owl:Class;
+	rdfs:label		 "GPU"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:gpuGeneration
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "gpu generation"@en ;
+	rdfs:domain		 gax-trust-framework:GPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "GPU generation." ;
+. 
+
+gax-trust-framework:memory
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "memory"@en ;
+	rdfs:domain		 gax-trust-framework:GPU ;
+	rdfs:range		 gax-trust-framework:Memory ;
+	rdfs:comment		 "Memory of the GPU" ;
+. 
+
+gax-trust-framework:connection
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connection"@en ;
+	rdfs:domain		 gax-trust-framework:GPU ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Interconnection of the GPU" ;
+. 
+
+################## 
+##HardwareSpec
+##################
+
+gax-trust-framework:HardwareSpec
+	a		 owl:Class;
+	rdfs:label		 "Hardware Spec"@en ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:HardwareSpec ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Product name of the hardware resource." ;
+. 
+
+gax-trust-framework:vendor
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vendor"@en ;
+	rdfs:domain		 gax-trust-framework:HardwareSpec ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Vendor of this hardware." ;
+. 
+
+################## 
+##LifetimeManagement
+##################
+
+gax-trust-framework:LifetimeManagement
+	a		 owl:Class;
+	rdfs:label		 "Lifetime Management"@en ;
+. 
+
+gax-trust-framework:lifetimeLastAccess
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "lifetime last access"@en ;
+	rdfs:domain		 gax-trust-framework:LifetimeManagement ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "Request from the service - Lifetime of data in this storage service in hours since last access. The data is then moved externally or to an archive and will not be accessible through the service" ;
+. 
+
+################## 
+##Measure
+##################
+
+gax-trust-framework:Measure
+	a		 owl:Class;
+	rdfs:label		 "Measure"@en ;
+. 
+
+gax-trust-framework:value
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "value"@en ;
+	rdfs:domain		 gax-trust-framework:Measure ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "The value of this measurement." ;
+. 
+
+gax-trust-framework:unit
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "unit"@en ;
+	rdfs:domain		 gax-trust-framework:Measure ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The unit of this measurement" ;
+. 
+
+################## 
+##Memory
+##################
+
+gax-trust-framework:Memory
+	a		 owl:Class;
+	rdfs:label		 "Memory"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:size
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "size"@en ;
+	rdfs:domain		 gax-trust-framework:Memory ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Memory size of the hardware device" ;
+. 
+
+gax-trust-framework:memoryClass
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "memory class"@en ;
+	rdfs:domain		 gax-trust-framework:Memory ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Memory class" ;
+. 
+
+gax-trust-framework:rank
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rank"@en ;
+	rdfs:domain		 gax-trust-framework:Memory ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "DIMM type" ;
+. 
+
+gax-trust-framework:defaultOverbookingRatio
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "default overbooking ratio"@en ;
+	rdfs:domain		 gax-trust-framework:Memory ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "a dimensionless value larger or equal to 1.0 describing the default overbooking ratio on this memory" ;
+. 
+
+gax-trust-framework:supportedOverbookingRatio
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "supported overbooking ratio"@en ;
+	rdfs:domain		 gax-trust-framework:Memory ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "several dimensionless values larger or equal to 1.0 describing the available overbooking ratios on this memory" ;
+. 
+
+################## 
+##QoS
+##################
+
+gax-trust-framework:QoS
+	a		 owl:Class;
+	rdfs:label		 "Qo S"@en ;
+. 
+
+gax-trust-framework:throughputValue
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "throughput value"@en ;
+	rdfs:domain		 gax-trust-framework:QoS ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Request from service for Target throughput of File, block or Object access in MB/s." ;
+. 
+
+gax-trust-framework:throughputGuarantee
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "throughput guarantee"@en ;
+	rdfs:domain		 gax-trust-framework:QoS ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Request from service for Throughput greater than \"Throughput Value\" for more than xx% of time" ;
+. 
+
+gax-trust-framework:latencyGuarantee
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "latency guarantee"@en ;
+	rdfs:domain		 gax-trust-framework:QoS ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Request from service - Latency lower than \"Latency Value\" for xx% of time" ;
+. 
+
+gax-trust-framework:iops
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "iops"@en ;
+	rdfs:domain		 gax-trust-framework:QoS ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "Request from service for IOs per second" ;
+. 
+
+gax-trust-framework:storageUptimesMonthly
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "storage uptimes monthly"@en ;
+	rdfs:domain		 gax-trust-framework:QoS ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Monthly uptime needed from storage service" ;
+. 
+
+################## 
+##RegistrationNumber
+##################
+
+gax-trust-framework:RegistrationNumber
+	a		 owl:Class;
+	rdfs:label		 "Registration Number"@en ;
+. 
+
+gax-trust-framework:local
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "local"@en ;
+	rdfs:domain		 gax-trust-framework:RegistrationNumber ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The state issued company number." ;
+. 
+
+gax-trust-framework:euid
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "euid"@en ;
+	rdfs:domain		 gax-trust-framework:RegistrationNumber ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The European Unique Identifier (EUID) for business located in the European Economic Area, Iceland, Liechtenstein or Norway and registered in the Business Registers Interconnection System (BRIS). This number can be found via the EU Business registers portal." ;
+. 
+
+gax-trust-framework:eori
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "eori"@en ;
+	rdfs:domain		 gax-trust-framework:RegistrationNumber ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The Economic Operators Registration and Identification number (EORI)." ;
+. 
+
+gax-trust-framework:vatID
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vat id"@en ;
+	rdfs:domain		 gax-trust-framework:RegistrationNumber ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The VAT identification number." ;
+. 
+
+gax-trust-framework:leiCode
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "lei code"@en ;
+	rdfs:domain		 gax-trust-framework:RegistrationNumber ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Unique LEI number as defined by https://www.gleif.org." ;
+. 
+
+################## 
+##Replication
+##################
+
+gax-trust-framework:Replication
+	a		 owl:Class;
+	rdfs:label		 "Replication"@en ;
+. 
+
+gax-trust-framework:storageDisasterRecoveryAndGeoreplication
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "storage disaster recovery and georeplication"@en ;
+	rdfs:domain		 gax-trust-framework:Replication ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is Disaster recovery and Geo-replication supported?" ;
+. 
+
+gax-trust-framework:storageRecoveryPointObjective
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "storage recovery point objective"@en ;
+	rdfs:domain		 gax-trust-framework:Replication ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Maximum time interval between creating recovery points" ;
+. 
+
+gax-trust-framework:storageRecoveryTimeObjective
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "storage recovery time objective"@en ;
+	rdfs:domain		 gax-trust-framework:Replication ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Upper limit of acceptable maximum delay between disaster and restoration of service" ;
+. 
+
+gax-trust-framework:storageReplicationType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "storage replication type"@en ;
+	rdfs:domain		 gax-trust-framework:Replication ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is replication done synchronously or asynchronously in the background?" ;
+. 
+
+gax-trust-framework:thirdPartyReplicationService
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "third party replication service"@en ;
+	rdfs:domain		 gax-trust-framework:Replication ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Uses the following third party replication service" ;
+. 
+
+################## 
+##ServiceAccessPoint
+##################
+
+gax-trust-framework:ServiceAccessPoint
+	a		 owl:Class;
+	rdfs:label		 "Service Access Point"@en ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the access point" ;
+. 
+
+gax-trust-framework:host
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "host"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Host of the access point" ;
+. 
+
+gax-trust-framework:protocol
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "protocol"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Protocol of the access point" ;
+. 
+
+gax-trust-framework:version
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "version"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Version of the access point" ;
+. 
+
+gax-trust-framework:port
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "port"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Port of the access point" ;
+. 
+
+gax-trust-framework:openAPI
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "open api"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "URL of the OpenAPI documentation" ;
+. 
+
+################## 
+##Signature
+##################
+
+gax-trust-framework:Signature
+	a		 owl:Class;
+	rdfs:label		 "Signature"@en ;
+. 
+
+gax-trust-framework:signature
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "signature"@en ;
+	rdfs:domain		 gax-trust-framework:Signature ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Value of the signature" ;
+. 
+
+gax-trust-framework:signatureAlgo
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "signature algo"@en ;
+	rdfs:domain		 gax-trust-framework:Signature ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Defines the algorithm used to check the signature" ;
+. 
+
+################## 
+##Snapshot
+##################
+
+gax-trust-framework:Snapshot
+	a		 owl:Class;
+	rdfs:label		 "Snapshot"@en ;
+. 
+
+gax-trust-framework:snapshotSupported
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "snapshot supported"@en ;
+	rdfs:domain		 gax-trust-framework:Snapshot ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Check if service supports snapshots" ;
+. 
+
+gax-trust-framework:timeMachineSupportSnapshot
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "time machine support snapshot"@en ;
+	rdfs:domain		 gax-trust-framework:Snapshot ;
+	rdfs:range		 gax-trust-framework:TimeMachineDetails ;
+	rdfs:comment		 "Request from service for going to this point in time to get the snapshot of the state of the storage system. This is similar to a time machine support for going to that specific point in time and getting the state of the storage system including metadata of objects, files, blocks, etc" ;
+. 
+
+################## 
+##Standard
+##################
+
+gax-trust-framework:Standard
+	a		 owl:Class;
+	rdfs:label		 "Standard"@en ;
+. 
+
+gax-trust-framework:title
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "title"@en ;
+	rdfs:domain		 gax-trust-framework:Standard ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the standard." ;
+. 
+
+gax-trust-framework:standardReference
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "standard reference"@en ;
+	rdfs:domain		 gax-trust-framework:Standard ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Provides a link to schemas or details about applied standards." ;
+. 
+
+gax-trust-framework:publisher
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "publisher"@en ;
+	rdfs:domain		 gax-trust-framework:Standard ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Publisher of the standard." ;
+. 
+
+################## 
+##TermsAndConditions
+##################
+
+gax-trust-framework:TermsAndConditions
+	a		 owl:Class;
+	rdfs:label		 "Terms And Conditions"@en ;
+. 
+
+gax-trust-framework:content
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "content"@en ;
+	rdfs:domain		 gax-trust-framework:TermsAndConditions ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "a resolvable link to the document" ;
+. 
+
+gax-trust-framework:hash
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "hash"@en ;
+	rdfs:domain		 gax-trust-framework:TermsAndConditions ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "sha256 hash of the above document." ;
+. 
+
+################## 
+##TimeMachineDetails
+##################
+
+gax-trust-framework:TimeMachineDetails
+	a		 owl:Class;
+	rdfs:label		 "Time Machine Details"@en ;
+. 
+
+gax-trust-framework:duration
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "duration"@en ;
+	rdfs:domain		 gax-trust-framework:TimeMachineDetails ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Time window during which backups/snapshots are available, please see granularity for what granularities these are available" ;
+. 
+
+gax-trust-framework:granularity
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "granularity"@en ;
+	rdfs:domain		 gax-trust-framework:TimeMachineDetails ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "For a given time window, with what granularity are backups and snapshots performed? For example one backup/snapshot per hour during the last month starting now, or 1 backup/snapshot per day during the last 3 months, or 1 backup/snapshot per week during the last 6 months" ;
+. 
+
+################## 
+##ComplianceAssessmentBody
+##################
+
+gax-trust-framework:ComplianceAssessmentBody
+	a		 owl:Class;
+	rdfs:label		 "Compliance Assessment Body"@en ;
+	rdfs:subClassOf		gax-core:Participant ;
+. 
+
+gax-trust-framework:certifiesThirdPartyComplianceCertificationScheme
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certifies third party compliance certification scheme"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceAssessmentBody ;
+	rdfs:range		 gax-trust-framework:ThirdPartyComplianceCertificationScheme ;
+	rdfs:comment		 "IDs of the Third Party Compliance Certification Scheme this Compliance Assessment Body can certify." ;
+. 
+
+gax-trust-framework:thirdPartyComplianceCertificateClaim
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "third party compliance certificate claim"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceAssessmentBody ;
+	rdfs:range		 gax-trust-framework:ThirdPartyComplianceCertificateClaim ;
+	rdfs:comment		 "IDs of Certificate claims issued by this Compliance Assessment Body." ;
+. 
+
+gax-trust-framework:thirdPartyComplianceCredential
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "third party compliance credential"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceAssessmentBody ;
+	rdfs:range		 gax-trust-framework:ThirdPartyComplianceCertificateCredential ;
+	rdfs:comment		 "IDs of the Certificate claims VC certified by this Compliance Assessment Body." ;
+. 
+
+################## 
+##ComplianceCertificateClaim
+##################
+
+gax-trust-framework:ComplianceCertificateClaim
+	a		 owl:Class;
+	rdfs:label		 "Compliance Certificate Claim"@en ;
+. 
+
+gax-trust-framework:complianceCertificationScheme
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance certification scheme"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCertificateClaim ;
+	rdfs:range		 gax-trust-framework:ComplianceCertificationScheme ;
+	rdfs:comment		 "ID of the Compliance Certification Scheme (self-description) involved in the certification" ;
+. 
+
+gax-trust-framework:serviceOffering
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "service offering"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCertificateClaim ;
+	rdfs:range		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:comment		 "ID of the Service Offering (self-description) certified for the compliance" ;
+. 
+
+################## 
+##ComplianceCertificateCredential
+##################
+
+gax-trust-framework:ComplianceCertificateCredential
+	a		 owl:Class;
+	rdfs:label		 "Compliance Certificate Credential"@en ;
+	rdfs:subClassOf		cred:VerifiableCredential ;
+. 
+
+gax-trust-framework:credentialSubject
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "credential subject"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCertificateCredential ;
+	rdfs:range		 gax-trust-framework:ComplianceCertificateClaim ;
+	rdfs:comment		 "ID of the claim to be signed in a verifiable credential build with all the information that are bound in the claim. In case of third party credential the ID is the ID of the third party" ;
+. 
+
+################## 
+##ComplianceCertificationScheme
+##################
+
+gax-trust-framework:ComplianceCertificationScheme
+	a		 owl:Class;
+	rdfs:label		 "Compliance Certification Scheme"@en ;
+. 
+
+gax-trust-framework:complianceReference
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance reference"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCertificationScheme ;
+	rdfs:range		 gax-trust-framework:ComplianceReference ;
+	rdfs:comment		 "ID of Compliance Reference (self-description) to be certified by any means defined in the Certification Scheme" ;
+. 
+
+gax-trust-framework:complianceCriteriaCombination
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance criteria combination"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCertificationScheme ;
+	rdfs:range		 gax-trust-framework:ComplianceCriteriaCombination ;
+	rdfs:comment		 "ID of Compliance Criterion Combination granted by the scheme in case of certification" ;
+. 
+
+################## 
+##ComplianceCriteriaCombination
+##################
+
+gax-trust-framework:ComplianceCriteriaCombination
+	a		 owl:Class;
+	rdfs:label		 "Compliance Criteria Combination"@en ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCriteriaCombination ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the Gaia-X criteria combination" ;
+. 
+
+gax-trust-framework:requiredOrGrantedCriteria
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "required or granted criteria"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCriteriaCombination ;
+	rdfs:range		 gax-trust-framework:ComplianceCriterion ;
+	rdfs:comment		 "One or more required Criteria to be granted for the label or one or more granted Criteria by the compliance. All the Criteria have to be granted (logic AND)" ;
+. 
+
+################## 
+##ComplianceCriterion
+##################
+
+gax-trust-framework:ComplianceCriterion
+	a		 owl:Class;
+	rdfs:label		 "Compliance Criterion"@en ;
+. 
+
+gax-trust-framework:hasName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "has name"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCriterion ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the Gaia-X Criterion" ;
+. 
+
+gax-trust-framework:level
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "level"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceCriterion ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A description in natural language of the Label level. The level ordering is done by alphanumeric order." ;
+. 
+
+################## 
+##ComplianceLabel
+##################
+
+gax-trust-framework:ComplianceLabel
+	a		 owl:Class;
+	rdfs:label		 "Compliance Label"@en ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceLabel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the Gaia-X Label" ;
+. 
+
+gax-trust-framework:level
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "level"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceLabel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A description in natural language of the Gaia-X Label Level as defined in TF document" ;
+. 
+
+gax-trust-framework:requiredCriteriaCombinations
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "required criteria combinations"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceLabel ;
+	rdfs:range		 gax-trust-framework:ComplianceCriteriaCombination ;
+	rdfs:comment		 "List of Criteria Combinations. If one of these Combinations is valid the Label is Granted" ;
+. 
+
+################## 
+##ComplianceReferenceManager
+##################
+
+gax-trust-framework:ComplianceReferenceManager
+	a		 owl:Class;
+	rdfs:label		 "Compliance Reference Manager"@en ;
+	rdfs:subClassOf		gax-core:Participant ;
+. 
+
+gax-trust-framework:complianceReferences
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance references"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReferenceManager ;
+	rdfs:range		 gax-trust-framework:ComplianceReference ;
+	rdfs:comment		 "One or more Ids of ComplianceReferences (self-description) managed by this ComplianceReferenceManager" ;
+. 
+
+################## 
+##ComplianceReference
+##################
+
+gax-trust-framework:ComplianceReference
+	a		 owl:Class;
+	rdfs:label		 "Compliance Reference"@en ;
+. 
+
+gax-trust-framework:referenceUrl
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "reference url"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "URI to reference the content of the compliance reference in a single PDF file" ;
+. 
+
+gax-trust-framework:sha256
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sha"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "SHA256 of PDF document referenced by referenceUrl." ;
+. 
+
+gax-trust-framework:complianceReferenceTitle
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "compliance reference title"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the Compliance Reference" ;
+. 
+
+gax-trust-framework:complianceReferenceManager
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance reference manager"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 gax-trust-framework:ComplianceReferenceManager ;
+	rdfs:comment		 "DID of the Participant (self-description) in charge of managing this Compliance Reference" ;
+. 
+
+gax-trust-framework:version
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "version"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "versioning according to [semver](https://semver.org/)." ;
+. 
+
+gax-trust-framework:crValidFrom
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "cr valid from"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:dateTime ;
+	rdfs:comment		 "Indicates the first date when the compliance reference goes into effect" ;
+. 
+
+gax-trust-framework:crValidUntil
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "cr valid until"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 xsd:dateTime ;
+	rdfs:comment		 "Indicates the last date when the compliance reference is no more into effect" ;
+. 
+
+gax-trust-framework:complianceCertificationSchemes
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance certification schemes"@en ;
+	rdfs:domain		 gax-trust-framework:ComplianceReference ;
+	rdfs:range		 gax-trust-framework:ComplianceCertificationScheme ;
+	rdfs:comment		 "One or more schemes that grants certification. This list is managed by a reference manager." ;
+. 
+
+################## 
+##ThirdPartyComplianceCertificateClaim
+##################
+
+gax-trust-framework:ThirdPartyComplianceCertificateClaim
+	a		 owl:Class;
+	rdfs:label		 "Third Party Compliance Certificate Claim"@en ;
+	rdfs:subClassOf		gax-trust-framework:ComplianceCertificateClaim ;
+. 
+
+gax-trust-framework:complianceAssessmentBody
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance assessment body"@en ;
+	rdfs:domain		 gax-trust-framework:ThirdPartyComplianceCertificateClaim ;
+	rdfs:range		 gax-trust-framework:ComplianceAssessmentBody ;
+	rdfs:comment		 "DID of the Participant (self-description) endorsed having a Compliance Assessment Body role that claims the compliance" ;
+. 
+
+################## 
+##ThirdPartyComplianceCertificateCredential
+##################
+
+gax-trust-framework:ThirdPartyComplianceCertificateCredential
+	a		 owl:Class;
+	rdfs:label		 "Third Party Compliance Certificate Credential"@en ;
+	rdfs:subClassOf		gax-trust-framework:ComplianceCertificateCredential ;
+. 
+
+gax-trust-framework:credentialSubject
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "credential subject"@en ;
+	rdfs:domain		 gax-trust-framework:ThirdPartyComplianceCertificateCredential ;
+	rdfs:range		 gax-trust-framework:ThirdPartyComplianceCertificateClaim ;
+	rdfs:comment		 "Id of the claim to be signed in a verifiable credential build with all the information that are bound in the claim. In case of third party credential the id is the id of the third party" ;
+. 
+
+################## 
+##ThirdPartyComplianceCertificationScheme
+##################
+
+gax-trust-framework:ThirdPartyComplianceCertificationScheme
+	a		 owl:Class;
+	rdfs:label		 "Third Party Compliance Certification Scheme"@en ;
+	rdfs:subClassOf		gax-trust-framework:ComplianceCertificationScheme ;
+. 
+
+gax-trust-framework:complianceAssessmentBodies
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "compliance assessment bodies"@en ;
+	rdfs:domain		 gax-trust-framework:ThirdPartyComplianceCertificationScheme ;
+	rdfs:range		 gax-trust-framework:ComplianceAssessmentBody ;
+	rdfs:comment		 "One or more IDs of ComplianceAssessmentBody (participant) endorsed having a Compliance Assessment Body role by the Compliance Reference. This unordered list is managed and validated by the Compliance Reference Manager" ;
+. 
+
+################## 
+##ComputeFunctionTrigger
+##################
+
+gax-trust-framework:ComputeFunctionTrigger
+	a		 owl:Class;
+	rdfs:label		 "Compute Function Trigger"@en ;
+	rdfs:subClassOf		gax-trust-framework:InstantiationRequirements ;
+. 
+
+gax-trust-framework:url
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "url"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunctionTrigger ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "URI / URL used to trigger this compute function" ;
+. 
+
+gax-trust-framework:confidential
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunctionTrigger ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Indicates whether function is of confidential nature" ;
+. 
+
+gax-trust-framework:confidentialComputingTechnology
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential computing technology"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunctionTrigger ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "one ore more particular CC technologies used by this flavor" ;
+. 
+
+gax-trust-framework:attestationServiceURI
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "attestation service uri"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunctionTrigger ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "indicates whether function has an associated attestation service" ;
+. 
+
+################## 
+##ContainerResourceLimits
+##################
+
+gax-trust-framework:ContainerResourceLimits
+	a		 owl:Class;
+	rdfs:label		 "Container Resource Limits"@en ;
+	rdfs:subClassOf		gax-trust-framework:InstantiationRequirements ;
+. 
+
+gax-trust-framework:cpuRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "cpu requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 gax-trust-framework:CPU ;
+	rdfs:comment		 "CPU requirements" ;
+. 
+
+gax-trust-framework:numberOfCoresLimit
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of cores limit"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "limit to the number of cores used by container" ;
+. 
+
+gax-trust-framework:memoryRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "memory requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 gax-trust-framework:Memory ;
+	rdfs:comment		 "container memory requirements" ;
+. 
+
+gax-trust-framework:memoryLimit
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "memory limit"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 gax-trust-framework:Memory ;
+	rdfs:comment		 "container memory limit" ;
+. 
+
+gax-trust-framework:gpuRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "gpu requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 gax-trust-framework:GPU ;
+	rdfs:comment		 "number of GPUs" ;
+. 
+
+gax-trust-framework:gpuLimit
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "gpu limit"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "GPU number limit" ;
+. 
+
+gax-trust-framework:confidential
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "indicates whether container is of confidential nature" ;
+. 
+
+gax-trust-framework:confidentialComputingTechnology
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential computing technology"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "one or more particular CC technologies used by this flavor" ;
+. 
+
+gax-trust-framework:attestationServiceURI
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "attestation service uri"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "indicates whether confidential container has an associated attestation service" ;
+. 
+
+################## 
+##InstantiationRequirements
+##################
+
+gax-trust-framework:InstantiationRequirements
+	a		 owl:Class;
+	rdfs:label		 "Instantiation Requirements"@en ;
+	rdfs:subClassOf		gax-core:Configuration ;
+. 
+
+################## 
+##ServerFlavor
+##################
+
+gax-trust-framework:ServerFlavor
+	a		 owl:Class;
+	rdfs:label		 "Server Flavor"@en ;
+	rdfs:subClassOf		gax-trust-framework:InstantiationRequirements ;
+. 
+
+gax-trust-framework:cpuReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "cpu req"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:CPU ;
+	rdfs:comment		 "CPU requirements" ;
+. 
+
+gax-trust-framework:memoryRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "memory requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:Memory ;
+	rdfs:comment		 "Server memory requirements" ;
+. 
+
+gax-trust-framework:gpuRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "gpu requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:GPU ;
+	rdfs:comment		 "Server memory requirements" ;
+. 
+
+gax-trust-framework:networkRequirements
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "network requirements"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:Network ;
+	rdfs:comment		 "Networking requirements" ;
+. 
+
+gax-trust-framework:bootVolumeReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "boot volume req"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:Disk ;
+	rdfs:comment		 "Boot volume requirement" ;
+. 
+
+gax-trust-framework:additionalVolumeReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "additional volume req"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 gax-trust-framework:Disk ;
+	rdfs:comment		 "Additional volume requirements" ;
+. 
+
+gax-trust-framework:confidential
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "indicates whether server is of confidential nature" ;
+. 
+
+gax-trust-framework:confidentialComputingTechnology
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidential computing technology"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "one ore more particular CC technologies used by this flavor" ;
+. 
+
+gax-trust-framework:attestationServiceURI
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "attestation service uri"@en ;
+	rdfs:domain		 gax-trust-framework:ServerFlavor ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "indicates whether confidential server has an associated attestation service" ;
+. 
+
+################## 
+##VmAutoscalingGroupSpec
+##################
+
+gax-trust-framework:VmAutoscalingGroupSpec
+	a		 owl:Class;
+	rdfs:label		 "Vm Autoscaling Group Spec"@en ;
+	rdfs:subClassOf		gax-trust-framework:InstantiationRequirements ;
+. 
+
+gax-trust-framework:minInstantiatedVM
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "min instantiated vm"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Minimum number of VM instances in the ASG" ;
+. 
+
+gax-trust-framework:loadMetric
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "load metric"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Load Metric type - can be of various types" ;
+. 
+
+gax-trust-framework:loadMetricTarget
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "load metric target"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Per VM instance Load Metric Target value. Must be defined if asgLoadMetric is defined. Must be between Min and Max" ;
+. 
+
+gax-trust-framework:loadMetricTargetMin
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "load metric target min"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Per VM Load Metric Target value. Must be defined if asgLoadMetric is defined. Must be < Max" ;
+. 
+
+gax-trust-framework:loadMetricTargetMax
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "load metric target max"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Per VM Load Metric Target value. Must be defined if asgLoadMetric is defined. Must be > Min" ;
+. 
+
+gax-trust-framework:asgScalingPlan
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "asg scaling plan"@en ;
+	rdfs:domain		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Autoscaling Policy" ;
+. 
+
+################## 
+##LegalPerson
+##################
+
+gax-trust-framework:LegalPerson
+	a		 owl:Class;
+	rdfs:label		 "Legal Person"@en ;
+	rdfs:subClassOf		gax-core:Participant, org:Organization ;
+. 
+
+gax-trust-framework:legalName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "legal name"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Legally binding name" ;
+. 
+
+gax-trust-framework:legalForm
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "legal form"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Legal form" ;
+. 
+
+gax-trust-framework:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Textual description of this organization." ;
+. 
+
+gax-trust-framework:registrationNumber
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "registration number"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 gax-trust-framework:RegistrationNumber ;
+	rdfs:comment		 "Country’s registration number which identifies one specific entity. Valid formats are local, EUID, EORI, vatID, leiCode." ;
+. 
+
+gax-trust-framework:legalAddress
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "legal address"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 vcard:Address ;
+	rdfs:comment		 "The full legal address of the organization." ;
+. 
+
+gax-trust-framework:headquarterAddress
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "headquarter address"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 vcard:Address ;
+	rdfs:comment		 "The full legal address of the organization." ;
+. 
+
+gax-trust-framework:leiCode
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "lei code"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Unique LEI number as defined by https://www.gleif.org." ;
+. 
+
+gax-trust-framework:parentOrganization
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "parent organization"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of one or more direct participants that this entity is a subOrganization of, if any." ;
+. 
+
+gax-trust-framework:subOrganization
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "sub organization"@en ;
+	rdfs:domain		 gax-trust-framework:LegalPerson ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of one or more direct participants with an legal mandate on this entity, e.g., as a subsidiary." ;
+. 
+
+################## 
+##AvailabilityZone
+##################
+
+gax-trust-framework:AvailabilityZone
+	a		 owl:Class;
+	rdfs:label		 "Availability Zone"@en ;
+	rdfs:subClassOf		gax-trust-framework:Resource ;
+. 
+
+gax-trust-framework:aggregationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "aggregation of"@en ;
+	rdfs:domain		 gax-trust-framework:AvailabilityZone ;
+	rdfs:range		 gax-trust-framework:Resource ;
+	rdfs:comment		 "An availability zone is an aggregation of resources - physical and abstract - in a non-redundant setup often associated with a single datacenter room" ;
+. 
+
+################## 
+##CodeArtifact
+##################
+
+gax-trust-framework:CodeArtifact
+	a		 owl:Class;
+	rdfs:label		 "Code Artifact"@en ;
+	rdfs:subClassOf		gax-trust-framework:SoftwareResource ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:CodeArtifact ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name identifying the code artifact" ;
+. 
+
+################## 
+##ComputationalResource
+##################
+
+gax-trust-framework:ComputationalResource
+	a		 owl:Class;
+	rdfs:label		 "Computational Resource"@en ;
+. 
+
+gax-trust-framework:cpu
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "cpu"@en ;
+	rdfs:domain		 gax-trust-framework:ComputationalResource ;
+	rdfs:range		 gax-trust-framework:CPU ;
+	rdfs:comment		 "Description of CPU(s) of this node" ;
+. 
+
+gax-trust-framework:gpu
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "gpu"@en ;
+	rdfs:domain		 gax-trust-framework:ComputationalResource ;
+	rdfs:range		 gax-trust-framework:GPU ;
+	rdfs:comment		 "Description of GPU(s) of this node." ;
+. 
+
+gax-trust-framework:ramSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "ram size"@en ;
+	rdfs:domain		 gax-trust-framework:ComputationalResource ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Size of RAM of this node" ;
+. 
+
+gax-trust-framework:disk
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "disk"@en ;
+	rdfs:domain		 gax-trust-framework:ComputationalResource ;
+	rdfs:range		 gax-trust-framework:Disk ;
+	rdfs:comment		 "Description of disk(s) of this nodes" ;
+. 
+
+gax-trust-framework:nic
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "nic"@en ;
+	rdfs:domain		 gax-trust-framework:ComputationalResource ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Description of network interface card(s) of this node" ;
+. 
+
+################## 
+##ComputeFunctionCode
+##################
+
+gax-trust-framework:ComputeFunctionCode
+	a		 owl:Class;
+	rdfs:label		 "Compute Function Code"@en ;
+	rdfs:subClassOf		gax-trust-framework:CodeArtifact ;
+. 
+
+gax-trust-framework:file
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "file"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunctionCode ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "URL referring to function code file" ;
+. 
+
+################## 
+##ContainerImage
+##################
+
+gax-trust-framework:ContainerImage
+	a		 owl:Class;
+	rdfs:label		 "Container Image"@en ;
+	rdfs:subClassOf		gax-trust-framework:WorkloadArtifact ;
+. 
+
+gax-trust-framework:baseOS
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "base os"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerImage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "container image base operating system" ;
+. 
+
+gax-trust-framework:format
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "format"@en ;
+	rdfs:domain		 gax-trust-framework:ContainerImage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "container image format" ;
+. 
+
+################## 
+##DataCenter
+##################
+
+gax-trust-framework:DataCenter
+	a		 owl:Class;
+	rdfs:label		 "Data Center"@en ;
+	rdfs:subClassOf		gax-trust-framework:PhysicalResource ;
+. 
+
+gax-trust-framework:aggregationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "aggregation of"@en ;
+	rdfs:domain		 gax-trust-framework:DataCenter ;
+	rdfs:range		 gax-trust-framework:AvailabilityZone ;
+	rdfs:comment		 "a data center is an aggregation of availability zones" ;
+. 
+
+################## 
+##DataConnectorOffering
+##################
+
+gax-trust-framework:DataConnectorOffering
+	a		 owl:Class;
+	rdfs:label		 "Data Connector Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOffering ;
+. 
+
+gax-trust-framework:physicalResource
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "physical resource"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 gax-trust-framework:PhysicalResource ;
+	rdfs:comment		 "one or more resources with information of where the data is located" ;
+. 
+
+gax-trust-framework:virtualResource
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "virtual resource"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 gax-trust-framework:VirtualResource ;
+	rdfs:comment		 "one or more resources with information of who owns the data." ;
+. 
+
+gax-trust-framework:policies
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "policies"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "one or more policies expressed using a DSL used by the data connector policy engine leveraging Gaia-X Self-descriptions as both data inputs and policy inputs" ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of the data asset, which helps discovery.  Preferably a controlled vocabulary entry referenced by URI" ;
+. 
+
+gax-trust-framework:creationTime
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "creation time"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 xsd:dateTimeStamp ;
+	rdfs:comment		 "Timestamp the service has been created." ;
+. 
+
+gax-trust-framework:standardConformity
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "standard conformity"@en ;
+	rdfs:domain		 gax-trust-framework:DataConnectorOffering ;
+	rdfs:range		 gax-trust-framework:Standard ;
+	rdfs:comment		 "Provides information about applied standards." ;
+. 
+
+################## 
+##DataResource
+##################
+
+gax-trust-framework:DataResource
+	a		 owl:Class;
+	rdfs:label		 "Data Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:VirtualResource ;
+. 
+
+gax-trust-framework:producedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "produced by"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of a participant legally enabling the data usage." ;
+. 
+
+gax-trust-framework:exposedThrough
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "exposed through"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the data exchange component that exposes the data resource." ;
+. 
+
+gax-trust-framework:obsoleteDateTime
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "obsolete date time"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 xsd:dateTime ;
+	rdfs:comment		 "Date time in ISO 8601 format after which data is obsolete." ;
+. 
+
+gax-trust-framework:expirationDateTime
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "expiration date time"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 xsd:dateTime ;
+	rdfs:comment		 "Date time in ISO 8601 format after which data is expired and shall be deleted." ;
+. 
+
+gax-trust-framework:containsPII
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "contains pii"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Boolean for Personal Identifier Information, which is determined by the Participant owning the Data Resource." ;
+. 
+
+gax-trust-framework:legalBasis
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "legal basis"@en ;
+	rdfs:domain		 gax-trust-framework:DataResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "NOTE: Mandatory if containsPII is True. One of the reasons as detailed in the identified Personal Data Protection Regimes, such as [GDPR2018]. Potential Legal Bases can be [article 6], article 7, (https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679&from=EN#d1e1888-1-1) or article 9. It shall be expressed as a string matching 6.1.[a-f], 6.1.4, 7 or 9.2.[a-j]. (Note: this list is not final, as GDPR and Member State Law may provide for additional legal basis. Those will be implemented as options in future iterations.)" ;
+. 
+
+################## 
+##Image
+##################
+
+gax-trust-framework:Image
+	a		 owl:Class;
+	rdfs:label		 "Image"@en ;
+	rdfs:subClassOf		gax-trust-framework:CodeArtifact ;
+. 
+
+gax-trust-framework:diskFormat
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "disk format"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Disk format. Default RAW" ;
+. 
+
+gax-trust-framework:checksum
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "checksum"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:Checksum ;
+	rdfs:comment		 "Details on checksum of this image." ;
+. 
+
+gax-trust-framework:version
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "version"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Version of this image." ;
+. 
+
+gax-trust-framework:cpuReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "cpu req"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:CPU ;
+	rdfs:comment		 "CPU requirements for this image" ;
+. 
+
+gax-trust-framework:fileSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "file size"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "file size of image" ;
+. 
+
+gax-trust-framework:ramSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "ram size"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "size in RAM of image" ;
+. 
+
+gax-trust-framework:encryption
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "encryption"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:Encryption ;
+	rdfs:comment		 "Details of image ecryption." ;
+. 
+
+gax-trust-framework:signature
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "signature"@en ;
+	rdfs:domain		 gax-trust-framework:Image ;
+	rdfs:range		 gax-trust-framework:Signature ;
+	rdfs:comment		 "Details of image signatur." ;
+. 
+
+################## 
+##InterconnectionPointIdentifier
+##################
+
+gax-trust-framework:InterconnectionPointIdentifier
+	a		 owl:Class;
+	rdfs:label		 "Interconnection Point Identifier"@en ;
+	rdfs:subClassOf		gax-trust-framework:Resource ;
+. 
+
+gax-trust-framework:dataCenterName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data center name"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the name or Id of datacenter where the service can be accessed" ;
+. 
+
+gax-trust-framework:dataCenterFloor
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data center floor"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the floor number of datacenter where the service can be accessed" ;
+. 
+
+gax-trust-framework:dataCenterRackNumber
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data center rack number"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the Id of datacenter rack number where the service can be accessed" ;
+. 
+
+gax-trust-framework:dataCenterPatchPanel
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data center patch panel"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the Id of datacenter patch panel where the service can be accessed" ;
+. 
+
+gax-trust-framework:dataCenterPortNumber
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data center port number"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the port number on the patch panel where the service can be accessed" ;
+. 
+
+gax-trust-framework:macAddress
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "mac address"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the mac address required for L2 connectivity setup" ;
+. 
+
+gax-trust-framework:ipAddress
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "ip address"@en ;
+	rdfs:domain		 gax-trust-framework:InterconnectionPointIdentifier ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the IP address required for L3 connectivity setup" ;
+. 
+
+################## 
+##Network
+##################
+
+gax-trust-framework:Network
+	a		 owl:Class;
+	rdfs:label		 "Network"@en ;
+	rdfs:subClassOf		gax-trust-framework:HardwareSpec ;
+. 
+
+gax-trust-framework:nicPortReq
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "nic port req"@en ;
+	rdfs:domain		 gax-trust-framework:Network ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "placeholder for networking" ;
+. 
+
+################## 
+##NetworkingDevice
+##################
+
+gax-trust-framework:NetworkingDevice
+	a		 owl:Class;
+	rdfs:label		 "Networking Device"@en ;
+	rdfs:subClassOf		gax-trust-framework:PhysicalResource ;
+. 
+
+gax-trust-framework:managementPort
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "management port"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A dedicated port for management tasks." ;
+. 
+
+gax-trust-framework:consolePort
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "console port"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A dedicated port for console tasks." ;
+. 
+
+gax-trust-framework:portCapacity_A
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "port capacity a"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "The assigned capacity of ports." ;
+. 
+
+gax-trust-framework:portCapacity_A_Count
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "port capacity count"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "The assigned number of ports." ;
+. 
+
+gax-trust-framework:redundantPowerSupply
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "redundant power supply"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Availability of redundant power supply for the cases of emergency." ;
+. 
+
+gax-trust-framework:ramSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "ram size"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Ram size of the networking device" ;
+. 
+
+gax-trust-framework:cpuCount
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "cpu count"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Number of available CPUs." ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of networking device" ;
+. 
+
+gax-trust-framework:supportedProtocols
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "supported protocols"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "List of  supported protocols among used layers should be specified." ;
+. 
+
+gax-trust-framework:networkAddress
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "network address"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkingDevice ;
+	rdfs:range		 xsd:float ;
+	rdfs:comment		 "IP address of the networking device" ;
+. 
+
+################## 
+##PhysicalComputationalResource
+##################
+
+gax-trust-framework:PhysicalComputationalResource
+	a		 owl:Class;
+	rdfs:label		 "Physical Computational Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:ComputationalResource, gax-trust-framework:PhysicalResource ;
+. 
+
+gax-trust-framework:supportedManagementProtocols
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "supported management protocols"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalComputationalResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Supported Management Protocols, including version number" ;
+. 
+
+gax-trust-framework:managementInterface
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "management interface"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalComputationalResource ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Interface used for management (NIC, Device, ...)" ;
+. 
+
+################## 
+##PhysicalResource
+##################
+
+gax-trust-framework:PhysicalResource
+	a		 owl:Class;
+	rdfs:label		 "Physical Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:Resource ;
+. 
+
+gax-trust-framework:maintainedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "maintained by"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the participant maintaining the resource in operational condition and thus have physical access to it." ;
+. 
+
+gax-trust-framework:ownedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "owned by"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the participant owning the resource." ;
+. 
+
+gax-trust-framework:manufacturedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "manufactured by"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the participant manufacturing the resource." ;
+. 
+
+gax-trust-framework:locationAddress
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "location address"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalResource ;
+	rdfs:range		 vcard:Address ;
+	rdfs:comment		 "A vcard:Address object that contains the physical location in ISO 3166-1 alpha2, alpha-3 or numeric format." ;
+. 
+
+gax-trust-framework:locationGPS
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "location gps"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A list of physical GPS in ISO 6709:2008/Cor 1:2009 format." ;
+. 
+
+################## 
+##PXEImage
+##################
+
+gax-trust-framework:PXEImage
+	a		 owl:Class;
+	rdfs:label		 "Image"@en ;
+	rdfs:subClassOf		gax-trust-framework:Image ;
+. 
+
+gax-trust-framework:format
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "format"@en ;
+	rdfs:domain		 gax-trust-framework:PXEImage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "PXE image format for a bare-metal server" ;
+. 
+
+################## 
+##Region
+##################
+
+gax-trust-framework:Region
+	a		 owl:Class;
+	rdfs:label		 "Region"@en ;
+	rdfs:subClassOf		gax-trust-framework:Resource ;
+. 
+
+gax-trust-framework:aggregationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "aggregation of"@en ;
+	rdfs:domain		 gax-trust-framework:Region ;
+	rdfs:range		 gax-trust-framework:DataCenter ;
+	rdfs:comment		 "a region is an aggregation of data centers" ;
+. 
+
+################## 
+##Resource
+##################
+
+gax-trust-framework:Resource
+	a		 owl:Class;
+	rdfs:label		 "Resource"@en ;
+	rdfs:subClassOf		gax-core:Resource ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:Resource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of resource." ;
+. 
+
+gax-trust-framework:aggregationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "aggregation of"@en ;
+	rdfs:domain		 gax-trust-framework:Resource ;
+	rdfs:range		 gax-trust-framework:Resource ;
+	rdfs:comment		 "Resources related to the resource and that can exist independently of it." ;
+. 
+
+################## 
+##SoftwareResource
+##################
+
+gax-trust-framework:SoftwareResource
+	a		 owl:Class;
+	rdfs:label		 "Software Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:VirtualResource ;
+. 
+
+################## 
+##VirtualComputationalResource
+##################
+
+gax-trust-framework:VirtualComputationalResource
+	a		 owl:Class;
+	rdfs:label		 "Virtual Computational Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:ComputationalResource, gax-trust-framework:InstantiatedVirtualResource ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualComputationalResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of virtual node" ;
+. 
+
+################## 
+##VirtualResource
+##################
+
+gax-trust-framework:VirtualResource
+	a		 owl:Class;
+	rdfs:label		 "Virtual Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:Resource ;
+. 
+
+gax-trust-framework:copyrightOwnedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "copyright owned by"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualResource ;
+	rdfs:range		 foaf:Agent ;
+	rdfs:comment		 "The copyright owner(s), given as a Gaia-X Participant or as some other agent, possibly also a person outside of Gaia-X. A copyright owner is a person or organization, that has the right to exploit the resource. Copyright owner does not necessary refer to the author of the resource, who is a natural person and may differ from copyright owner. A simple name string can be referenced as a blank node whose foaf:name attribute has that string value." ;
+. 
+
+gax-trust-framework:license
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "license"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "one or more SPDX licenses identifiers or URL to license document" ;
+. 
+
+gax-trust-framework:policy
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "policy"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualResource ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "one or more policies expressed using a DSL (e.g., Rego or ODRL) (access control, throttling, usage, retention, …)" ;
+. 
+
+################## 
+##VMImage
+##################
+
+gax-trust-framework:VMImage
+	a		 owl:Class;
+	rdfs:label		 "Image"@en ;
+	rdfs:subClassOf		gax-trust-framework:Image ;
+. 
+
+gax-trust-framework:format
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "format"@en ;
+	rdfs:domain		 gax-trust-framework:VMImage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Format of this virtual machine image." ;
+. 
+
+################## 
+##Volume
+##################
+
+gax-trust-framework:Volume
+	a		 owl:Class;
+	rdfs:label		 "Volume"@en ;
+	rdfs:subClassOf		gax-trust-framework:StorageResource ;
+. 
+
+gax-trust-framework:size
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "size"@en ;
+	rdfs:domain		 gax-trust-framework:Volume ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Size of this storage volume" ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:Volume ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "storage volume type" ;
+. 
+
+################## 
+##AutoscalingContainer
+##################
+
+gax-trust-framework:AutoscalingContainer
+	a		 owl:Class;
+	rdfs:label		 "Autoscaling Container"@en ;
+	rdfs:subClassOf		gax-trust-framework:Container ;
+. 
+
+################## 
+##AutoscalingVirtualMachine
+##################
+
+gax-trust-framework:AutoscalingVirtualMachine
+	a		 owl:Class;
+	rdfs:label		 "Autoscaling Virtual Machine"@en ;
+	rdfs:subClassOf		gax-trust-framework:VirtualMachine ;
+. 
+
+gax-trust-framework:autoscalingVmServiceSpecification
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "autoscaling vm service specification"@en ;
+	rdfs:domain		 gax-trust-framework:AutoscalingVirtualMachine ;
+	rdfs:range		 gax-trust-framework:VmAutoscalingGroupSpec ;
+	rdfs:comment		 "Auto Scaling Group Specifications for this service offering" ;
+. 
+
+################## 
+##BareMetal
+##################
+
+gax-trust-framework:BareMetal
+	a		 owl:Class;
+	rdfs:label		 "Bare Metal"@en ;
+	rdfs:subClassOf		gax-trust-framework:Compute ;
+. 
+
+gax-trust-framework:codeArtifact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "code artifact"@en ;
+	rdfs:domain		 gax-trust-framework:BareMetal ;
+	rdfs:range		 gax-trust-framework:PXEImage ;
+	rdfs:comment		 "all possible provided bare metal server images for this service offering" ;
+. 
+
+gax-trust-framework:instantiationReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "instantiation req"@en ;
+	rdfs:domain		 gax-trust-framework:BareMetal ;
+	rdfs:range		 gax-trust-framework:ServerFlavor ;
+	rdfs:comment		 "all possible provided bare metal server flavors for this service offering" ;
+. 
+
+################## 
+##BigData
+##################
+
+gax-trust-framework:BigData
+	a		 owl:Class;
+	rdfs:label		 "Big Data"@en ;
+	rdfs:subClassOf		gax-trust-framework:Platform ;
+. 
+
+################## 
+##BlockStorageOffering
+##################
+
+gax-trust-framework:BlockStorageOffering
+	a		 owl:Class;
+	rdfs:label		 "Block Storage Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:StorageServiceOffering ;
+. 
+
+gax-trust-framework:blockSize
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "block size"@en ;
+	rdfs:domain		 gax-trust-framework:BlockStorageOffering ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "Block size of block, file or object store to be used" ;
+. 
+
+gax-trust-framework:blockRedundancyMechanism
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "block redundancy mechanism"@en ;
+	rdfs:domain		 gax-trust-framework:BlockStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying data protection mechanism to be employed. Some example are - Triplication creates three copies in three different protection domains. Some references are here - https://en.wikipedia.org/wiki/Erasure_code, https://en.wikipedia.org/wiki/RAID" ;
+. 
+
+gax-trust-framework:blockStorageTechnology
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "block storage technology"@en ;
+	rdfs:domain		 gax-trust-framework:BlockStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying storage technology type to be used" ;
+. 
+
+gax-trust-framework:lowLevelBlockAccessProtocol
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "low level block access protocol"@en ;
+	rdfs:domain		 gax-trust-framework:BlockStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying low level access protocol for the storage service to be used. These are various methods to access the storage technology Some examples anbd references - https://www.enterprisestorageforum.com/hardware/nvme-vs-sata-comparing-storage-technologies/" ;
+. 
+
+################## 
+##Catalogue
+##################
+
+gax-trust-framework:Catalogue
+	a		 owl:Class;
+	rdfs:label		 "Catalogue"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOffering ;
+. 
+
+gax-trust-framework:getVerifiableCredentialsIDs
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "get verifiable credentials ds"@en ;
+	rdfs:domain		 gax-trust-framework:Catalogue ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A route used to synchronize catalogues and retrieve the list of Verifiable Credentials (issuer, id)." ;
+. 
+
+################## 
+##ComputeFunction
+##################
+
+gax-trust-framework:ComputeFunction
+	a		 owl:Class;
+	rdfs:label		 "Compute Function"@en ;
+	rdfs:subClassOf		gax-trust-framework:Compute ;
+. 
+
+gax-trust-framework:code
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "code"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunction ;
+	rdfs:range		 gax-trust-framework:ComputeFunctionCode ;
+	rdfs:comment		 "all possible function codes for this service offering" ;
+. 
+
+gax-trust-framework:trigger
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "trigger"@en ;
+	rdfs:domain		 gax-trust-framework:ComputeFunction ;
+	rdfs:range		 gax-trust-framework:ComputeFunctionTrigger ;
+	rdfs:comment		 "all possible function codes for this service offering" ;
+. 
+
+################## 
+##Compute
+##################
+
+gax-trust-framework:Compute
+	a		 owl:Class;
+	rdfs:label		 "Compute"@en ;
+	rdfs:subClassOf		gax-trust-framework:InfrastructureOffering ;
+. 
+
+gax-trust-framework:codeArtifact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "code artifact"@en ;
+	rdfs:domain		 gax-trust-framework:Compute ;
+	rdfs:range		 gax-trust-framework:CodeArtifact ;
+	rdfs:comment		 "Compute Service Code Artifacts" ;
+. 
+
+gax-trust-framework:instantiationReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "instantiation req"@en ;
+	rdfs:domain		 gax-trust-framework:Compute ;
+	rdfs:range		 gax-trust-framework:InstantiationRequirements ;
+	rdfs:comment		 "Set of technical Requirements / conditions to instantiate this service offering" ;
+. 
+
+gax-trust-framework:tenantSeparation
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "tenant separation"@en ;
+	rdfs:domain		 gax-trust-framework:Compute ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How compute resources of different tenants are separated. Default value = hw-virtualized" ;
+. 
+
+################## 
+##Connectivity
+##################
+
+gax-trust-framework:Connectivity
+	a		 owl:Class;
+	rdfs:label		 "Connectivity"@en ;
+	rdfs:subClassOf		gax-trust-framework:Infrastructure ;
+. 
+
+gax-trust-framework:instantiationRequirements
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "instantiation requirements"@en ;
+	rdfs:domain		 gax-trust-framework:Connectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "" ;
+. 
+
+################## 
+##Container
+##################
+
+gax-trust-framework:Container
+	a		 owl:Class;
+	rdfs:label		 "Container"@en ;
+	rdfs:subClassOf		gax-trust-framework:Compute ;
+. 
+
+gax-trust-framework:image
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "image"@en ;
+	rdfs:domain		 gax-trust-framework:Container ;
+	rdfs:range		 gax-trust-framework:ContainerImage ;
+	rdfs:comment		 "set of all possible provided container images for this service offering" ;
+. 
+
+gax-trust-framework:resourceLimits
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "resource limits"@en ;
+	rdfs:domain		 gax-trust-framework:Container ;
+	rdfs:range		 gax-trust-framework:ContainerResourceLimits ;
+	rdfs:comment		 "set of all possible container resource limits for this service offering" ;
+. 
+
+################## 
+##Database
+##################
+
+gax-trust-framework:Database
+	a		 owl:Class;
+	rdfs:label		 "Database"@en ;
+	rdfs:subClassOf		gax-trust-framework:Platform ;
+. 
+
+################## 
+##DigitalIdentityWallet
+##################
+
+gax-trust-framework:DigitalIdentityWallet
+	a		 owl:Class;
+	rdfs:label		 "Digital Identity Wallet"@en ;
+	rdfs:subClassOf		gax-trust-framework:Wallet ;
+. 
+
+################## 
+##FileStorageOffering
+##################
+
+gax-trust-framework:FileStorageOffering
+	a		 owl:Class;
+	rdfs:label		 "File Storage Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:StorageServiceOffering ;
+. 
+
+gax-trust-framework:fileSystemType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "file system type"@en ;
+	rdfs:domain		 gax-trust-framework:FileStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Filesystem Type  for storage  partition  Ref:https://opensource.com/article/18/4/ext4-filesystem" ;
+. 
+
+gax-trust-framework:fileBlockSize
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "file block size"@en ;
+	rdfs:domain		 gax-trust-framework:FileStorageOffering ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "Block size of block, file or object store" ;
+. 
+
+gax-trust-framework:fileRedundancyMechanism
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "file redundancy mechanism"@en ;
+	rdfs:domain		 gax-trust-framework:FileStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying data protection mechanism. Some example are - Triplication creates three copies in three different protection domains. Some references are here - https://en.wikipedia.org/wiki/Erasure_code, https://en.wikipedia.org/wiki/RAID" ;
+. 
+
+gax-trust-framework:highLevelAccessProtocol
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "high level access protocol"@en ;
+	rdfs:domain		 gax-trust-framework:FileStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying higher level access protocol, These mainly refer to access methods such as NFS (Network File System), Common Internet File System (CIFS) and Hadoop File System (HDFS)" ;
+. 
+
+################## 
+##IdentityAccessManagementOffering
+##################
+
+gax-trust-framework:IdentityAccessManagementOffering
+	a		 owl:Class;
+	rdfs:label		 "Identity Access Management Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:Infrastructure ;
+. 
+
+gax-trust-framework:disableUserAccountDaysInactive
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "disable user account days inactive"@en ;
+	rdfs:domain		 gax-trust-framework:IdentityAccessManagementOffering ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Days of account inactivity before a user account is disabled." ;
+. 
+
+gax-trust-framework:passwordExpiresDays
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "password expires days"@en ;
+	rdfs:domain		 gax-trust-framework:IdentityAccessManagementOffering ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Days until a user must renew their password. This attribute is only allowed with authKind=credentials." ;
+. 
+
+gax-trust-framework:authKind
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "auth kind"@en ;
+	rdfs:domain		 gax-trust-framework:IdentityAccessManagementOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Indicate, which kind of authentication is used. \"credentials\": Authentication with username and password. \"ssl-cert\": Authentication with X.509 certificates." ;
+. 
+
+################## 
+##IdentityFederation
+##################
+
+gax-trust-framework:IdentityFederation
+	a		 owl:Class;
+	rdfs:label		 "Identity Federation"@en ;
+	rdfs:subClassOf		gax-trust-framework:IdentityAccessManagement ;
+. 
+
+################## 
+##IdentityProvider
+##################
+
+gax-trust-framework:IdentityProvider
+	a		 owl:Class;
+	rdfs:label		 "Identity Provider"@en ;
+	rdfs:subClassOf		gax-trust-framework:IdentityAccessManagement ;
+. 
+
+################## 
+##ImageRegistryOffering
+##################
+
+gax-trust-framework:ImageRegistryOffering
+	a		 owl:Class;
+	rdfs:label		 "Image Registry Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:Storage ;
+. 
+
+gax-trust-framework:image
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "image"@en ;
+	rdfs:domain		 gax-trust-framework:ImageRegistryOffering ;
+	rdfs:range		 gax-trust-framework:Image ;
+	rdfs:comment		 "Images available in this image registry." ;
+. 
+
+gax-trust-framework:encryption
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "encryption"@en ;
+	rdfs:domain		 gax-trust-framework:ImageRegistryOffering ;
+	rdfs:range		 gax-trust-framework:Encryption ;
+	rdfs:comment		 "Details on encryption capabilities of this image registry." ;
+. 
+
+gax-trust-framework:privateImagesAllowed
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "private images allowed"@en ;
+	rdfs:domain		 gax-trust-framework:ImageRegistryOffering ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Default: \"True\". \"True\" means that the image registry supports upload of private user images." ;
+. 
+
+################## 
+##InfrastructureOffering
+##################
+
+gax-trust-framework:InfrastructureOffering
+	a		 owl:Class;
+	rdfs:label		 "Infrastructure Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOffering ;
+. 
+
+################## 
+##InstantiatedVirtualResource
+##################
+
+gax-trust-framework:InstantiatedVirtualResource
+	a		 owl:Class;
+	rdfs:label		 "Instantiated Virtual Resource"@en ;
+	rdfs:subClassOf		gax-trust-framework:VirtualResource ;
+. 
+
+gax-trust-framework:maintainedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "maintained by"@en ;
+	rdfs:domain		 gax-trust-framework:InstantiatedVirtualResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of one or more participants maintaining the resource in operational condition." ;
+. 
+
+gax-trust-framework:hostedOn
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "hosted on"@en ;
+	rdfs:domain		 gax-trust-framework:InstantiatedVirtualResource ;
+	rdfs:range		 gax-core:Resource ;
+	rdfs:comment		 "a resource where the instance of this virtual resource is being executed on." ;
+. 
+
+gax-trust-framework:instanceOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "instance of"@en ;
+	rdfs:domain		 gax-trust-framework:InstantiatedVirtualResource ;
+	rdfs:range		 gax-core:Resource ;
+	rdfs:comment		 "A virtual resource (normally a software resource) this process is an instance of." ;
+. 
+
+gax-trust-framework:tenantOwnedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "tenant owned by"@en ;
+	rdfs:domain		 gax-trust-framework:InstantiatedVirtualResource ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of one or more participants with contractual relation with the resource." ;
+. 
+
+gax-trust-framework:serviceAccessPoint
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "service access point"@en ;
+	rdfs:domain		 gax-trust-framework:InstantiatedVirtualResource ;
+	rdfs:range		 gax-trust-framework:ServiceAccessPoint ;
+	rdfs:comment		 "One or more Service Access Points which can be an endpoint as a mean to access and interact with the resource" ;
+. 
+
+################## 
+##Interconnection
+##################
+
+gax-trust-framework:Interconnection
+	a		 owl:Class;
+	rdfs:label		 "Interconnection"@en ;
+	rdfs:subClassOf		gax-trust-framework:Network ;
+. 
+
+gax-trust-framework:location
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "location"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 vcard:Address ;
+	rdfs:comment		 "A vcard:Address Object containing the physical location in ISO 3166-1 alpha2, alpha-3 or numeric format with at least the both ends of the connection." ;
+. 
+
+gax-trust-framework:interfaceType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "interface type"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "a type of physical interface" ;
+. 
+
+gax-trust-framework:connectionPointA
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connection point a"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The ID of the source of the connection." ;
+. 
+
+gax-trust-framework:connectionPointZ
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connection point z"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The ID of the destination of the connection." ;
+. 
+
+gax-trust-framework:bandwidth
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "bandwidth"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual bandwidth defined in the service level agreement (SLA). Bandwidth is usually measured in dimension of bits per second." ;
+. 
+
+gax-trust-framework:latency
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "latency"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual latency defined in the SLA. If not specified, then best effort is assumed. Latency is usually measured in dimension of time." ;
+. 
+
+gax-trust-framework:availability
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "availability"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual availability of connection defined in the SLA agreement. If not specified, then best effort is assumed. Availability is measured in the pseudo-unit \"percent\"." ;
+. 
+
+gax-trust-framework:packetLoss
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "packet loss"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual packet loss of connection defined in the SLA agreement. If not specified, then best effort is assumed. PackageLoss s measured in the pseudo-unit \"percent\"-" ;
+. 
+
+gax-trust-framework:jitter
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "jitter"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual jitterdefined in the SLA. If not specified, then best effort is assumed. Jitter is measured in dimension of time." ;
+. 
+
+gax-trust-framework:targetPercentile
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "target percentile"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual percentile in the SLA. Usually referred to the nubmer of frames the SLA metrics such as availability, latency and jitter can bbe guaranteed." ;
+. 
+
+gax-trust-framework:connectionType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connection type"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the supported types of connection, preferably specified as a controlled vocabulary entry" ;
+. 
+
+gax-trust-framework:vlanType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vlan type"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the chosen types of vlan types" ;
+. 
+
+gax-trust-framework:vlanTag
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "vlan tag"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Vlan Tag ID that range between 1 and 4094. In case qinq connection type is chosen tow vlan tag, namely outer and innter should be provided" ;
+. 
+
+gax-trust-framework:vlanEtherType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vlan ether type"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The ethertype of the vlan in hexadecimal notation." ;
+. 
+
+gax-trust-framework:connectedNetworkA
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connected network a"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "autonomous system (AS) number (ASN) of the side A" ;
+. 
+
+gax-trust-framework:connectedNetworkZ
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "connected network z"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:decimal ;
+	rdfs:comment		 "autonomous system (AS) number (ASN) of the side Z" ;
+. 
+
+gax-trust-framework:prefixSetA
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "prefix set a"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "CIDR Provider Identifier of network on the side A" ;
+. 
+
+gax-trust-framework:prefixSetZ
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "prefix set z"@en ;
+	rdfs:domain		 gax-trust-framework:Interconnection ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "CIDR Provider Identifier of network on the side Z" ;
+. 
+
+################## 
+##LinkConnectivity
+##################
+
+gax-trust-framework:LinkConnectivity
+	a		 owl:Class;
+	rdfs:label		 "Link Connectivity"@en ;
+	rdfs:subClassOf		gax-trust-framework:Connectivity ;
+. 
+
+gax-trust-framework:sourceAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "source access point"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the source" ;
+. 
+
+gax-trust-framework:destinationAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "destination access point"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the destination" ;
+. 
+
+gax-trust-framework:bandwidth
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "bandwidth"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual bandwidth defined in the service level agreement (SLA)" ;
+. 
+
+gax-trust-framework:roundTripTime
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "round trip time"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual latency defined in the SLA." ;
+. 
+
+gax-trust-framework:availability
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "availability"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual availability of connection defined in the SLA agreement. Availability is measured in the pseudo-unit \"percent\"." ;
+. 
+
+gax-trust-framework:packetLoss
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "packet loss"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual packet loss of connection defined in the SLA agreement. If not specified, then best effort is assumed. PackageLoss s measured in the pseudo-unit \"percent\"-" ;
+. 
+
+gax-trust-framework:jitter
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "jitter"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Contractual jitter defined in the SLA. If not specified, then best effort is assumed." ;
+. 
+
+gax-trust-framework:protocolType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "protocol type"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Link protocol type" ;
+. 
+
+gax-trust-framework:vlanType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vlan type"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "the chosen types of vlan types" ;
+. 
+
+gax-trust-framework:vlanTag
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "vlan tag"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Vlan Tag ID that range between 1 and 4094. In case qinq connection type is chosen tow vlan tag, namely outer and innter should be provided" ;
+. 
+
+gax-trust-framework:vlanEtherType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vlan ether type"@en ;
+	rdfs:domain		 gax-trust-framework:LinkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "The ethertype of the vlan in hexadecimal notation." ;
+. 
+
+################## 
+##LocatedServiceOffering
+##################
+
+gax-trust-framework:LocatedServiceOffering
+	a		 owl:Class;
+	rdfs:label		 "Located Service Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOfferiing ;
+. 
+
+gax-trust-framework:implementationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "implementation of"@en ;
+	rdfs:domain		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:range		 gax-trust-framework:ServiceOffering ;
+	rdfs:comment		 "Id of the Service Offering referenced by this located service" ;
+. 
+
+gax-trust-framework:hostedOn
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "hosted on"@en ;
+	rdfs:domain		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:range		 gax-trust-framework:Location ;
+	rdfs:comment		 "Id of the Location where this located service is hosted on" ;
+. 
+
+gax-trust-framework:hasComplianceCertificateClaim
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "has compliance certificate claim"@en ;
+	rdfs:domain		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:range		 gax-trust-framework:ComplianceCertificateClaim ;
+	rdfs:comment		 "Ids of the compliance reference claims claimed by the provider for the located service" ;
+. 
+
+gax-trust-framework:hasComplianceCertificateCredential
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "has compliance certificate credential"@en ;
+	rdfs:domain		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:range		 gax-trust-framework:ComplianceCertificateCredential ;
+	rdfs:comment		 "Ids of the compliance reference claim claimed by the provider for the located service" ;
+. 
+
+################## 
+##Location
+##################
+
+gax-trust-framework:Location
+	a		 owl:Class;
+	rdfs:label		 "Location"@en ;
+. 
+
+gax-trust-framework:provider
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "provider"@en ;
+	rdfs:domain		 gax-trust-framework:Location ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the participant who operates the Location Unit that implements the Service Offering" ;
+. 
+
+gax-trust-framework:hostedServiceOfferings
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "hosted service offerings"@en ;
+	rdfs:domain		 gax-trust-framework:Location ;
+	rdfs:range		 gax-trust-framework:ServiceOffering ;
+	rdfs:comment		 "List of references of Service Offering that may be hosted on this location" ;
+. 
+
+gax-trust-framework:administrativeLocation
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "administrative location"@en ;
+	rdfs:domain		 gax-trust-framework:Location ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "ISO 3166-2 5 digit string for location" ;
+. 
+
+gax-trust-framework:locatedServiceOffering
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "located service offering"@en ;
+	rdfs:domain		 gax-trust-framework:Location ;
+	rdfs:range		 gax-trust-framework:LocatedServiceOffering ;
+	rdfs:comment		 "Ids of Located Service Offerings on this location" ;
+. 
+
+################## 
+##NetworkConnectivity
+##################
+
+gax-trust-framework:NetworkConnectivity
+	a		 owl:Class;
+	rdfs:label		 "Network Connectivity"@en ;
+	rdfs:subClassOf		gax-trust-framework:Connectivity ;
+. 
+
+gax-trust-framework:sourceAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "source access point"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the source" ;
+. 
+
+gax-trust-framework:destinationAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "destination access point"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the destination and references a network" ;
+. 
+
+################## 
+##NetworkOffering
+##################
+
+gax-trust-framework:NetworkOffering
+	a		 owl:Class;
+	rdfs:label		 "Network Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:Infrastructure ;
+. 
+
+gax-trust-framework:serviceType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "service type"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of Service Offering. Choose one of the following: virtual, bare-metal, mixed" ;
+. 
+
+gax-trust-framework:publicIpAddressProvisioning
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "public ip address provisioning"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Defines how public IP address are provided. Floating: floating ips are supported ." ;
+. 
+
+gax-trust-framework:ipVersion
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "ip version"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Version of IP address supported. IPv4: only ipV4 addresses are supported. IPv6: both version iIPV4 and IPv6 are supported." ;
+. 
+
+gax-trust-framework:tenantSeparation
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "tenant separation"@en ;
+	rdfs:domain		 gax-trust-framework:NetworkOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Default: virtual. How networks of different tenants are separated." ;
+. 
+
+################## 
+##ObjectStorageOffering
+##################
+
+gax-trust-framework:ObjectStorageOffering
+	a		 owl:Class;
+	rdfs:label		 "Object Storage Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:StorageServiceOffering ;
+. 
+
+gax-trust-framework:objectRedundancyMechanism
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "object redundancy mechanism"@en ;
+	rdfs:domain		 gax-trust-framework:ObjectStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Underlying data protection mechanism. Some example are - Triplication creates three copies in three different protection domains. Some references are here - https://en.wikipedia.org/wiki/Erasure_code, https://en.wikipedia.org/wiki/RAID" ;
+. 
+
+gax-trust-framework:objectAPICompatibility
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "object compatibility"@en ;
+	rdfs:domain		 gax-trust-framework:ObjectStorageOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Compatibility for third party object storage  APIs. Ref:https://docs.aws.amazon.com/AmazonS3/latest/API/Type_API_Reference.html https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api" ;
+. 
+
+################## 
+##Orchestration
+##################
+
+gax-trust-framework:Orchestration
+	a		 owl:Class;
+	rdfs:label		 "Orchestration"@en ;
+	rdfs:subClassOf		gax-trust-framework:Platform ;
+. 
+
+gax-trust-framework:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 gax-trust-framework:Orchestration ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of this Orchestration Service Offering, such as kubernetes." ;
+. 
+
+################## 
+##PhysicalConnectivity
+##################
+
+gax-trust-framework:PhysicalConnectivity
+	a		 owl:Class;
+	rdfs:label		 "Physical Connectivity"@en ;
+	rdfs:subClassOf		gax-trust-framework:Connectivity ;
+. 
+
+gax-trust-framework:circuitType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "circuit type"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "type of access medium: wired medium access or wireless medium access" ;
+. 
+
+gax-trust-framework:interfaceType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "interface type"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "for the chosen circuit type, one should know the interface type in case the interoperability is required" ;
+. 
+
+gax-trust-framework:sourceAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "source access point"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the source" ;
+. 
+
+gax-trust-framework:destinationAccessPoint
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "destination access point"@en ;
+	rdfs:domain		 gax-trust-framework:PhysicalConnectivity ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "defined via interconnection point identifier of the destination" ;
+. 
+
+################## 
+##PlatformOffering
+##################
+
+gax-trust-framework:PlatformOffering
+	a		 owl:Class;
+	rdfs:label		 "Platform Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOffering ;
+. 
+
+################## 
+##ServiceOffering
+##################
+
+gax-trust-framework:ServiceOffering
+	a		 owl:Class;
+	rdfs:label		 "Service Offering"@en ;
+	rdfs:subClassOf		gax-core:ServiceOffering ;
+. 
+
+gax-trust-framework:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "human readable name of the service offering" ;
+. 
+
+gax-trust-framework:termsAndConditions
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "terms and conditions"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-trust-framework:TermsAndConditions ;
+	rdfs:comment		 "a resolvable link to the Terms and Conditions applying to that service." ;
+. 
+
+gax-trust-framework:policy
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "policy"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "One or more policies expressed using a DSL (e.g., Rego or ODRL)" ;
+. 
+
+gax-trust-framework:dataProtectionRegime
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data protection regime"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "One or more data protection regimes from the list available below" ;
+. 
+
+gax-trust-framework:dataAccountExport
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data account export"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-trust-framework:DataAccountExport ;
+	rdfs:comment		 "One or more  methods to export data out of the service" ;
+. 
+
+gax-trust-framework:provisionType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "provision type"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Provision type of the service" ;
+. 
+
+gax-trust-framework:endpoint
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "endpoint"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-trust-framework:Endpoint ;
+	rdfs:comment		 "Endpoint through which the Service Offering can be accessed" ;
+. 
+
+gax-trust-framework:providedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "provided by"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-core:Participant ;
+	rdfs:comment		 "DID of the participant (self-description) providing this service offering." ;
+. 
+
+gax-trust-framework:aggregationOf
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "aggregation of"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-trust-framework:Resource ;
+	rdfs:comment		 "DID of the resource (self-description) related to the service and that can exist independently of it." ;
+. 
+
+gax-trust-framework:dependsOn
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "depends on"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "a resolvable link to the service offering self-description related to the service and that can exist independently of it." ;
+. 
+
+gax-trust-framework:hostedOn
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "hosted on"@en ;
+	rdfs:domain		 gax-trust-framework:ServiceOffering ;
+	rdfs:range		 gax-trust-framework:DataCenter ;
+	rdfs:comment		 "list of data center IDs where service is hosted and can be instantiated" ;
+. 
+
+################## 
+##SoftwareOffering
+##################
+
+gax-trust-framework:SoftwareOffering
+	a		 owl:Class;
+	rdfs:label		 "Software Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:ServiceOffering ;
+. 
+
+################## 
+##StorageServiceOffering
+##################
+
+gax-trust-framework:StorageServiceOffering
+	a		 owl:Class;
+	rdfs:label		 "Storage Service Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:Infrastructure ;
+. 
+
+gax-trust-framework:usableSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "usable size"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Usable Capacity in TBs (Block, File or Object)" ;
+. 
+
+gax-trust-framework:totalSize
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "total size"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Measure ;
+	rdfs:comment		 "Total Capacity in TBs (Block, File or Object). Total capacity includes space to manage redundancy etc" ;
+. 
+
+gax-trust-framework:compressionAlgorithm
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "compression algorithm"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Algorithm used in compressing data in storage" ;
+. 
+
+gax-trust-framework:backup
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "backup"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Backup ;
+	rdfs:comment		 "Backup Strategies within Storage as a Service" ;
+. 
+
+gax-trust-framework:snapshot
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "snapshot"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Snapshot ;
+	rdfs:comment		 "Snapshot Strategies within Storage as a Service" ;
+. 
+
+gax-trust-framework:lLifetimeManagement
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "lifetime management"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:LifetimeManagement ;
+	rdfs:comment		 "Lifetime of Data in this storage service since last access with data moving externally after this" ;
+. 
+
+gax-trust-framework:replication
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "replication"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Replication ;
+	rdfs:comment		 "Data replication strategies for this storage service" ;
+. 
+
+gax-trust-framework:qos
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "qos"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:QoS ;
+	rdfs:comment		 "Quality of Service for this storage service" ;
+. 
+
+gax-trust-framework:accessAttributes
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "access attributes"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How the data is accessed, read only, read-write etc" ;
+. 
+
+gax-trust-framework:deduplicationSupport
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "deduplication support"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Deduplication is a method of storing a reference that points to multiple similar blocks hence saving space. https://en.wikipedia.org/wiki/Data_deduplication" ;
+. 
+
+gax-trust-framework:deduplicationType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "deduplication type"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "There are different types of Deduplication" ;
+. 
+
+gax-trust-framework:accessSemantics
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "access semantics"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Does I/O conform to the POSIX standard? POSIX:https://en.wikipedia.org/wiki/POSIX. https://www.pdl.cmu.edu/posix/docs/POSIX-extensions-goals.pdf https://www.nextplatform.com/2017/09/11/whats-bad-posix-io/" ;
+. 
+
+gax-trust-framework:encryption
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "encryption"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 gax-trust-framework:Encryption ;
+	rdfs:comment		 "Information about used encryption techniques for data storage" ;
+. 
+
+gax-trust-framework:versioning
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "versioning"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Get Support for File, Block or Object versioning" ;
+. 
+
+gax-trust-framework:storageConsistency
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "storage consistency"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type/level of consistency provided Ref- https://en.wikipedia.org/wiki/Consistency_model" ;
+. 
+
+gax-trust-framework:dataViews
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data views"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Capability to compose logical data views - Present the subset of the data as a logical data entity" ;
+. 
+
+gax-trust-framework:multipleViews
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "multiple views"@en ;
+	rdfs:domain		 gax-trust-framework:StorageServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Capability for multiple views. For example is it possible to view Objects as Files, or the other way around?" ;
+. 
+
+################## 
+##VerifiableCredentialWallet
+##################
+
+gax-trust-framework:VerifiableCredentialWallet
+	a		 owl:Class;
+	rdfs:label		 "Verifiable Credential Wallet"@en ;
+	rdfs:subClassOf		gax-trust-framework:Wallet ;
+. 
+
+gax-trust-framework:verifiableCredentialExportFormat
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "verifiable credential export format"@en ;
+	rdfs:domain		 gax-trust-framework:VerifiableCredentialWallet ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "One or more  machine readable formats used to export verifiable credentials." ;
+. 
+
+gax-trust-framework:privateKeyExportFormat
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "private key export format"@en ;
+	rdfs:domain		 gax-trust-framework:VerifiableCredentialWallet ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "One or more machine readable formats used to export private keys." ;
+. 
+
+################## 
+##VirtualMachine
+##################
+
+gax-trust-framework:VirtualMachine
+	a		 owl:Class;
+	rdfs:label		 "Virtual Machine"@en ;
+	rdfs:subClassOf		gax-trust-framework:Compute ;
+. 
+
+gax-trust-framework:codeArtifact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "code artifact"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualMachine ;
+	rdfs:range		 gax-trust-framework:VMImage ;
+	rdfs:comment		 "all possible provided virtual machine images for this service offering" ;
+. 
+
+gax-trust-framework:instantiationReq
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "instantiation req"@en ;
+	rdfs:domain		 gax-trust-framework:VirtualMachine ;
+	rdfs:range		 gax-trust-framework:ServerFlavor ;
+	rdfs:comment		 "all possible provided virtual machine flavors for this service offering" ;
+. 
+
+################## 
+##WalletOffering
+##################
+
+gax-trust-framework:WalletOffering
+	a		 owl:Class;
+	rdfs:label		 "Wallet Offering"@en ;
+	rdfs:subClassOf		gax-trust-framework:Software ;
+. 
+

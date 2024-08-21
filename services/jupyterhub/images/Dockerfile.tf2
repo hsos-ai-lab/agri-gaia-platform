@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+
+ARG NGC_IMAGE_TAG
+
+FROM nvcr.io/nvidia/tensorflow:${NGC_IMAGE_TAG}-tf2-py3
+
+ARG JUPYTERHUB_VERSION=4.0.2
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y s3fs libxml2-utils
+RUN sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
+
+COPY mount-s3.sh /usr/bin/
+
+WORKDIR /root
+
+COPY platformtools/lib .platformtools/lib
+COPY platformtools/examples examples
+
+RUN pip3 install \
+    jupyterhub==${JUPYTERHUB_VERSION} \
+    ipywidgets~=8.0.6 \
+    .platformtools/lib
+
+ENTRYPOINT ["/opt/nvidia/nvidia_entrypoint.sh"]
+CMD ["jupyterhub-singleuser", "--ip=0.0.0.0"]

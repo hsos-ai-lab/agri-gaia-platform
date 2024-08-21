@@ -1,0 +1,108 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@base <http://w3id.org/agri-gaia-x/asset> .
+
+@prefix : <http://w3id.org/agri-gaia-x/asset#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voaf:       <http://purl.org/vocommons/voaf#> .
+@prefix dct:        <http://purl.org/dc/terms/> .
+@prefix dcat:       <http://www.w3.org/ns/dcat#> .
+@prefix cc:         <http://creativecommons.org/ns#> .
+@prefix vann:       <http://purl.org/vocab/vann/> .
+@prefix void:       <http://rdfs.org/ns/void#> .
+@prefix skos:       <http://www.w3.org/2004/02/skos/core#> .
+@prefix gax-resource:  <http://w3id.org/gaia-x/resource#> .
+@prefix gax-service:  <http://w3id.org/gaia-x/service#>.
+@prefix weat: <https://bimerr.iot.linkeddata.es/def/weather>.
+@prefix agro: <http://purl.obolibrary.org/obo/>.
+@prefix ppdo: <http://ontology.inrae.fr/ppdo/ontology/>.
+@prefix sosa: <http://www.w3.org/ns/sosa/>.
+@prefix strdf: <http://strdf.di.uoa.gr/ontology#> .
+
+@prefix isobus: <https://www.isobus.net/isobus/dDEntity/>.
+@prefix strdf: <http://strdf.di.uoa.gr/ontology#> .
+
+
+
+<http://w3id.org/agri-gaia-x/asset>
+    a                             voaf:Vocabulary, owl:Ontology ;
+    rdfs:label                    "AGRIGAIA-X Resource Ontology"@en ;
+    dct:title                     "AGRIGAIA-X Resource Ontology"@en ;
+    dct:abstract                  "The AGRIGAIA-X asset ontology contains the components needed to model a resource in agricultural domain inside the GAIA-X architecture.";
+    cc:license                    <http://www.apache.org/licenses/LICENSE-2.0> ;
+    dct:creator                   "Semantic Data Description Group" ;
+    dct:contributor               "ansgar.bernardi@dfki.de", "Arka.Sinha@dfki.de", "d.martini@ktbl.de", "l.seuring@ktbl.de", "marian.renz@dfki.de", "Martin.Leinberger@de.bosch.com" ;
+    dct:created                   "2022-05-03T12:00:00+01:00"^^xsd:dateTimeStamp ;
+    dct:modified                  "2021-05-03T12:00:00+01:00"^^xsd:dateTimeStamp ;
+    owl:versionInfo               "0.1" ;
+    vann:preferredNamespaceUri    "http://w3id.org/agri-gaia-x/asset#" ;
+    vann:preferredNamespacePrefix "agri-gax" ;
+    void:vocabulary               vann:, void:, voaf:, dct: .
+
+
+
+
+
+:ImageDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "ImageDataResource"@en, "BildDatensatz"@de ;
+    rdfs:comment "A subclass of Gaiax DataResource and primarily comprises of images." ;
+    rdfs:subClassOf gax-service:DataResource, dcat:Dataset, :AgriDataResource.
+
+
+:imageCount rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Number of images available in the dataset."@en ;
+        rdfs:label "imageCount"@en .
+
+
+:avgImageWidth rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Average image width count in pixel"@en ;
+        rdfs:label "cameraImageWidth"@en .
+
+
+:avgImageHeight rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Average image height count in pixel"@en ;
+        rdfs:label "cameraImageHeight"@en .
+
+
+
+:avgImageSize rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Average size of each images in bytes, kilobytes or megabytes"@en ;
+        rdfs:label "averageImageSize"@en .
+
+
+:imageFormat rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Format or codec information of the images."@en ;
+        rdfs:label "imageFormat"@en ;
+        rdfs:subPropertyOf dct:format.
+
+
+:imageColorScheme rdf:type owl:DatatypeProperty ;
+        rdfs:domain :ImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Color scheme of the images, e.g. RGB, CMYK, grayscale, monochrome etc. "@en ;
+        rdfs:label "ImageColorScheme"@en .
+

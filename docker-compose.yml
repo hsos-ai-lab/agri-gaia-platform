@@ -1,0 +1,861 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+networks:
+  default:
+    name: ${COMPOSE_PROJECT_NAME}_network
+
+services:
+  reverse_proxy:
+    image: traefik:v2.11
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - traefik.${PROJECT_BASE_URL}
+          - keycloak.${PROJECT_BASE_URL}
+          - registry.${PROJECT_BASE_URL}
+          - api.${PROJECT_BASE_URL}
+          - cvat.${PROJECT_BASE_URL}
+          - jupyterhub.${PROJECT_BASE_URL}
+    # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      # The React Frontend
+      - "80:80"
+      - "443:443"
+      - "8000:8000"
+      # The Traefik Web UI (enabled by --api.insecure=true)
+      - "11000:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/traefik/dynamic/:/configuration/
+    labels:
+      - traefik.enable=true
+
+      # Dashboard
+      - traefik.http.routers.traefik.rule=Host(`traefik.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.options=default
+      - traefik.http.routers.traefik.middlewares[0]=security-headers
+
+      # New middleware to disable external access to /metrics paths
+      # - traefik.http.middlewares.block-metrics.replacepathregex.regex=^/metrics
+      # - traefik.http.middlewares.block-metrics.replacepathregex.replacement=/
+
+      # Wildcard TLS
+      # - traefik.http.routers.traefik.tls.domains[0].main=${PROJECT_BASE_URL}
+      # - traefik.http.routers.traefik.tls.domains[0].sans=*.${PROJECT_BASE_URL}
+
+      # Security headers middleware
+      - traefik.http.middlewares.security-headers.headers.stsSeconds=31536000
+      - traefik.http.middlewares.security-headers.headers.stsPreload=true
+      - traefik.http.middlewares.security-headers.headers.forceSTSHeader=true
+      - traefik.http.middlewares.security-headers.headers.stsIncludeSubdomains=true
+
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/configuration/
+      - --providers.file.watch=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.http.http.redirections.entrypoint.to=https
+      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+      - --entrypoints.https.address=:443
+      - --entryPoints.https.transport.respondingTimeouts.readTimeout=0
+      - --entrypoints.edge.address=:8000
+      - --entryPoints.edge.transport.respondingTimeouts.readTimeout=0
+
+  # The Backend-Webserver by FastAPI
+  backend:
+    build:
+      context: services/backend
+      args:
+        - DOCKER_VERSION=${DOCKER_VERSION}
+        - NUCLIO_VERSION=${NUCLIO_VERSION}
+        - NVIDIA_NGC_API_KEY=${NVIDIA_NGC_API_KEY}
+    restart: unless-stopped
+    expose:
+      - "8000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`api.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.backend.tls=true
+      - traefik.http.routers.backend.tls.options=default
+      - traefik.http.routers.backend.middlewares[0]=security-headers
+      #- traefik.http.routers.backend.middlewares[1]=block-metrics
+      - traefik.http.routers.backend.entrypoints=https
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - ./:/platform:ro
+      - build-container-certs:/certs/docker-build
+      - model-training:/code/model-training
+      - model-inference:/code/model-inference
+    depends_on:
+      - keycloak
+      - postgres_backend
+      - build_container
+      - registry
+    environment:
+      PROJECT_BASE_URL: ${PROJECT_BASE_URL}
+      PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+
+      BACKEND_OPENID_CLIENT_ID: ${BACKEND_OPENID_CLIENT_ID}
+      BACKEND_OPENID_CLIENT_SECRET: ${BACKEND_OPENID_CLIENT_SECRET}
+
+      BACKEND_VERIFY_SSL: ${BACKEND_VERIFY_SSL}
+
+      KEYCLOAK_INTERNAL_URL: "http://keycloak:8080"
+      KEYCLOAK_REALM_NAME: ${KEYCLOAK_REALM_NAME}
+
+      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+
+      REALM_SERVICE_ACCOUNT_USERNAME: ${REALM_SERVICE_ACCOUNT_USERNAME}
+      REALM_SERVICE_ACCOUNT_PASSWORD: ${REALM_SERVICE_ACCOUNT_PASSWORD}
+
+      REGISTRY_URL: registry.${PROJECT_BASE_URL}
+      REGISTRY_TOKEN: ${BACKEND_REGISTRY_TOKEN}
+
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ENDPOINT: "minio:9000"
+
+      FUSEKI_ENDPOINT: "http://fuseki:3030/"
+      FUSEKI_ADMIN_USER: ${FUSEKI_ADMIN_USER}
+      FUSEKI_ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD}
+
+      CONNECTOR_PASSWORD: ${CONNECTOR_PASSWORD}
+
+      PROVIDER_DATA_ENDPOINT: "http://edc_provider:8182"
+
+      POSTGRES_DB: ${BACKEND_POSTGRES_DB}
+      POSTGRES_USER: ${BACKEND_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${BACKEND_POSTGRES_PASSWORD}
+
+      POSTGIS_DB: ${BACKEND_POSTGIS_DB}
+      POSTGIS_USER: ${BACKEND_POSTGIS_USER}
+      POSTGIS_PASSWORD: ${BACKEND_POSTGIS_PASSWORD}
+
+      CVAT_SUPERUSER: ${CVAT_SUPERUSER}
+      CVAT_SUPERUSER_PASSWORD: ${CVAT_SUPERUSER_PASSWORD}
+      NUCLIO_CVAT_PROJECT_NAME: ${NUCLIO_CVAT_PROJECT_NAME}
+
+      PORTAINER_VERSION: ${PORTAINER_VERSION}
+      PORTAINER_OPENID_CLIENT_ID: ${PORTAINER_OPENID_CLIENT_ID}
+      PORTAINER_OPENID_CLIENT_SECRET: ${PORTAINER_OPENID_CLIENT_SECRET}
+      PORTAINER_ADMIN_USERNAME: admin
+      PORTAINER_ADMIN_PASSWORD: ${PORTAINER_ADMIN_PASSWORD}
+      PORTAINER_EDGE_PORT: ${PORTAINER_EDGE_PORT}
+
+      GPUS: ${GPUS}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "http://localhost:8000/metrics"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  # The Frontend-Webserver with React
+  frontend:
+    build:
+      context: services/frontend
+      args:
+        - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
+        - REACT_APP_PORTAINER_VERSION=${PORTAINER_VERSION}
+    restart: unless-stopped
+    expose:
+      - "80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`app.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.options=default
+      - traefik.http.routers.frontend.middlewares[0]=security-headers
+      - traefik.http.routers.frontend.entrypoints=https
+    depends_on:
+      - keycloak
+      - cvat_server
+
+  # Portainer
+  portainer:
+    build:
+      context: services/portainer
+      args:
+        - PORTAINER_EDITION=${PORTAINER_EDITION}
+        - PORTAINER_VERSION=${PORTAINER_VERSION}
+        - ADMIN_PASSWORD=${PORTAINER_ADMIN_PASSWORD}
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+
+      # Frontend
+      - traefik.http.routers.portainer.service=portainer
+      - traefik.http.routers.portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.portainer.tls=true
+      - traefik.http.routers.portainer.tls.options=default
+      - traefik.http.routers.portainer.middlewares=security-headers
+      - traefik.http.routers.portainer.entrypoints=https
+
+      # Edge
+      - traefik.http.routers.edge.service=edge
+      - traefik.http.routers.edge.rule=Host(`edge.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edge.loadbalancer.server.port=8000
+      - traefik.http.routers.edge.tls=false
+      - traefik.http.routers.edge.entrypoints=edge
+      # Edge
+      #- traefik.http.routers.edge.service=edge
+      #- traefik.http.routers.edge.rule=Host(`edge.${PROJECT_BASE_URL}`)
+      #- traefik.http.services.edge.loadbalancer.server.port=8000
+      #- traefik.http.routers.edge.tls=true
+      #- traefik.http.routers.edge.entrypoints=https
+
+    volumes:
+      - portainer-data:/data
+    depends_on:
+      - keycloak
+    profiles: [ "edge" ]
+
+  # The Jena Fuseki Triple Store
+  fuseki:
+    restart: unless-stopped
+    expose:
+      - "3030"
+    build:
+      context: services/fuseki
+      args:
+        - JENA_VERSION=4.6.1
+        - JVM_ARGS=-Xmx5G
+        - FUSEKI_ADMIN_USER=${FUSEKI_ADMIN_USER}
+        - FUSEKI_ADMIN_PASSWORD=${FUSEKI_ADMIN_PASSWORD}
+    volumes:
+      - fuseki-data:/fuseki/databases/DB2
+      - ./config/fuseki/:/fuseki/run/configuration/imports/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fuseki.rule=Host(`fuseki.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.fuseki.tls=true
+      - traefik.http.routers.fuseki.tls.options=default
+      - traefik.http.routers.fuseki.middlewares=security-headers
+      - traefik.http.routers.fuseki.entrypoints=https
+    profiles: [ "semantics" ]
+
+  # The WebVOWL ontology visualizer
+  webvowl:
+    restart: unless-stopped
+    expose:
+      - "8080"
+    build:
+      context: ./
+      dockerfile: services/webvowl/Dockerfile
+      args:
+        - WEBVOWL_VERSION=1.1.7
+        - OWL2VOWL_VERSION=0.3.7
+        - DEFAULT_ONTOLOGY_NAME=agri-gaia-onto
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webvowl.rule=Host(`webvowl.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.webvowl.tls=true
+      - traefik.http.routers.webvowl.tls.options=default
+      - traefik.http.routers.webvowl.middlewares=security-headers
+      - traefik.http.routers.webvowl.entrypoints=https
+    profiles: [ "semantics" ]
+
+  # The MinIO S3 Storage
+  minio:
+    build:
+      context: services/minio
+      args:
+        - MINIO_IMAGE_TAG=${MINIO_IMAGE_TAG}
+    restart: unless-stopped
+    expose:
+      - "9000"
+      - "9001"
+    volumes:
+      - minio-data:/data
+    command:
+      - server
+      - /data
+      - --console-address
+      - ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_BROWSER_REDIRECT_URL: https://minio-console.${PROJECT_BASE_URL}
+      MINIO_IDENTITY_OPENID_CONFIG_URL: http://keycloak:8080/realms/${KEYCLOAK_REALM_NAME}/.well-known/openid-configuration
+      MINIO_IDENTITY_OPENID_CLIENT_ID: minio
+      MINIO_IDENTITY_OPENID_CLAIM_NAME: minio_policy
+      MINIO_IDENTITY_OPENID_SCOPES: openid
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.minio.service=minio
+      - traefik.http.routers.minio.tls=true
+      - traefik.http.routers.minio.tls.options=default
+      - traefik.http.routers.minio.middlewares=security-headers
+      - traefik.http.routers.minio.entrypoints=https
+      - traefik.http.routers.minio.rule=Host(`minio.${PROJECT_BASE_URL}`)
+      - traefik.http.services.minio.loadbalancer.server.port=9000
+
+      - traefik.http.routers.minio-console.service=minio-console
+      - traefik.http.routers.minio-console.tls=true
+      - traefik.http.routers.minio-console.tls.options=default
+      - traefik.http.routers.minio-console.middlewares=security-headers
+      - traefik.http.routers.minio-console.entrypoints=https
+      - traefik.http.routers.minio-console.rule=Host(`minio-console.${PROJECT_BASE_URL}`)
+      - traefik.http.services.minio-console.loadbalancer.server.port=9001
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "http://minio:9000/minio/health/live"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+
+  # The DB for storing geographical data
+  postgis_backend:
+    image: postgis/postgis:14-3.3
+    # unofficial image build that supports arm64
+    # image: ghcr.io/baosystems/postgis:14-3.3
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${BACKEND_POSTGIS_DB}
+      POSTGRES_USER: ${BACKEND_POSTGIS_USER}
+      POSTGRES_PASSWORD: ${BACKEND_POSTGIS_PASSWORD}
+    expose:
+      - "5432"
+    volumes:
+      - postgis-data:/var/lib/postgresql/data
+      - ./data/geo:/tmp/data
+
+  # The main DB used by the Backend
+  postgres_backend:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${BACKEND_POSTGRES_DB}
+      POSTGRES_USER: ${BACKEND_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${BACKEND_POSTGRES_PASSWORD}
+    expose:
+      - "5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  # The Database for keycloak
+  postgres_keycloak:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: ${KEYCLOAK_DB_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    expose:
+      - "5432"
+    volumes:
+      - postgres-keycloak-data:/var/lib/postgresql/data
+
+  keycloak:
+    build:
+      context: services/keycloak
+      args:
+        - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+        - REALM_NAME=${KEYCLOAK_REALM_NAME}
+        - BACKEND_OPENID_CLIENT_SECRET=${BACKEND_OPENID_CLIENT_SECRET}
+        - PORTAINER_OPENID_CLIENT_SECRET=${PORTAINER_OPENID_CLIENT_SECRET}
+        - JUPYTERHUB_OPENID_CLIENT_SECRET=${JUPYTERHUB_OPENID_CLIENT_SECRET}
+        - KC_HEALTH_ENABLED=true
+        - KC_METRICS_ENABLED=true
+    restart: unless-stopped
+    expose:
+      - 8080
+    environment:
+      REALM_SERVICE_ACCOUNT_USERNAME: ${REALM_SERVICE_ACCOUNT_USERNAME}
+      REALM_SERVICE_ACCOUNT_PASSWORD: ${REALM_SERVICE_ACCOUNT_PASSWORD}
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KC_DB_VENDOR: postgres
+      KC_DB_URL_HOST: postgres_keycloak
+      KC_DB_DATABASE: keycloak
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_HOSTNAME: keycloak.${PROJECT_BASE_URL}
+      # load exported config on startup
+      REGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-registration
+      DEREGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-deregistration
+      WEBHOOK_RECEIVER_CLIENT_ID: ${BACKEND_OPENID_CLIENT_ID}
+      REALM_NAME: ${KEYCLOAK_REALM_NAME}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.keycloak.service=keycloak
+      - traefik.http.routers.keycloak.rule=Host(`keycloak.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.keycloak.tls=true
+      - traefik.http.routers.keycloak.tls.options=default
+      - traefik.http.routers.keycloak.middlewares=security-headers
+      - traefik.http.routers.keycloak.entrypoints=https
+      #- traefik.http.routers.keycloak.middlewares=block-metrics
+      - traefik.http.services.keycloak.loadbalancer.server.port=8080
+    depends_on:
+      - postgres_keycloak
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "http://localhost:8080/health"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 100
+      start_period: 15s
+
+  registry:
+    build:
+      context: services/docker-registry
+    restart: unless-stopped
+    volumes:
+      - registry-data:/data
+      #- ./services/docker-registry/config.yml:/etc/docker/registry/config.yml
+    expose:
+      - 5000
+    environment:
+      CERT_ENDPOINT: http://keycloak:8080/realms/test-realm/protocol/openid-connect/certs
+
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+
+      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /opt/certs/registry_trust_chain.pem
+      REGISTRY_AUTH_TOKEN_REALM: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm/protocol/docker-v2/auth
+      REGISTRY_AUTH_TOKEN_SERVICE: docker-registry
+      REGISTRY_AUTH_TOKEN_ISSUER: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm
+
+      LOG_LEVEL: debug
+
+      REGISTRY_NOTIFICATIONS_ENDPOINTS: "- name: pushlistener
+
+        \  url: http://backend:8000/service/registry-event
+
+        \  headers:
+
+        \    Authorization: [Bearer ${BACKEND_REGISTRY_TOKEN}]
+
+        \  timeout: 1s
+
+        \  threshold: 5
+
+        \  backoff: 2s"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.registry.service=registry
+      - traefik.http.routers.registry.rule=Host(`registry.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.registry.tls=true
+      - traefik.http.routers.registry.tls.options=default
+      - traefik.http.routers.registry.middlewares=security-headers
+      - traefik.http.routers.registry.entrypoints=https
+      - traefik.http.services.registry.loadbalancer.server.port=5000
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  build_container:
+    build:
+      context: services/build-container
+      args:
+        - NVIDIA_NGC_API_KEY=${NVIDIA_NGC_API_KEY}
+    privileged: true
+    restart: unless-stopped
+    environment:
+      DOCKER_TLS_SAN: "DNS:build-container"
+      DOCKER_TLS_CERTDIR: "/certs"
+    networks:
+      default:
+        aliases:
+          - build-container
+    volumes:
+      - build-container-certs:/certs
+
+  ### Jupyter Hub ###
+  jupyterhub:
+    build:
+      context: services/jupyterhub
+      args:
+        - JUPYTERHUB_VERSION=${JUPYTERHUB_VERSION}
+    hostname: jupyterhub
+    restart: unless-stopped
+    volumes:
+      # The JupyterHub configuration file
+      - ./services/jupyterhub/config:/srv/jupyterhub/config:ro"
+      # Bind Docker socket on the host so we can connect to the daemon from
+      # within the container
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+      # Bind Docker volume on host for JupyterHub database and cookie secrets
+      - "jupyterhub-data:/data"
+    environment:
+      ROOT_URL: ${PROJECT_BASE_URL}
+
+      OAUTH_URL: ${KEYCLOAK_FRONTEND_URL}
+      OAUTH_REALM: ${KEYCLOAK_REALM_NAME}
+      OAUTH_CLIENT_ID: ${JUPYTERHUB_OPENID_CLIENT_ID}
+      OAUTH_CLIENT_SECRET: ${JUPYTERHUB_OPENID_CLIENT_SECRET}
+
+      PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_network
+
+      NGC_IMAGE_TAG: ${JUPYTERHUB_NGC_IMAGE_TAG}
+      JUPYTERHUB_VERSION: ${JUPYTERHUB_VERSION}
+      JUPYTERHUB_CRYPT_KEY: ${JUPYTERHUB_CRYPT_KEY}
+      GPUS: ${GPUS}
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.jupyterhub.service=jupyterhub
+      - traefik.http.routers.jupyterhub.rule=Host(`jupyterhub.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.jupyterhub.tls=true
+      - traefik.http.routers.jupyterhub.tls.options=default
+      - traefik.http.routers.jupyterhub.middlewares=security-headers
+      - traefik.http.routers.jupyterhub.entrypoints=https
+      #- traefik.http.routers.jupyterhub.middlewares=block-metrics
+      - traefik.http.services.jupyterhub.loadbalancer.server.port=8000
+
+  ##### CVAT #####
+
+  # CVAT Server
+  cvat_server:
+    build:
+      context: services/cvat
+      args:
+        - S3FS_VERSION=${S3FS_VERSION}
+        - NUCLIO_VERSION=${NUCLIO_VERSION}
+        - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    restart: unless-stopped
+    depends_on:
+      - cvat_redis
+      - cvat_db
+      - cvat_opa
+      - nuclio
+    environment:
+      DJANGO_MODWSGI_EXTRA_ARGS: ""
+      ALLOWED_HOSTS: "*"
+      CVAT_SERVERLESS: 1
+      CVAT_REDIS_HOST: "cvat_redis"
+      CVAT_REDIS_PASSWORD: ""
+      CVAT_POSTGRES_HOST: "cvat_db"
+      CVAT_POSTGRES_PORT: 5432
+      ADAPTIVE_AUTO_ANNOTATION: "false"
+      IAM_OPA_BUNDLE: "1"
+      no_proxy: nuclio,opa,${no_proxy:-}
+      NUMPROCS: 1
+      CVAT_ANALYTICS: 0
+      CVAT_BASE_URL: "https://cvat.${PROJECT_BASE_URL}"
+
+      CVAT_SUPERUSER: ${CVAT_SUPERUSER}
+      CVAT_SUPERUSER_PASSWORD: ${CVAT_SUPERUSER_PASSWORD}
+      CVAT_SUPERUSER_EMAIL: ${CVAT_SUPERUSER_EMAIL}
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cvat.service=cvat
+      - traefik.http.routers.cvat.tls=true
+      - traefik.http.routers.cvat.tls.options=default
+      - traefik.http.routers.cvat.middlewares=security-headers
+      - traefik.http.routers.cvat.entrypoints=https
+      - traefik.http.routers.cvat.rule=Host(`cvat.${PROJECT_BASE_URL}`) && PathPrefix(`/api/`, `/git/`, `/opencv/`, `/static/`, `/admin`, `/documentation/`, `/django-rq`)
+      - traefik.http.services.cvat.loadbalancer.server.port=8080
+    volumes:
+      - cvat-data:/home/django/data
+      - cvat-keys:/home/django/keys
+      - cvat-logs:/home/django/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      default:
+        aliases:
+          - cvat-server
+    command: -c supervisord.conf
+    profiles: [ "annotation" ]
+
+  # CVAT UI (Client)
+  cvat_ui:
+    image: cvat/ui:v2.4.2
+    restart: unless-stopped
+    depends_on:
+      - cvat_server
+    expose:
+      - "7000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cvat_ui.tls=true
+      - traefik.http.routers.cvat_ui.tls.options=default
+      - traefik.http.routers.cvat_ui.middlewares=security-headers
+      - traefik.http.routers.cvat_ui.entrypoints=https
+      - traefik.http.routers.cvat_ui.rule=Host(`cvat.${PROJECT_BASE_URL}`)
+    profiles: [ "annotation" ]
+
+  # CVAT Postgres database
+  cvat_db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: cvat
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - cvat-db:/var/lib/postgresql/data
+    profiles: [ "annotation" ]
+
+  # CVAT Redis database
+  cvat_redis:
+    image: redis:4.0-alpine
+    restart: unless-stopped
+    profiles: [ "annotation" ]
+
+  # CVAT Open policy agent
+  cvat_opa:
+    image: openpolicyagent/opa:0.45.0-rootless
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - opa
+    command:
+      - run
+      - --server
+      - --log-level=error
+      - --set=services.cvat.url=http://cvat-server:8080
+      - --set=bundles.cvat.service=cvat
+      - --set=bundles.cvat.resource=/api/auth/rules
+      - --set=bundles.cvat.polling.min_delay_seconds=5
+      - --set=bundles.cvat.polling.max_delay_seconds=15
+    profiles: [ "annotation" ]
+
+  # CVAT Nuclio (Auto Annotation)
+  nuclio:
+    image: "quay.io/nuclio/dashboard:${NUCLIO_VERSION}-amd64"
+    restart: unless-stopped
+    volumes:
+      - /tmp:/tmp
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      http_proxy:
+      https_proxy:
+      no_proxy: 172.28.0.1
+      NUCLIO_CHECK_FUNCTION_CONTAINERS_HEALTHINESS: "true"
+      NUCLIO_DASHBOARD_DEFAULT_FUNCTION_MOUNT_MODE: "volume"
+    expose:
+      - "8070"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+        max-file: "3"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nuclio.service=nuclio
+      - traefik.http.routers.nuclio.rule=Host(`nuclio.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.nuclio.tls=true
+      - traefik.http.routers.nuclio.tls.options=default
+      - traefik.http.routers.nuclio.middlewares=security-headers,nuclio-auth
+      - traefik.http.routers.nuclio.entrypoints=https
+      - traefik.http.middlewares.nuclio-auth.basicauth.removeHeader=true
+      - traefik.http.middlewares.nuclio-auth.basicauth.users=${REALM_SERVICE_ACCOUNT_USERNAME}:${REALM_SERVICE_ACCOUNT_HTPASSWD}
+      - traefik.http.services.nuclio.loadbalancer.server.port=8070
+    profiles: [ "annotation" ]
+
+  ##### MONITORING #####
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    volumes:
+      - prometheus-data:/prometheus
+      - ./services/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    expose:
+      - "9090"
+    links:
+      - cadvisor:cadvisor
+    depends_on:
+      - cadvisor
+    labels:
+      - traefik.enable=true # disabled in production, only enabled for development
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.routers.prometheus.tls.options=default
+      - traefik.http.routers.prometheus.middlewares=security-headers
+      - traefik.http.routers.prometheus.entrypoints=https
+    profiles: [ "monitoring" ]
+
+  # Host System Monitoring
+  node-exporter:
+    image: prom/node-exporter
+    restart: unless-stopped
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - "--path.rootfs=/host"
+      - --collector.filesystem.mount-points-exclude
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    expose:
+      - "9100"
+    profiles: [ "monitoring" ]
+
+  # Container Monitoring
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.45.0
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      # Normal Linux docker mount:
+      - /var/lib/docker/:/var/lib/docker:ro
+      # WSL2 docker mount workaround:
+      #- /mnt/windows_docker/:/rootfs/var/lib/docker:ro
+    expose:
+      - "8080"
+    profiles: [ "monitoring" ]
+
+  # Grafana
+  grafana:
+    image: grafana/grafana-oss
+    user: "472"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./services/monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+    expose:
+      - "3000"
+    links:
+      - prometheus:prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.routers.grafana.tls.options=default
+      - traefik.http.routers.grafana.middlewares=security-headers
+      - traefik.http.routers.grafana.entrypoints=https
+      - traefik.http.routers.grafana.rule=Host(`monitoring.${PROJECT_BASE_URL}`)
+    profiles: [ "monitoring" ]
+
+  ##EDC Provider
+  edc_provider:
+    build:
+      context: services/edc
+      args:
+        - PROJECT_BASE_URL=${PROJECT_BASE_URL}
+        - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+        - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+        - CONNECTOR_PASSWORD=${CONNECTOR_PASSWORD}
+    restart: on-failure:3
+    volumes:
+      - ./secrets/edc:/home/secrets
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.edc-provider.service=edc-provider
+      - traefik.http.routers.edc-provider.tls=true
+      - traefik.http.routers.edc-provider.tls.options=default
+      - traefik.http.routers.edc-provider.middlewares=security-headers
+      - traefik.http.routers.edc-provider.entrypoints=https
+      - traefik.http.routers.edc-provider.rule=Host(`edc-provider.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc-provider.loadbalancer.server.port=8182
+
+      - traefik.http.routers.edc-provider-web.service=edc-provider-web
+      - traefik.http.routers.edc-provider-web.tls=true
+      - traefik.http.routers.edc-provider-web.tls.options=default
+      - traefik.http.routers.edc-provider-web.middlewares=security-headers
+      - traefik.http.routers.edc-provider-web.entrypoints=https
+      - traefik.http.routers.edc-provider-web.rule=Host(`edc-provider-web.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc-provider-web.loadbalancer.server.port=8181
+
+      - traefik.http.routers.edc-provider-ids.service=edc-provider-ids
+      - traefik.http.routers.edc-provider-ids.tls=true
+      - traefik.http.routers.edc-provider-ids.tls.options=default
+      - traefik.http.routers.edc-provider-ids.middlewares=security-headers
+      - traefik.http.routers.edc-provider-ids.entrypoints=https
+      - traefik.http.routers.edc-provider-ids.rule=Host(`edc-provider-ids.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282
+    profiles: [ "edc" ]
+
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.12-py3
+    environment:
+      - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
+    expose:
+      - 8000
+      - 8001
+      - 8002
+    depends_on:
+      - minio
+    restart: unless-stopped
+    command:
+      [
+        "tritonserver",
+        "--model-repository=s3://minio:9000/triton",
+        "--model-control-mode=poll"
+      ]
+    profiles: [ "triton" ]
+
+volumes:
+  fuseki-data:
+  minio-data:
+  postgis-data:
+  postgres-data:
+  postgres-keycloak-data:
+  registry-data:
+  portainer-data:
+  build-container-certs:
+  model-training:
+  model-inference:
+  cvat-db:
+  cvat-data:
+  cvat-keys:
+  cvat-logs:
+  prometheus-data:
+  grafana-data:
+  jupyterhub-data:
+  triton-data:

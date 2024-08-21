@@ -1,0 +1,464 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix : <http://w3id.org/gaia-x/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://w3id.org/gaia-x/core#> .
+
+<http://w3id.org/gaia-x/core#> rdf:type owl:Ontology ;
+                                <http://creativecommons.org/ns#license> <http://www.apache.org/licenses/LICENSE-2.0> ;
+                                <http://purl.org/dc/terms/abstract> """The GAIA-X core ontology contains the components needed to model an efficient, competitive, secure and trustworthy federation of data infrastructure and service providers.
+
+The different ontology modules can be found here: 
+
+Core: <a href=\"https://www.w3id.org/gaia-x/core\">https://www.w3id.org/gaia-x/core</a> 
+
+Resource: <a href=\"https://www.w3id.org/gaia-x/resource\">https://www.w3id.org/gaia-x/resource</a> 
+
+Contract: <a href=\"https://www.w3id.org/gaia-x/contract\">https://www.w3id.org/gaia-x/contract</a> 
+
+Node: <a href=\"https://www.w3id.org/gaia-x/node\">https://www.w3id.org/gaia-x/node</a> 
+
+Participant: <a href=\"https://www.w3id.org/gaia-x/participant\">https://www.w3id.org/gaia-x/participant</a> 
+
+Service: <a href=\"https://www.w3id.org/gaia-x/service\">https://www.w3id.org/gaia-x/service</a> 
+
+The defined constraints for these modules can be found here:
+
+Constraint overview: <a href=\"https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/constraints.html\">https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/constraints.html</a>""" ;
+                                <http://purl.org/dc/terms/contributor> <https://github.com/JohannesLipp> ,
+                                                                       <https://github.com/clange> ,
+                                                                       <https://github.com/jlangkau> ,
+                                                                       <https://github.com/jpfr> ,
+                                                                       <https://github.com/moosmannp> ;
+                                <http://purl.org/dc/terms/created> "2021-10-18T12:00:00+01:00"^^xsd:dateTimeStamp ;
+                                <http://purl.org/dc/terms/creator> "GAIA-X Open Work Package 'Self-Description'" ;
+                                <http://purl.org/dc/terms/modified> "2022-02-15T12:00:00+01:00"^^xsd:dateTimeStamp ;
+                                <http://purl.org/dc/terms/title> "GAIA-X Core Ontology"@en ;
+                                <http://purl.org/vocab/vann/preferredNamespacePrefix> "gax-core" ;
+                                <http://purl.org/vocab/vann/preferredNamespaceUri> "http://w3id.org/gaia-x/core#" ;
+                                <http://rdfs.org/ns/void#vocabulary> <http://purl.org/dc/terms/> ,
+                                                                     <http://purl.org/vocab/vann/> ,
+                                                                     <http://purl.org/vocommons/voaf#> ,
+                                                                     <http://rdfs.org/ns/void#> ;
+                                rdfs:label "GAIA-X Core Ontology"@en ;
+                                owl:versionInfo "21/12" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://creativecommons.org/ns#license
+<http://creativecommons.org/ns#license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/abstract
+<http://purl.org/dc/terms/abstract> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/contributor
+<http://purl.org/dc/terms/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/modified
+<http://purl.org/dc/terms/modified> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://rdfs.org/ns/void#vocabulary
+<http://rdfs.org/ns/void#vocabulary> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#note
+<http://www.w3.org/2004/02/skos/core#note> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://w3id.org/gaia-x/core#composes
+:composes rdf:type owl:ObjectProperty ;
+          rdfs:domain :ServiceOffering ;
+          rdfs:range :Composable ;
+          rdfs:label "composes"@en .
+
+
+###  http://w3id.org/gaia-x/core#conforms
+:conforms rdf:type owl:ObjectProperty ;
+          rdfs:domain <http://w3id.org/gaia-x/service#ServiceInstance> ;
+          rdfs:range :ServiceOffering ;
+          rdfs:label "conforms"@en .
+
+
+###  http://w3id.org/gaia-x/core#definesServiceOffering
+:definesServiceOffering rdf:type owl:ObjectProperty ;
+                        rdfs:domain <http://w3id.org/gaia-x/participant#Provider> ;
+                        rdfs:range :ServiceOffering ;
+                        rdfs:label "defines service offering"@en .
+
+
+###  http://w3id.org/gaia-x/core#legallyEnablesResourceProvision
+:legallyEnablesResourceProvision rdf:type owl:ObjectProperty ;
+                                 rdfs:domain <http://w3id.org/gaia-x/resource#ResourceOwner> ;
+                                 rdfs:range <http://w3id.org/gaia-x/participant#Provider> ;
+                                 rdfs:label "legally enables resource provision"@en .
+
+
+###  http://w3id.org/gaia-x/core#managedBy
+:managedBy rdf:type owl:ObjectProperty ;
+           rdfs:domain <http://w3id.org/gaia-x/resource#Resource> ;
+           rdfs:range <http://w3id.org/gaia-x/participant#Participant> ;
+           rdfs:comment "Declares a GAIA-X participant that manages / maintains this asset."@en ;
+           rdfs:label "managed by"@en ;
+           <http://www.w3.org/2004/02/skos/core#note> "Should be used to link GAIA-X asset to their respective Participant, as they cannot exist without one."@en .
+
+
+###  http://w3id.org/gaia-x/core#offersTo
+:offersTo rdf:type owl:ObjectProperty ;
+          rdfs:domain :Consumer ;
+          rdfs:range :EndUser ;
+          rdfs:label "offers to"@en .
+
+
+###  http://w3id.org/gaia-x/core#operates
+:operates rdf:type owl:ObjectProperty ;
+          rdfs:domain [ rdf:type owl:Class ;
+                        owl:unionOf ( <http://w3id.org/gaia-x/participant#Provider>
+                                      <http://w3id.org/gaia-x/service#ServiceInstance>
+                                    )
+                      ] ;
+          rdfs:range <http://w3id.org/gaia-x/resource#Resource> ;
+          rdfs:label "operates"@en .
+
+
+###  http://w3id.org/gaia-x/core#ownedBy
+:ownedBy rdf:type owl:ObjectProperty ;
+         rdfs:range <http://w3id.org/gaia-x/participant#Participant> ;
+         rdfs:label "owned by"@en .
+
+
+###  http://w3id.org/gaia-x/core#owns
+:owns rdf:type owl:ObjectProperty ;
+      rdfs:domain <http://w3id.org/gaia-x/resource#ResourceOwner> ;
+      rdfs:range <http://w3id.org/gaia-x/resource#Resource> ;
+      rdfs:label "owns"@en .
+
+
+###  http://w3id.org/gaia-x/core#providedBy
+:providedBy rdf:type owl:ObjectProperty ;
+            rdfs:domain [ rdf:type owl:Class ;
+                          owl:unionOf ( <http://w3id.org/gaia-x/node#Node>
+                                        <http://w3id.org/gaia-x/service#Service>
+                                      )
+                        ] ;
+            rdfs:range <http://w3id.org/gaia-x/participant#Provider> ;
+            rdfs:label "provided by"@en .
+
+
+###  http://w3id.org/gaia-x/core#providesResourcesFrom
+:providesResourcesFrom rdf:type owl:ObjectProperty ;
+                       rdfs:domain <http://w3id.org/gaia-x/participant#Provider> ;
+                       rdfs:range <http://w3id.org/gaia-x/resource#ResourceOwner> ;
+                       rdfs:label "provides resources from"@en .
+
+
+###  http://w3id.org/gaia-x/core#providesService
+:providesService rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Federator ;
+                 rdfs:range :FederationService ;
+                 rdfs:label "provides service"@en .
+
+
+###  http://w3id.org/gaia-x/core#providesTemplate
+:providesTemplate rdf:type owl:ObjectProperty ;
+                  rdfs:domain <http://w3id.org/gaia-x/participant#Provider> ;
+                  rdfs:range <http://w3id.org/gaia-x/resource#ResourceTemplate> ;
+                  rdfs:label "provides template"@en .
+
+
+###  http://w3id.org/gaia-x/core#realizedBy
+:realizedBy rdf:type owl:ObjectProperty ;
+            rdfs:domain :ServiceOffering ;
+            rdfs:range <http://w3id.org/gaia-x/service#ServiceInstance> ;
+            rdfs:label "realized by"@en .
+
+
+###  http://w3id.org/gaia-x/core#reliesOn
+:reliesOn rdf:type owl:ObjectProperty ;
+          rdfs:domain <http://w3id.org/gaia-x/service#ServiceInstance> ;
+          rdfs:range <http://w3id.org/gaia-x/contract#Contract> ;
+          rdfs:label "relies on"@en .
+
+
+###  http://w3id.org/gaia-x/core#resourceDependsOn
+:resourceDependsOn rdf:type owl:ObjectProperty ;
+                   rdfs:domain <http://w3id.org/gaia-x/service#ServiceInstance> ;
+                   rdfs:range :ServiceOffering ;
+                   rdfs:label "resource depends on"@en .
+
+
+###  http://w3id.org/gaia-x/core#serviceOfferingDependsOn
+:serviceOfferingDependsOn rdf:type owl:ObjectProperty ;
+                          rdfs:domain :ServiceOffering ;
+                          rdfs:range :ServiceOffering ;
+                          rdfs:label "service offering depends on"@en .
+
+
+###  http://w3id.org/gaia-x/core#uses
+:uses rdf:type owl:ObjectProperty ;
+      rdfs:domain :EndUser ;
+      rdfs:range <http://w3id.org/gaia-x/service#ServiceInstance> ;
+      rdfs:label "uses"@en .
+
+
+###  http://w3id.org/gaia-x/core#usesAndConforms
+:usesAndConforms rdf:type owl:ObjectProperty ;
+                 rdfs:domain :ServiceOffering ;
+                 rdfs:range :FederationService ;
+                 rdfs:label "uses and conforms"@en .
+
+
+###  http://w3id.org/gaia-x/core#usesDigitalOfferingBy
+:usesDigitalOfferingBy rdf:type owl:ObjectProperty ;
+                       rdfs:domain :EndUser ;
+                       rdfs:range :Consumer ;
+                       rdfs:label "uses digital offering by"@en .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://w3id.org/gaia-x/core#hasUnit
+:hasUnit rdf:type owl:DatatypeProperty ;
+         rdfs:domain :Measure ;
+         rdfs:range xsd:string ;
+         rdfs:label "has unit" .
+
+
+###  http://w3id.org/gaia-x/core#hasValue
+:hasValue rdf:type owl:DatatypeProperty ;
+          rdfs:domain :Measure ;
+          rdfs:range xsd:float ;
+          rdfs:label "has value" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/vocommons/voaf#Vocabulary
+<http://purl.org/vocommons/voaf#Vocabulary> rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/contract#Contract
+<http://w3id.org/gaia-x/contract#Contract> rdf:type owl:Class ;
+                                           rdfs:comment "Contract means the binding legal agreement describing a Service Instance and includes all rights and obligations."@en ;
+                                           rdfs:label "Contract"@en .
+
+
+###  http://w3id.org/gaia-x/core#Composable
+:Composable rdf:type owl:Class ;
+            rdfs:comment "A class that can be composed." ;
+            rdfs:label "Composable" .
+
+
+###  http://w3id.org/gaia-x/core#Consumable
+:Consumable rdf:type owl:Class ;
+            rdfs:comment "A class that can be consumed." ;
+            rdfs:label "Consumable" .
+
+
+###  http://w3id.org/gaia-x/core#Consumer
+:Consumer rdf:type owl:Class ;
+          rdfs:subClassOf <http://w3id.org/gaia-x/participant#Participant> ;
+          rdfs:comment "A Participant who consumes and leverages Service Instance in the GAIA-X ecosystem to enable digital offerings for End Users."@en ;
+          rdfs:label "Consumer"@en .
+
+
+###  http://w3id.org/gaia-x/core#Controllable
+:Controllable rdf:type owl:Class ;
+              rdfs:comment "A class that can be controlled." ;
+              rdfs:label "Controllable" .
+
+
+###  http://w3id.org/gaia-x/core#DataResource
+:DataResource rdf:type owl:Class ;
+              rdfs:subClassOf <http://w3id.org/gaia-x/resource#Resource> ;
+              rdfs:comment "A Data Resource consists of data in any form and necessary information for data sharing." ;
+              rdfs:label "Data Resource"@en .
+
+
+###  http://w3id.org/gaia-x/core#EndUser
+:EndUser rdf:type owl:Class ;
+         rdfs:comment "A natural person not being Principal, using digital offering from a Consumer. End-Users own an identity within the Consumer context."@en ;
+         rdfs:label "End User"@en .
+
+
+###  http://w3id.org/gaia-x/core#FederationService
+:FederationService rdf:type owl:Class ;
+                   rdfs:subClassOf :Providable ;
+                   rdfs:comment "Federation Services provide the foundation for the operational implementation of the GAIA-X model. An Open-Source community-based reference implementation of them will be provided by the Federation Services projects under specification and oversight by GAIA-X AISBL."@en ;
+                   rdfs:label "Federation Service"@en .
+
+
+###  http://w3id.org/gaia-x/core#Federator
+:Federator rdf:type owl:Class ;
+           rdfs:subClassOf <http://w3id.org/gaia-x/participant#Participant> ;
+           rdfs:comment "A Federator is a Participant who enables a Federation Service."@en ;
+           rdfs:label "Federator"@en .
+
+
+###  http://w3id.org/gaia-x/core#HiddenCriterion
+:HiddenCriterion rdf:type owl:Class ;
+                 rdfs:subClassOf rdf:Property ;
+                 rdfs:comment "a property that should be hidden when generating visualizations of an entity"@en ;
+                 rdfs:label "hidden criterion"@en .
+
+
+###  http://w3id.org/gaia-x/core#Interconnection
+:Interconnection rdf:type owl:Class ;
+                 rdfs:subClassOf <http://w3id.org/gaia-x/resource#Resource> ;
+                 rdfs:comment "An Interconnection is a Resource presenting the connection between two or more Nodes." ;
+                 rdfs:label "Interconnection"@en .
+
+
+###  http://w3id.org/gaia-x/core#Measure
+:Measure rdf:type owl:Class ;
+         rdfs:comment "A measure is a compound of a numeric value and a unit of measurement. A measure is typically not given an identifier and reused in multiple places, but written down locally, as the value of a single attribute." ;
+         rdfs:label "Measure"@en .
+
+
+###  http://w3id.org/gaia-x/core#MustCriterion
+:MustCriterion rdf:type owl:Class ;
+               rdfs:subClassOf rdf:Property ;
+               rdfs:comment "a property for which a value must be provided"@en ;
+               rdfs:label "must criterion"@en .
+
+
+###  http://w3id.org/gaia-x/core#OverridableCriterion
+:OverridableCriterion rdf:type owl:Class ;
+                      rdfs:subClassOf rdf:Property ;
+                      rdfs:comment "a property whose value can be inherited, but may be overridden"@en ;
+                      rdfs:label "overridable criterion"@en .
+
+
+###  http://w3id.org/gaia-x/core#Providable
+:Providable rdf:type owl:Class ;
+            rdfs:comment "A class that can be provided." ;
+            rdfs:label "Providable" .
+
+
+###  http://w3id.org/gaia-x/core#ServiceOffering
+:ServiceOffering rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/core#SoftwareResource
+:SoftwareResource rdf:type owl:Class ;
+                  rdfs:subClassOf <http://w3id.org/gaia-x/resource#Resource> ;
+                  rdfs:comment "A Software Resource is a Resource consisting of non-physical functions." ;
+                  rdfs:label "Software Asset"@en .
+
+
+###  http://w3id.org/gaia-x/node#Node
+<http://w3id.org/gaia-x/node#Node> rdf:type owl:Class ;
+                                   rdfs:subClassOf <http://w3id.org/gaia-x/resource#Resource> ;
+                                   rdfs:comment "A Node is a Resource that represents a computational or physical entity that hosts, manipulates, or interacts with other computational or physical entities."@en ;
+                                   rdfs:label "Node"@en .
+
+
+###  http://w3id.org/gaia-x/participant#Participant
+<http://w3id.org/gaia-x/participant#Participant> rdf:type owl:Class ;
+                                                 rdfs:comment "A Participant is a natural or legal person who is identified, authorized and has a GAIA-X Self-Description."@en ;
+                                                 rdfs:label "Participant"@en .
+
+
+###  http://w3id.org/gaia-x/participant#Provider
+<http://w3id.org/gaia-x/participant#Provider> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://w3id.org/gaia-x/participant#Participant> ;
+                                              rdfs:comment "A GAIA-X Provider is a registered legal entity, which operates Gaia-X nodes and/or provides GAIA-X services."@en ;
+                                              rdfs:label "Provider"@en .
+
+
+###  http://w3id.org/gaia-x/resource#Resource
+<http://w3id.org/gaia-x/resource#Resource> rdf:type owl:Class ;
+                                           rdfs:comment "Behavior element used by the Service Instance via the Service Offering composition."@en ;
+                                           rdfs:label "Resource"@en .
+
+
+###  http://w3id.org/gaia-x/resource#ResourceOwner
+<http://w3id.org/gaia-x/resource#ResourceOwner> rdf:type owl:Class ;
+                                                rdfs:comment "A natural or legal person who is in legal possession of the resource."@en ;
+                                                rdfs:label "Resource Owner"@en .
+
+
+###  http://w3id.org/gaia-x/resource#ResourceTemplate
+<http://w3id.org/gaia-x/resource#ResourceTemplate> rdf:type owl:Class ;
+                                                   rdfs:comment "Resource Template."@en ;
+                                                   rdfs:label "Resource Template"@en .
+
+
+###  http://w3id.org/gaia-x/service#Service
+<http://w3id.org/gaia-x/service#Service> rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/service#ServiceInstance
+<http://w3id.org/gaia-x/service#ServiceInstance> rdf:type owl:Class ;
+                                                 rdfs:subClassOf :Consumable ,
+                                                                 :Providable ;
+                                                 rdfs:comment "Realisation by the Provider of the Service Offering."@en ;
+                                                 rdfs:label "ServiceInstance"@en .
+
+
+###  http://w3id.org/gaia-x/service#ServiceOffering
+<http://w3id.org/gaia-x/service#ServiceOffering> rdf:type owl:Class ;
+                                                 rdfs:comment "A Service Offering is a set of Assets and Resources, which a Provider bundles into an offering."@en ;
+                                                 rdfs:label "Service Offering"@en .
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+rdf:Property rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://w3id.org/gaia-x/core#
+<http://w3id.org/gaia-x/core#> rdf:type owl:NamedIndividual ,
+                                        <http://purl.org/vocommons/voaf#Vocabulary> .
+
+
+###  Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/

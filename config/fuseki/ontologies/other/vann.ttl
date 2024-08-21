@@ -1,0 +1,86 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix bio: <http://purl.org/vocab/bio/0.1/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix cc: <http://web.resource.org/cc/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<file:///mnt/c/Users/d.martini/src/semantic_data_description/ontology-deps/other/vann-vocab-20100607.rdf>
+    dc:type <http://purl.org/dc/dcmitype/Text> ;
+    cc:license <http://creativecommons.org/licenses/by/1.0/> ;
+    a cc:Work .
+
+<http://creativecommons.org/licenses/by/1.0/>
+    cc:permits cc:DerivativeWorks, cc:Distribution, cc:Reproduction ;
+    cc:requires cc:Attribution, cc:Notice ;
+    a cc:License .
+
+<http://iandavis.com/id/me>
+    a foaf:Person ;
+    foaf:name "Ian Davis" .
+
+<http://purl.org/vocab/vann/>
+    dc:creator <http://iandavis.com/id/me> ;
+    dc:date "2010-06-07" ;
+    dc:description "This document describes a vocabulary for annotating descriptions of vocabularies with examples and usage notes."@en ;
+    dc:identifier "http://purl.org/vocab/vann/vann-vocab-20050401" ;
+    dc:isVersionOf <http://purl.org/vocab/vann/> ;
+    dc:replaces vann:vann-vocab-20040305 ;
+    dc:rights "Copyright © 2005 Ian Davis" ;
+    dc:title "VANN: A vocabulary for annotating vocabulary descriptions"@en ;
+    vann:preferredNamespacePrefix "vann" ;
+    vann:preferredNamespaceUri "http://purl.org/vocab/vann/" ;
+    a owl:Ontology .
+
+vann:changes
+    a owl:AnnotationProperty ;
+    rdfs:comment "A reference to a resource that describes changes between this version of a vocabulary and the previous."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Changes"@en ;
+    rdfs:subPropertyOf rdfs:seeAlso .
+
+vann:example
+    a owl:AnnotationProperty ;
+    rdfs:comment "A reference to a resource that provides an example of how this resource can be used."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Example"@en ;
+    rdfs:subPropertyOf rdfs:seeAlso .
+
+vann:preferredNamespacePrefix
+    a owl:AnnotationProperty ;
+    rdfs:comment "The preferred namespace prefix to use when using terms from this vocabulary in an XML document."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Preferred Namespace Prefix"@en .
+
+vann:preferredNamespaceUri
+    a owl:AnnotationProperty ;
+    rdfs:comment "The preferred namespace URI to use when using terms from this vocabulary in an XML document."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Preferred Namespace Uri"@en .
+
+vann:termGroup
+    a owl:AnnotationProperty ;
+    rdfs:comment "A group of related terms in a vocabulary."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Term Group"@en .
+
+vann:usageNote
+    a owl:AnnotationProperty ;
+    rdfs:comment "A reference to a resource that provides information on how this resource is to be used."@en ;
+    rdfs:isDefinedBy <http://purl.org/vocab/vann/> ;
+    rdfs:label "Usage Note"@en ;
+    rdfs:subPropertyOf rdfs:seeAlso .
+

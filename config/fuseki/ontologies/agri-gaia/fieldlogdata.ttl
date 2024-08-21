@@ -1,0 +1,127 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix : <https://www.agri-gaia.de/ontologies/core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix agrovoc: <http://aims.fao.org/aos/agrovoc/> .
+@prefix gax-trust-framework: <http://w3id.org/gaia-x/resource#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@base <https://www.agri-gaia.de/ontologies/core> .
+
+:FieldLogDataset
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf gax-trust-framework:DataResource, dcat:Dataset, prov:Entity ;
+    rdfs:comment "a set of numerical data that has been gathered on a field"@en ;
+    rdfs:label "Field Log Data"@en ;
+    skos:prefLabel "Field Log Data"@en .
+
+:FieldRecord
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf dcat:DatasetSeries ;
+    rdfs:comment "documentation of a series of datasets that happened on one field in one agricultural cycle"@en ;
+    rdfs:label "Field Record"@en ;
+    skos:prefLabel "Field Record"@en .
+
+:Location
+    a rdfs:Class, owl:Class ;
+    rdfs:subClassOf prov:Location, dcterms:Location .
+
+# Not a fan of redefining basic classes, but not sure where to take that from
+# maybe, @prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> ?
+:GeoPoint
+    a rdfs:Class, owl:Class ;
+    rdfs:label "Geographical point"@en .
+
+:Field
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf :Location ;
+    rdfs:comment "a field"@en ;
+    rdfs:label "Field"@en ;
+    skos:prefLabel "Field"@en .
+
+:AgriculturalMachine
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf sosa:Platform ;
+    rdfs:comment "a agricultural device, e.g., a tractor"@en ;
+    rdfs:label "Agricultural Machine"@en ;
+    skos:prefLabel "Agricultural Machine"@en .
+
+:plantedProduct
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcat:theme ;
+    rdfs:comment "linking a dataset to the plant that is planted on the field"@en ;
+    rdfs:label "Planted Product"@en ;
+    rdfs:domain :FieldLogDataset ;
+    rdfs:range skos:Concept .
+
+:plantStatus
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcat:theme ;
+    rdfs:comment "linking dataset with BBCH stage of plants"@en ;
+    rdfs:label "Plant Status (BBCH)"@en;
+    rdfs:domain :FieldLogDataset ;
+    rdfs:range skos:Concept .
+
+:inFieldRecord
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcat:inSeries ;
+    rdfs:comment "linking a dataset to a field record"@en ;
+    rdfs:label "in Record"@en ;
+    rdfs:domain :FieldLogDataset ;
+    rdfs:range :FieldRecord .
+
+# Bad relation name I think
+:spatialCoverage
+    a owl:ObjectProperty ;
+    rdfs:comment "spatial coverage linking dataset to field on which the data was recorded"@en ;
+    rdfs:label "Spatial Coverage"@en ;
+    rdfs:domain :FieldLogDataset ;
+    rdfs:range :Field .
+
+:centroid
+    a owl:ObjectProperty ;
+    rdfs:comment "the centroid of a location" ;
+    rdfs:label "Centroid" ;
+    rdfs:domain :Location;
+    rdfs:range :GeoPoint .
+
+:latitude
+    a owl:DatatypeProperty ;
+    rdfs:label "Latitude"@en ;
+    rdfs:domain :GeoPoint ;
+    rdfs:range rdfs:Literal .
+
+:longitude
+    a owl:DatatypeProperty ;
+    rdfs:label "Longitude"@en ;
+    rdfs:domain :GeoPoint  ;
+    rdfs:range rdfs:Literal .
+
+:geometry
+    a owl:DatatypeProperty ;
+    rdfs:label "Geometry as a WKT Literal" ;
+    rdfs:domain :Location ;
+    rdfs:range rdfs:Literal .
+
+:usesEquipment
+    a owl:ObjectProperty ;
+    rdfs:comment "Linking dataset and equipment"@en ;
+    rdfs:label "Uses Equipment"@en ;
+    rdfs:domain :FieldLogDataset ;
+    rdfs:range :AgriculturalMachine  .

@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+services:
+  reverse_proxy:
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/configuration/
+      - --providers.file.watch=true
+      - --api.insecure=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.http.http.redirections.entrypoint.to=https
+      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+      - --entrypoints.https.address=:443
+      - --entryPoints.https.transport.respondingTimeouts.readTimeout=0
+      - --entrypoints.edge.address=:8000
+      - --entryPoints.edge.transport.respondingTimeouts.readTimeout=0
+
+      - --accesslog
+      - --log.level=INFO
+
+  backend:
+    build:
+      context: services/backend
+      dockerfile: Dockerfile-dev
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./services/backend:/code
+
+  frontend:
+    build:
+      context: services/frontend
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./services/frontend/public:/code/public
+      - ./services/frontend/src:/code/src
+
+  build_container:
+    volumes:
+      - ./config/traefik/certs/self-signed/wildcard/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+
+  portainer:
+    volumes:
+      - ./config/traefik/certs/self-signed/wildcard/ca.${PROJECT_BASE_URL}.crt:/etc/ssl/certs/ca.${PROJECT_BASE_URL}.crt
+  
+  jupyterhub:
+    build:
+      context: services/jupyterhub
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./config/traefik/certs/self-signed/wildcard/ca.${PROJECT_BASE_URL}.crt:/usr/local/share/ca-certificates/extra/ca.${PROJECT_BASE_URL}.crt

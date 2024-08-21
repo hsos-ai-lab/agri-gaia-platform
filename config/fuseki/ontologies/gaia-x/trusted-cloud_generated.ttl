@@ -1,0 +1,2039 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix trusted-cloud: <http://w3id.org/gaia-x/trusted-cloud#> .
+@prefix gax-core: <http://w3id.org/gaia-x/core#> .
+@prefix vcard: <https://www.w3.org/2006/vcard/ns#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix did: <https://www.w3.org/TR/did-core/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix schema: <http://schema.org/> .
+
+
+trusted-cloud: 
+a		voaf:Vocabulary, owl:Ontology ;
+rdfs:label		"Gaia-X trusted-cloud Ontology"@en ;
+dct:title		"Gaia-X trusted-cloud Ontology"@en ;
+dct:abstract		"todo" ;
+cc:license		<http://www.apache.org/licenses/LICENSE-2.0> ;
+dct:creator		"Working Group Service Characteristics" ;
+dct:contributor		"Akyürek, Haydar", "Bader, Sebastian", "Baum, Hannes", "Blanch, Josep", "Frömberg, Jan", "Gronlier, Pierre", "Hermsen, Felix", "Lange, Christoph", "Langkau, Jörg", "Leberecht, Markus", "Meinke, Kai", "Moosmann, Paul", "Niessen, Thomas", "Ogel, Frederic", "Ottradovetz, Klaus", "Qin, Chang", "Rubina, Alina", "Staginus, Judith", "Strunk, Anja", "Theissen-Lipp, Johannes" ;
+dct:created		"2021-10-18T12:00:00+01:00"^^xsd:dateTimeStamp ;
+owl:versionInfo		"22.04" ;
+vann:preferredNamespaceUri		"http://w3id.org/gaia-x/trusted-cloud#" ;
+vann:preferredNamespacePrefix		"trusted-cloud" ;
+void:vocabulary 		vann:, void:, voaf:, dct: ;
+dct:modified		"2023-06-28T12:40:30+02:00"^^xsd:dateTimeStamp ;
+.
+
+################## 
+##Backups
+##################
+
+trusted-cloud:Backups
+	a		 owl:Class;
+	rdfs:label		 "Backups"@en ;
+. 
+
+trusted-cloud:backupOptions
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "backup options"@en ;
+	rdfs:domain		 trusted-cloud:Backups ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of backup options" ;
+. 
+
+trusted-cloud:confidentiality
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "confidentiality"@en ;
+	rdfs:domain		 trusted-cloud:Backups ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is it guaranteed, that data protection is also extended to the backup?" ;
+. 
+
+################## 
+##CertificateScope
+##################
+
+trusted-cloud:CertificateScope
+	a		 owl:Class;
+	rdfs:label		 "Certificate Scope"@en ;
+. 
+
+trusted-cloud:certificate
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certificate"@en ;
+	rdfs:domain		 trusted-cloud:CertificateScope ;
+	rdfs:range		 trusted-cloud:Certificate ;
+	rdfs:comment		 "Reference to certificate, which is reelvant for this scope." ;
+. 
+
+trusted-cloud:scope
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "scope"@en ;
+	rdfs:domain		 trusted-cloud:CertificateScope ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Details about relevance of the certificate for this scope." ;
+. 
+
+################## 
+##CertificationBody
+##################
+
+trusted-cloud:CertificationBody
+	a		 owl:Class;
+	rdfs:label		 "Certification Body"@en ;
+. 
+
+trusted-cloud:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 trusted-cloud:CertificationBody ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the company." ;
+. 
+
+################## 
+##ChangeManagement
+##################
+
+trusted-cloud:ChangeManagement
+	a		 owl:Class;
+	rdfs:label		 "Change Management"@en ;
+. 
+
+trusted-cloud:chnagesCommunicatedBeforehand
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "chnages communicated beforehand"@en ;
+	rdfs:domain		 trusted-cloud:ChangeManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are changes in the contract communicated to the customer beforehand?" ;
+. 
+
+trusted-cloud:rulesForChangeManagementInContract
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rules for change management in contract"@en ;
+	rdfs:domain		 trusted-cloud:ChangeManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are rules for change management in the contract?" ;
+. 
+
+trusted-cloud:changeManagementRules
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "change management rules"@en ;
+	rdfs:domain		 trusted-cloud:ChangeManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of change management rules" ;
+. 
+
+################## 
+##ClientIsolation
+##################
+
+trusted-cloud:ClientIsolation
+	a		 owl:Class;
+	rdfs:label		 "Client Isolation"@en ;
+. 
+
+trusted-cloud:clientSeparation
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "client separation"@en ;
+	rdfs:domain		 trusted-cloud:ClientIsolation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is a continuous client separation guaranteed?" ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:ClientIsolation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How does the client separation work?" ;
+. 
+
+################## 
+##ContractLaw
+##################
+
+trusted-cloud:ContractLaw
+	a		 owl:Class;
+	rdfs:label		 "Contract Law"@en ;
+. 
+
+trusted-cloud:applicableLaw
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "applicable law"@en ;
+	rdfs:domain		 trusted-cloud:ContractLaw ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "If EU contract law, a correct contract law has additinally to be written in a freetext field" ;
+. 
+
+trusted-cloud:placeOfJurisdiction
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "place of jurisdiction"@en ;
+	rdfs:domain		 trusted-cloud:ContractLaw ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "EU contract law results in a place of jursdiction in the EU. Give the right place as written in the contract." ;
+. 
+
+################## 
+##ContractTransparency
+##################
+
+trusted-cloud:ContractTransparency
+	a		 owl:Class;
+	rdfs:label		 "Contract Transparency"@en ;
+. 
+
+trusted-cloud:contractsAvailable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "contracts available"@en ;
+	rdfs:domain		 trusted-cloud:ContractTransparency ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are the contracts available to the customer before the closing?" ;
+. 
+
+trusted-cloud:webReference
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "web reference"@en ;
+	rdfs:domain		 trusted-cloud:ContractTransparency ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "A resolvable link to service contract, if contractAvailable is set to published." ;
+. 
+
+trusted-cloud:usedLicence
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "used licence"@en ;
+	rdfs:domain		 trusted-cloud:ContractTransparency ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Transparent description of the used licenses" ;
+. 
+
+################## 
+##DataExport
+##################
+
+trusted-cloud:DataExport
+	a		 owl:Class;
+	rdfs:label		 "Data Export"@en ;
+. 
+
+trusted-cloud:unlimitedAccessToCustomerData
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "unlimited access to customer data"@en ;
+	rdfs:domain		 trusted-cloud:DataExport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the user access unlimited and at any time the customer data?" ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:DataExport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of procedures for data repatriation and supported file formats?" ;
+. 
+
+################## 
+##DataRetention
+##################
+
+trusted-cloud:DataRetention
+	a		 owl:Class;
+	rdfs:label		 "Data Retention"@en ;
+. 
+
+trusted-cloud:customDataHostingRestrictable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "custom data hosting restrictable"@en ;
+	rdfs:domain		 trusted-cloud:DataRetention ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the hosting of customer data be restricted to a specific location?" ;
+. 
+
+trusted-cloud:customDataAdminstrationRestrictable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "custom data adminstration restrictable"@en ;
+	rdfs:domain		 trusted-cloud:DataRetention ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the administration of customer data be restricted to a specific location?" ;
+. 
+
+trusted-cloud:geoRegionOptions
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "geo region options"@en ;
+	rdfs:domain		 trusted-cloud:DataRetention ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Detailed information for options of GEO-regions." ;
+. 
+
+################## 
+##DataSubjectRights
+##################
+
+trusted-cloud:DataSubjectRights
+	a		 owl:Class;
+	rdfs:label		 "Data Subject Rights"@en ;
+. 
+
+trusted-cloud:guaranteeForImplementationOfDataSubjectRights
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "guarantee for implementation of data subject rights"@en ;
+	rdfs:domain		 trusted-cloud:DataSubjectRights ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How can the requirements of the GDPR according to data subject rights be fulfilled, e.g. the deletion of personal data?" ;
+. 
+
+trusted-cloud:guaranteeToDeleteLinksToCustomerData
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "guarantee to delete links to customer data"@en ;
+	rdfs:domain		 trusted-cloud:DataSubjectRights ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How can it be guaranteed, that also links get deleted, if the data is removed?" ;
+. 
+
+################## 
+##EmployeesCommitmentDataStrategy
+##################
+
+trusted-cloud:EmployeesCommitmentDataStrategy
+	a		 owl:Class;
+	rdfs:label		 "Employees Commitment Data Strategy"@en ;
+. 
+
+trusted-cloud:customDataHostingRestrictable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "custom data hosting restrictable"@en ;
+	rdfs:domain		 trusted-cloud:EmployeesCommitmentDataStrategy ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the hosting of customer data be restricted to a specific location?" ;
+. 
+
+trusted-cloud:customDataAdminstrationRestrictable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "custom data adminstration restrictable"@en ;
+	rdfs:domain		 trusted-cloud:EmployeesCommitmentDataStrategy ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the administration of customer data be restricted to a specific location?" ;
+. 
+
+trusted-cloud:geoRegionOptions
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "geo region options"@en ;
+	rdfs:domain		 trusted-cloud:EmployeesCommitmentDataStrategy ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Detailed information for options of GEO-regions." ;
+. 
+
+################## 
+##Encryption
+##################
+
+trusted-cloud:Encryption
+	a		 owl:Class;
+	rdfs:label		 "Encryption"@en ;
+. 
+
+trusted-cloud:encryptionTypesForDataTransmissionAndStorage
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "encryption types for data transmission and storage"@en ;
+	rdfs:domain		 trusted-cloud:Encryption ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Encryption types that can be used to encrypt data for transmission and storage?" ;
+. 
+
+trusted-cloud:keyManagementOptions
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "key management options"@en ;
+	rdfs:domain		 trusted-cloud:Encryption ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Key management options" ;
+. 
+
+################## 
+##ExitSupport
+##################
+
+trusted-cloud:ExitSupport
+	a		 owl:Class;
+	rdfs:label		 "Exit Support"@en ;
+. 
+
+trusted-cloud:rulesContacted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rules contacted"@en ;
+	rdfs:domain		 trusted-cloud:ExitSupport ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are rules and measures for exit support contractually defined?" ;
+. 
+
+trusted-cloud:descriptionOfRules
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description of rules"@en ;
+	rdfs:domain		 trusted-cloud:ExitSupport ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the rules for termination support" ;
+. 
+
+################## 
+##FunctionalDescriptionService
+##################
+
+trusted-cloud:FunctionalDescriptionService
+	a		 owl:Class;
+	rdfs:label		 "Functional Description Service"@en ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:FunctionalDescriptionService ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "A short description in natural language to display on the query site." ;
+. 
+
+trusted-cloud:briefDescription
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "brief description"@en ;
+	rdfs:domain		 trusted-cloud:FunctionalDescriptionService ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Functional brief description of the service in reference to company demand." ;
+. 
+
+################## 
+##GdprCompliance
+##################
+
+trusted-cloud:GdprCompliance
+	a		 owl:Class;
+	rdfs:label		 "Gdpr Compliance"@en ;
+. 
+
+trusted-cloud:gdprFullfiled
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "gdpr fullfiled"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How are the formal requirements specified by GDPR fulfilled?" ;
+. 
+
+trusted-cloud:opdContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "opd contracted"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How is an office of data privacy contract or legal act agreed with the client based in the EU GDPR requirements?" ;
+. 
+
+trusted-cloud:dpdiaContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "dpdia contracted"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the support of the controller of data protection impact assessment (DPIA) contractually agreed, in case this is necessary for the client? (e.g. Date processing on a large scale\", \"data transfer outside the EU\", etc)." ;
+. 
+
+trusted-cloud:personalDataEncryptionContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "personal data encryption contracted"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is there contracted pseudonymization or encryption of personal data?" ;
+. 
+
+trusted-cloud:applicationOfDataSubjectRightsContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "application of data subject rights contracted"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the application of data subject rights contractually guaranteed?" ;
+. 
+
+trusted-cloud:dataDeletionContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "data deletion contracted"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the deletion of data including links to the relevant data and data copies in the cloud contractually assured?" ;
+. 
+
+trusted-cloud:clientFeedbackRequired
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "client feedback required"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Does the office of data privacy contract require information from the client regarding the type of personal data as well as categories of the peronss concerns?" ;
+. 
+
+trusted-cloud:proofs
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "proofs"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Which of the following proofs can be provided to the contractor for review by appropriate means in accordace with the office for data privacy contract?" ;
+. 
+
+trusted-cloud:gdprArt40
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "gdpr art"@en ;
+	rdfs:domain		 trusted-cloud:GdprCompliance ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is a record of processing activities commissioned by the client based on Art. 30 GDPR?" ;
+. 
+
+################## 
+##GdprMeasures
+##################
+
+trusted-cloud:GdprMeasures
+	a		 owl:Class;
+	rdfs:label		 "Gdpr Measures"@en ;
+. 
+
+trusted-cloud:gdprMeasures
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "gdpr measures"@en ;
+	rdfs:domain		 trusted-cloud:GdprMeasures ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How adequately does the implementation of technical and organizational measures take place by European General Data Protection Regulation (GDPR)?" ;
+. 
+
+trusted-cloud:details
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "details"@en ;
+	rdfs:domain		 trusted-cloud:GdprMeasures ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Details about the implemented technical and organizational measurements." ;
+. 
+
+################## 
+##GeneralInformationService
+##################
+
+trusted-cloud:GeneralInformationService
+	a		 owl:Class;
+	rdfs:label		 "General Information Service"@en ;
+. 
+
+trusted-cloud:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 trusted-cloud:GeneralInformationService ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of the service" ;
+. 
+
+trusted-cloud:serviceLogo
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "service logo"@en ;
+	rdfs:domain		 trusted-cloud:GeneralInformationService ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Resolvable link to logo of service that will be displayed at listing. Please provide image with at least 200 x 400 pixel." ;
+. 
+
+trusted-cloud:provisionType
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "provision type"@en ;
+	rdfs:domain		 trusted-cloud:GeneralInformationService ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of provisioning of service." ;
+. 
+
+trusted-cloud:serviceModel
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "service model"@en ;
+	rdfs:domain		 trusted-cloud:GeneralInformationService ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Service Model for the service" ;
+. 
+
+trusted-cloud:website
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "website"@en ;
+	rdfs:domain		 trusted-cloud:GeneralInformationService ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Web address for the service presentation." ;
+. 
+
+################## 
+##LegalInformation
+##################
+
+trusted-cloud:LegalInformation
+	a		 owl:Class;
+	rdfs:label		 "Legal Information"@en ;
+. 
+
+trusted-cloud:legalName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "legal name"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Legally binding name." ;
+. 
+
+trusted-cloud:legalForm
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "legal form"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Legal form of organization." ;
+. 
+
+trusted-cloud:registrationNumber
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "registration number"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Country’s registration number which identify one specific company." ;
+. 
+
+trusted-cloud:headquarterAddress
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "headquarter address"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 vcard:Address ;
+	rdfs:comment		 "Address of head offcie or main subsidary." ;
+. 
+
+trusted-cloud:webAddress
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "web address"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Resolvable URL to web page of this organization." ;
+. 
+
+trusted-cloud:logo
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "logo"@en ;
+	rdfs:domain		 trusted-cloud:LegalInformation ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Resolvable URL to logo of this organization." ;
+. 
+
+################## 
+##Location
+##################
+
+trusted-cloud:Location
+	a		 owl:Class;
+	rdfs:label		 "Location"@en ;
+. 
+
+trusted-cloud:country-name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "country name"@en ;
+	rdfs:domain		 trusted-cloud:Location ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Country data centre is located in." ;
+. 
+
+trusted-cloud:state
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "state"@en ;
+	rdfs:domain		 trusted-cloud:Location ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "State data centre is located in." ;
+. 
+
+################## 
+##PricingModel
+##################
+
+trusted-cloud:PricingModel
+	a		 owl:Class;
+	rdfs:label		 "Pricing Model"@en ;
+. 
+
+trusted-cloud:pricingModel
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "pricing model"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Details about used pricing model." ;
+. 
+
+trusted-cloud:isPublic
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "is public"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is the pricing model publicly available to all customers?" ;
+. 
+
+trusted-cloud:pricingModelLink
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "pricing model link"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "Link to the pricing model." ;
+. 
+
+trusted-cloud:contractDuration
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "contract duration"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Specifications for the contract duration." ;
+. 
+
+trusted-cloud:terminationModalities
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "termination modalities"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Information about termination modalities and periods" ;
+. 
+
+trusted-cloud:freeTrialPhase
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "free trial phase"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is there a free trial phase?" ;
+. 
+
+trusted-cloud:sameDataProtections
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "same data protections"@en ;
+	rdfs:domain		 trusted-cloud:PricingModel ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Has the free trial phase the same data protection as a commercial service?" ;
+. 
+
+################## 
+##RequirementsServiceUsage
+##################
+
+trusted-cloud:RequirementsServiceUsage
+	a		 owl:Class;
+	rdfs:label		 "Requirements Service Usage"@en ;
+. 
+
+trusted-cloud:technicalRequirements
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "technical requirements"@en ;
+	rdfs:domain		 trusted-cloud:RequirementsServiceUsage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description for the technical requirements to use the service" ;
+. 
+
+trusted-cloud:organizationalRequirements
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "organizational requirements"@en ;
+	rdfs:domain		 trusted-cloud:RequirementsServiceUsage ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description for the organizational requirements to use the service" ;
+. 
+
+################## 
+##SecurityManagement
+##################
+
+trusted-cloud:SecurityManagement
+	a		 owl:Class;
+	rdfs:label		 "Security Management"@en ;
+. 
+
+trusted-cloud:hasEfficientManagement
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "has efficient management"@en ;
+	rdfs:domain		 trusted-cloud:SecurityManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is there an efficient management for information safety given, e.g. certification according to ISO 27001?" ;
+. 
+
+trusted-cloud:detailsAboutProcess
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "details about process"@en ;
+	rdfs:domain		 trusted-cloud:SecurityManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "More details about the process in the IT safety management" ;
+. 
+
+################## 
+##ServiceAvailability
+##################
+
+trusted-cloud:ServiceAvailability
+	a		 owl:Class;
+	rdfs:label		 "Service Availability"@en ;
+. 
+
+trusted-cloud:availability
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "availability"@en ;
+	rdfs:domain		 trusted-cloud:ServiceAvailability ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Assured Service Availability in Percent / Year" ;
+. 
+
+trusted-cloud:maximumDownTime
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "maximum down time"@en ;
+	rdfs:domain		 trusted-cloud:ServiceAvailability ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Maximum downtime of the service in hours" ;
+. 
+
+trusted-cloud:timeToRecover
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "time to recover"@en ;
+	rdfs:domain		 trusted-cloud:ServiceAvailability ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "How is the quick recovery of availability of client data and access to it guarantieed in the event of a physical or technical incident?" ;
+. 
+
+################## 
+##ServiceInterruptionRules
+##################
+
+trusted-cloud:ServiceInterruptionRules
+	a		 owl:Class;
+	rdfs:label		 "Service Interruption Rules"@en ;
+. 
+
+trusted-cloud:rulesContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rules contracted"@en ;
+	rdfs:domain		 trusted-cloud:ServiceInterruptionRules ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are clear rules provided which guarantee adequate data feedback in case of insolvency or special ending of contract or interruption of service provisioning." ;
+. 
+
+trusted-cloud:rulesDetails
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rules details"@en ;
+	rdfs:domain		 trusted-cloud:ServiceInterruptionRules ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Details about contractually ensured rules for feedback of customer data." ;
+. 
+
+################## 
+##ServiceLevelAgreement
+##################
+
+trusted-cloud:ServiceLevelAgreement
+	a		 owl:Class;
+	rdfs:label		 "Service Level Agreement"@en ;
+. 
+
+gax-core:hasSLAInContract
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "has sl in contract"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are there SLAs component of contract?" ;
+. 
+
+trusted-cloud:slaComplianceReviewable
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sla compliance reviewable"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is it possible to review the compliance with the SLA by the customer?" ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the SLAs" ;
+. 
+
+trusted-cloud:slaViolationConcequencesContracted
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sla violation concequences contracted"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are there legal consequences for an SLA violation in the contract?" ;
+. 
+
+trusted-cloud:continuousGuaranteeOfPrivacy
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "continuous guarantee of privacy"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is there a contracted continuous guarantee of privacy, integrity and resilience of the systems?" ;
+. 
+
+trusted-cloud:contractedAvailabilityForDataAfterTechnicalProblems
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "contracted availability for data after technical problems"@en ;
+	rdfs:domain		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are there contracted availabilities for data after a physical or technical problem?" ;
+. 
+
+################## 
+##ServiceManagement
+##################
+
+trusted-cloud:ServiceManagement
+	a		 owl:Class;
+	rdfs:label		 "Service Management"@en ;
+. 
+
+trusted-cloud:serviceManagement
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "service management"@en ;
+	rdfs:domain		 trusted-cloud:ServiceManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is an efficient service management ensured e.g. as per ITIL?" ;
+. 
+
+trusted-cloud:details
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "details"@en ;
+	rdfs:domain		 trusted-cloud:ServiceManagement ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Details about the service management" ;
+. 
+
+trusted-cloud:certificates
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certificates"@en ;
+	rdfs:domain		 trusted-cloud:ServiceManagement ;
+	rdfs:range		 trusted-cloud:CertificateScope ;
+	rdfs:comment		 "Details about certificates, which are relevant for this service." ;
+. 
+
+################## 
+##ServiceScaling
+##################
+
+trusted-cloud:ServiceScaling
+	a		 owl:Class;
+	rdfs:label		 "Service Scaling"@en ;
+. 
+
+trusted-cloud:scalingTypes
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "scaling types"@en ;
+	rdfs:domain		 trusted-cloud:ServiceScaling ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are the scales and factors of the technical infrastructure defined?" ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:ServiceScaling ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of defined scaling types" ;
+. 
+
+################## 
+##SubcontractorTransparency
+##################
+
+trusted-cloud:SubcontractorTransparency
+	a		 owl:Class;
+	rdfs:label		 "Subcontractor Transparency"@en ;
+. 
+
+trusted-cloud:allSubContractorsMentioned
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "all sub contractors mentioned"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorTransparency ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are all concerned subcontractors specified in the service provisioning?" ;
+. 
+
+trusted-cloud:allContractConditionsMetBySubContractor
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "all contract conditions met by sub contractor"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorTransparency ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Are all contract conditions transferable to the sub contractors are adhered by these contractually?" ;
+. 
+
+################## 
+##Support
+##################
+
+trusted-cloud:Support
+	a		 owl:Class;
+	rdfs:label		 "Support"@en ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the scope of support services" ;
+. 
+
+trusted-cloud:responseTimeOnNormalRequests
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "response time on normal requests"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "What is the guaranteed response time on normal requests?" ;
+. 
+
+trusted-cloud:responseTimeOnCriticalRequests
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "response time on critical requests"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "What is the guaranteed response time on critical requests?" ;
+. 
+
+trusted-cloud:mainResolveTimeOfMinorProblems
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "main resolve time of minor problems"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Whats the average time until minor problems are resolved?" ;
+. 
+
+trusted-cloud:mainResolveTimeMajorProblems
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "main resolve time major problems"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "What is the average time until major problems are resolved?" ;
+. 
+
+trusted-cloud:availabilityOfSupport
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "availability of support"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "What is the availability of the support?" ;
+. 
+
+trusted-cloud:userDocumentationCompleteness
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "user documentation completeness"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is there a complete user documentation?" ;
+. 
+
+trusted-cloud:systemDocumentationCompleteness
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "system documentation completeness"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is there a complete system documentation?" ;
+. 
+
+trusted-cloud:trainingOffered
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "training offered"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are trainings offered?" ;
+. 
+
+trusted-cloud:trainingPartners
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "training partners"@en ;
+	rdfs:domain		 trusted-cloud:Support ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Specification from training partners" ;
+. 
+
+################## 
+##TechnicalIntegration
+##################
+
+trusted-cloud:TechnicalIntegration
+	a		 owl:Class;
+	rdfs:label		 "Technical Integration"@en ;
+. 
+
+trusted-cloud:standardizedAPI
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "standardized api"@en ;
+	rdfs:domain		 trusted-cloud:TechnicalIntegration ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is there a standardized API to integrate the service into the customers IT-landscape?" ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:TechnicalIntegration ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the offered APIs to integrate the services" ;
+. 
+
+################## 
+##TechnicalStandards
+##################
+
+trusted-cloud:TechnicalStandards
+	a		 owl:Class;
+	rdfs:label		 "Technical Standards"@en ;
+. 
+
+trusted-cloud:administrationApiStandards
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "administration api standards"@en ;
+	rdfs:domain		 trusted-cloud:TechnicalStandards ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is the administration of service possible with standard API?" ;
+. 
+
+trusted-cloud:virtualizationStandards
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "virtualization standards"@en ;
+	rdfs:domain		 trusted-cloud:TechnicalStandards ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Does the service use standardized formats for virtual machines and containers?" ;
+. 
+
+trusted-cloud:serviceStackStandards
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "service stack standards"@en ;
+	rdfs:domain		 trusted-cloud:TechnicalStandards ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the standard, the service stack is built on." ;
+. 
+
+################## 
+##UsageRights
+##################
+
+trusted-cloud:UsageRights
+	a		 owl:Class;
+	rdfs:label		 "Usage Rights"@en ;
+. 
+
+trusted-cloud:applicableLaw
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "applicable law"@en ;
+	rdfs:domain		 trusted-cloud:UsageRights ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is there applicable law?" ;
+. 
+
+trusted-cloud:applicableEULaw
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "applicable law"@en ;
+	rdfs:domain		 trusted-cloud:UsageRights ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "If applicable law is EU law, this field has to specify the concrete law." ;
+. 
+
+trusted-cloud:jurisdiction
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "jurisdiction"@en ;
+	rdfs:domain		 trusted-cloud:UsageRights ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "City of jurisdiction of the service" ;
+. 
+
+################## 
+##Certificate
+##################
+
+trusted-cloud:Certificate
+	a		 owl:Class;
+	rdfs:label		 "Certificate"@en ;
+. 
+
+trusted-cloud:name
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "name"@en ;
+	rdfs:domain		 trusted-cloud:Certificate ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of certificate" ;
+. 
+
+trusted-cloud:type
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type"@en ;
+	rdfs:domain		 trusted-cloud:Certificate ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of the certificates" ;
+. 
+
+trusted-cloud:certificateAuthority
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certificate authority"@en ;
+	rdfs:domain		 trusted-cloud:Certificate ;
+	rdfs:range		 trusted-cloud:CertificationBody ;
+	rdfs:comment		 "Certificate authority for this service or its certificate" ;
+. 
+
+trusted-cloud:expirationDate
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "expiration date"@en ;
+	rdfs:domain		 trusted-cloud:Certificate ;
+	rdfs:range		 xsd:date ;
+	rdfs:comment		 "Date on which the certificate expires" ;
+. 
+
+trusted-cloud:regularAudited
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "regular audited"@en ;
+	rdfs:domain		 trusted-cloud:Certificate ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the certificate regularly audited?" ;
+. 
+
+################## 
+##AuditabilityProfile
+##################
+
+trusted-cloud:AuditabilityProfile
+	a		 owl:Class;
+	rdfs:label		 "Auditability Profile"@en ;
+. 
+
+trusted-cloud:auditability
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "auditability"@en ;
+	rdfs:domain		 trusted-cloud:AuditabilityProfile ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is it possible for the user to request an audit?" ;
+. 
+
+trusted-cloud:audits
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "audits"@en ;
+	rdfs:domain		 trusted-cloud:AuditabilityProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of audits which were already performed." ;
+. 
+
+trusted-cloud:auditor
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "auditor"@en ;
+	rdfs:domain		 trusted-cloud:AuditabilityProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can audits on processes and organizational procedures related to data protection and security be conducted?" ;
+. 
+
+################## 
+##ProviderCompanyProfile
+##################
+
+trusted-cloud:ProviderCompanyProfile
+	a		 owl:Class;
+	rdfs:label		 "Provider Company Profile"@en ;
+. 
+
+trusted-cloud:employeeCount
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "employee count"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Employee count of the organization." ;
+. 
+
+trusted-cloud:employeeCountForCloudServices
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "employee count for cloud services"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Employee count of the organization in the cloud service area." ;
+. 
+
+trusted-cloud:salesVolume
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sales volume"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Sales volume of the organization." ;
+. 
+
+trusted-cloud:category
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "category"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Specific category of the organization." ;
+. 
+
+trusted-cloud:numberOfPublicCloudServices
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of public cloud services"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Publicly offered cloud services." ;
+. 
+
+trusted-cloud:experienceCloudServices
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "experience cloud services"@en ;
+	rdfs:domain		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Experience / knowledge of the organization in the cloud service business." ;
+. 
+
+################## 
+##ProviderLegalInformation
+##################
+
+trusted-cloud:ProviderLegalInformation
+	a		 owl:Class;
+	rdfs:label		 "Provider Legal Information"@en ;
+	rdfs:subClassOf		trusted-cloud:LegalInformation ;
+. 
+
+trusted-cloud:typeOfApplication
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type of application"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Type of Application offered" ;
+. 
+
+trusted-cloud:vatNumber
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "vat number"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Organization’s VAT / sales tax-id number. Either vatNumber or registrationNumber has to be set." ;
+. 
+
+trusted-cloud:registrationDate
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "registration date"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 xsd:dateTimeStamp ;
+	rdfs:comment		 "Date of the legal registration." ;
+. 
+
+trusted-cloud:sme
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sme"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the company a \"small or medium sized\" company?." ;
+. 
+
+trusted-cloud:managingDirector
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "managing director"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "Managing director or legal guardian of the organization." ;
+. 
+
+trusted-cloud:mainContact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "main contact"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "Main contact of the organization" ;
+. 
+
+trusted-cloud:dataProtectionOfficer
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data protection officer"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "A contact within an organization to contact for data protection purposes." ;
+. 
+
+trusted-cloud:itDepartmentContact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "it department contact"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "A contact within an organization to contact for technical purposes." ;
+. 
+
+trusted-cloud:legalContact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "legal contact"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "A contact within an organization to contact for data protection purposes." ;
+. 
+
+trusted-cloud:description
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "description"@en ;
+	rdfs:domain		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the organization." ;
+. 
+
+################## 
+##Provider
+##################
+
+trusted-cloud:Provider
+	a		 owl:Class;
+	rdfs:label		 "Provider"@en ;
+	rdfs:subClassOf		gax-core:Participant ;
+. 
+
+trusted-cloud:legalInformation
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "legal information"@en ;
+	rdfs:domain		 trusted-cloud:Provider ;
+	rdfs:range		 trusted-cloud:ProviderLegalInformation ;
+	rdfs:comment		 "Legal information of provider." ;
+. 
+
+trusted-cloud:companyProfile
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "company profile"@en ;
+	rdfs:domain		 trusted-cloud:Provider ;
+	rdfs:range		 trusted-cloud:ProviderCompanyProfile ;
+	rdfs:comment		 "Details on experience / knowledge of the company in the cloud service business." ;
+. 
+
+trusted-cloud:auditabilityProfile
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "auditability profile"@en ;
+	rdfs:domain		 trusted-cloud:Provider ;
+	rdfs:range		 trusted-cloud:AuditabilityProfile ;
+	rdfs:comment		 "Details on auditability possibilities of the organization." ;
+. 
+
+################## 
+##DataCentre
+##################
+
+trusted-cloud:DataCentre
+	a		 owl:Class;
+	rdfs:label		 "Data Centre"@en ;
+	rdfs:subClassOf		gax-core:Resource ;
+. 
+
+trusted-cloud:operatedBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "operated by"@en ;
+	rdfs:domain		 trusted-cloud:DataCentre ;
+	rdfs:range		 trusted-cloud:SubContractor ;
+	rdfs:comment		 "DID of datacenter subcontractor." ;
+. 
+
+trusted-cloud:geoLocation
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "geo location"@en ;
+	rdfs:domain		 trusted-cloud:DataCentre ;
+	rdfs:range		 trusted-cloud:Location ;
+	rdfs:comment		 "Geographical location of dat centre." ;
+. 
+
+################## 
+##Contract
+##################
+
+trusted-cloud:Contract
+	a		 owl:Class;
+	rdfs:label		 "Contract"@en ;
+. 
+
+trusted-cloud:contractTransparency
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "contract transparency"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:ContractTransparency ;
+	rdfs:comment		 "Information about general contract transparency." ;
+. 
+
+trusted-cloud:rightsOfUsage
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "rights of usage"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:UsageRights ;
+	rdfs:comment		 "Details about rights of usage and area of juristication." ;
+. 
+
+trusted-cloud:transparencyWithSubcontractors
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "transparency with subcontractors"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:SubcontractorTransparency ;
+	rdfs:comment		 "Name all concerd subcontractors and agreements for change during duration of service provision as well as commitment on data privacy information." ;
+. 
+
+trusted-cloud:interruptionRules
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "interruption rules"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:ServiceInterruptionRules ;
+	rdfs:comment		 "Details about rules which guarantee data feedback at any time." ;
+. 
+
+trusted-cloud:sla
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "sla"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:ServiceLevelAgreement ;
+	rdfs:comment		 "Information of Service Level Agreements (SLA) and rules for SLA-violation." ;
+. 
+
+trusted-cloud:pricingModel
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "pricing model"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:PricingModel ;
+	rdfs:comment		 "Information about used price model, contracted duration and notive of cancellation." ;
+. 
+
+trusted-cloud:changeManagement
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "change management"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:ChangeManagement ;
+	rdfs:comment		 "Information of contractural rules for handeling changes." ;
+. 
+
+trusted-cloud:obligationToCooperateInContract
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "obligation to cooperate in contract"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Are all obligations to cooperate or provisions defined in the contract?" ;
+. 
+
+trusted-cloud:customerExemptionFromClaimsOfThirdParties
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "customer exemption from claims of third parties"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the customer exempt from all claims of third parties while using this service?" ;
+. 
+
+trusted-cloud:exitSupport
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "exit support"@en ;
+	rdfs:domain		 trusted-cloud:Contract ;
+	rdfs:range		 trusted-cloud:ExitSupport ;
+	rdfs:comment		 "Information about rules for exit support (Exit-Management), especially the adjusted feedback for customer data." ;
+. 
+
+################## 
+##DataProtection
+##################
+
+trusted-cloud:DataProtection
+	a		 owl:Class;
+	rdfs:label		 "Data Protection"@en ;
+. 
+
+trusted-cloud:gdprMeasures
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "gdpr measures"@en ;
+	rdfs:domain		 trusted-cloud:DataProtection ;
+	rdfs:range		 trusted-cloud:GdprMeasures ;
+	rdfs:comment		 "Information about technical and organizational measures for GDPR." ;
+. 
+
+trusted-cloud:gdprCompliance
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "gdpr compliance"@en ;
+	rdfs:domain		 trusted-cloud:DataProtection ;
+	rdfs:range		 trusted-cloud:GdprCompliance ;
+	rdfs:comment		 "Information of compliance of European General Data Protection Regulation (GDPR)" ;
+. 
+
+trusted-cloud:dataRetention
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data retention"@en ;
+	rdfs:domain		 trusted-cloud:DataProtection ;
+	rdfs:range		 trusted-cloud:DataRetention ;
+	rdfs:comment		 "Information about limitation of customer data to specific regions" ;
+. 
+
+trusted-cloud:dataSubjectRights
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data subject rights"@en ;
+	rdfs:domain		 trusted-cloud:DataProtection ;
+	rdfs:range		 trusted-cloud:DataSubjectRights ;
+	rdfs:comment		 "Details on the implementation of the data subject rigths in accordance with Art. 12-23 GDPR?" ;
+. 
+
+trusted-cloud:employeesCommitment
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "employees commitment"@en ;
+	rdfs:domain		 trusted-cloud:DataProtection ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the obligation of all persons authorizied to process personal data to be subject to data secrecy according to Art. 28 (3) sentence 2 lit. b, 29, 32 para. 4 GDPR contractually defined??" ;
+. 
+
+################## 
+##Interoperability
+##################
+
+trusted-cloud:Interoperability
+	a		 owl:Class;
+	rdfs:label		 "Interoperability"@en ;
+. 
+
+trusted-cloud:technicalStandards
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "technical standards"@en ;
+	rdfs:domain		 trusted-cloud:Interoperability ;
+	rdfs:range		 trusted-cloud:TechnicalStandards ;
+	rdfs:comment		 "Information about technical standards the service stack is based on." ;
+. 
+
+trusted-cloud:dataExport
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data export"@en ;
+	rdfs:domain		 trusted-cloud:Interoperability ;
+	rdfs:range		 trusted-cloud:DataExport ;
+	rdfs:comment		 "Representation of procedures of data access of customer data and data feedback." ;
+. 
+
+trusted-cloud:technicalIntegration
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "technical integration"@en ;
+	rdfs:domain		 trusted-cloud:Interoperability ;
+	rdfs:range		 trusted-cloud:TechnicalIntegration ;
+	rdfs:comment		 "Description of procedures of techincal integration of service in the available IT-landscape of the user?" ;
+. 
+
+trusted-cloud:requirementsServiceUsage
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "requirements service usage"@en ;
+	rdfs:domain		 trusted-cloud:Interoperability ;
+	rdfs:range		 trusted-cloud:RequirementsServiceUsage ;
+	rdfs:comment		 "Description for the technical and organizational prerequisites to use the service the user has to fulill." ;
+. 
+
+################## 
+##MaturityLevel
+##################
+
+trusted-cloud:MaturityLevel
+	a		 owl:Class;
+	rdfs:label		 "Maturity Level"@en ;
+. 
+
+trusted-cloud:numberOfCustomers
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of customers"@en ;
+	rdfs:domain		 trusted-cloud:MaturityLevel ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Number of customers who use the service." ;
+. 
+
+trusted-cloud:numberOfUsers
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of users"@en ;
+	rdfs:domain		 trusted-cloud:MaturityLevel ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Number of overall users who use the service." ;
+. 
+
+################## 
+##OperativeProcesses
+##################
+
+trusted-cloud:OperativeProcesses
+	a		 owl:Class;
+	rdfs:label		 "Operative Processes"@en ;
+. 
+
+trusted-cloud:serviceManagement
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "service management"@en ;
+	rdfs:domain		 trusted-cloud:OperativeProcesses ;
+	rdfs:range		 trusted-cloud:ServiceManagement ;
+	rdfs:comment		 "Information about efficient service management for ensuring the quality of service?" ;
+. 
+
+trusted-cloud:serviceAvailability
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "service availability"@en ;
+	rdfs:domain		 trusted-cloud:OperativeProcesses ;
+	rdfs:range		 trusted-cloud:ServiceAvailability ;
+	rdfs:comment		 "Information of ensured service availability in service level agreements." ;
+. 
+
+trusted-cloud:backups
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "backups"@en ;
+	rdfs:domain		 trusted-cloud:OperativeProcesses ;
+	rdfs:range		 trusted-cloud:Backups ;
+	rdfs:comment		 "Details on backup options and implementation of data protection concepts." ;
+. 
+
+trusted-cloud:provisionPossibility
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "provision possibility"@en ;
+	rdfs:domain		 trusted-cloud:OperativeProcesses ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Can the customer provision the service himself?" ;
+. 
+
+trusted-cloud:support
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "support"@en ;
+	rdfs:domain		 trusted-cloud:OperativeProcesses ;
+	rdfs:range		 trusted-cloud:Support ;
+	rdfs:comment		 "Information about support services and documentation." ;
+. 
+
+################## 
+##ReferenceProfile
+##################
+
+trusted-cloud:ReferenceProfile
+	a		 owl:Class;
+	rdfs:label		 "Reference Profile"@en ;
+. 
+
+trusted-cloud:customerName
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "customer name"@en ;
+	rdfs:domain		 trusted-cloud:ReferenceProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Name of reference customer who is using the service?" ;
+. 
+
+trusted-cloud:usage
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "usage"@en ;
+	rdfs:domain		 trusted-cloud:ReferenceProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of usage of service by this customer." ;
+. 
+
+trusted-cloud:contact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "contact"@en ;
+	rdfs:domain		 trusted-cloud:ReferenceProfile ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "Contact person of this reference." ;
+. 
+
+trusted-cloud:url
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "url"@en ;
+	rdfs:domain		 trusted-cloud:ReferenceProfile ;
+	rdfs:range		 xsd:anyURI ;
+	rdfs:comment		 "URL of the customer." ;
+. 
+
+################## 
+##Security
+##################
+
+trusted-cloud:Security
+	a		 owl:Class;
+	rdfs:label		 "Security"@en ;
+. 
+
+trusted-cloud:securityManagement
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "security management"@en ;
+	rdfs:domain		 trusted-cloud:Security ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Proof of efficient management of information security for example by certificates as per ISO 27001 or BSI?" ;
+. 
+
+trusted-cloud:reportDataLeaks
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "report data leaks"@en ;
+	rdfs:domain		 trusted-cloud:Security ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Description of the process to report data leaks to the customer." ;
+. 
+
+trusted-cloud:certificates
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certificates"@en ;
+	rdfs:domain		 trusted-cloud:Security ;
+	rdfs:range		 trusted-cloud:CertificateScope ;
+	rdfs:comment		 "Details about certificates, which are relevant for security." ;
+. 
+
+trusted-cloud:encryption
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "encryption"@en ;
+	rdfs:domain		 trusted-cloud:Security ;
+	rdfs:range		 trusted-cloud:Encryption ;
+	rdfs:comment		 "Information about used encryption techniques for encryption data transmission and storage." ;
+. 
+
+trusted-cloud:rightsAndRoleConcept
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "rights and role concept"@en ;
+	rdfs:domain		 trusted-cloud:Security ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Which rights- and role-concept are used?" ;
+. 
+
+################## 
+##ServiceArchitecture
+##################
+
+trusted-cloud:ServiceArchitecture
+	a		 owl:Class;
+	rdfs:label		 "Service Architecture"@en ;
+. 
+
+trusted-cloud:clientIsolation
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "client isolation"@en ;
+	rdfs:domain		 trusted-cloud:ServiceArchitecture ;
+	rdfs:range		 trusted-cloud:ClientIsolation ;
+	rdfs:comment		 "Description of measures for limiting client areas for dedicated technical infrastructures and data areas." ;
+. 
+
+trusted-cloud:scaling
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "scaling"@en ;
+	rdfs:domain		 trusted-cloud:ServiceArchitecture ;
+	rdfs:range		 trusted-cloud:ServiceScaling ;
+	rdfs:comment		 "Information about scaling possibilities of technical infrastructure of the service." ;
+. 
+
+################## 
+##ServiceOffering
+##################
+
+trusted-cloud:ServiceOffering
+	a		 owl:Class;
+	rdfs:label		 "Service Offering"@en ;
+	rdfs:subClassOf		gax-core:ServiceOffering ;
+. 
+
+gax-core:offeredBy
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "offered by"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:Provider ;
+	rdfs:comment		 "DID of trusted cloud provider self-descrription offering this service offering." ;
+. 
+
+trusted-cloud:generalInformation
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "general information"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:GeneralInformationService ;
+	rdfs:comment		 "Basic classification of the service as per provision type and service model." ;
+. 
+
+trusted-cloud:functionalDescription
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "functional description"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:FunctionalDescriptionService ;
+	rdfs:comment		 "Functional description of the service and functional categorization of the service." ;
+. 
+
+trusted-cloud:mainContact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "main contact"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "Main contact of this service." ;
+. 
+
+trusted-cloud:additionalContact
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "additional contact"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 vcard:Agent ;
+	rdfs:comment		 "Further contacts of this service." ;
+. 
+
+trusted-cloud:typeOfProcessedData
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "type of processed data"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Which type of data are to be processes?" ;
+. 
+
+trusted-cloud:subContractors
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "sub contractors"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:SubContractor ;
+	rdfs:comment		 "SubCompanies required to operated the service." ;
+. 
+
+trusted-cloud:dataCentres
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data centres"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:DataCentre ;
+	rdfs:comment		 "Data centre required to operated the service" ;
+. 
+
+trusted-cloud:certificates
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "certificates"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:CertificateScope ;
+	rdfs:comment		 "Details about certificates, which are relevant for this service." ;
+. 
+
+trusted-cloud:contracts
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "contracts"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:Contract ;
+	rdfs:comment		 "Description of technical and organizational mechanism to ensure data protection." ;
+. 
+
+trusted-cloud:security
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "security"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:Security ;
+	rdfs:comment		 "Representation of technical and organizational mechanisms to ensure data protection and IT security." ;
+. 
+
+trusted-cloud:dataProtection
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "data protection"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:DataProtection ;
+	rdfs:comment		 "Technical and organizational mechanisms to ensure data protection and IT security." ;
+. 
+
+trusted-cloud:operativeProcesses
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "operative processes"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:OperativeProcesses ;
+	rdfs:comment		 "Representation of technical and functional prerequisites for ues, migration and exchange off service." ;
+. 
+
+trusted-cloud:interoperability
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "interoperability"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:Interoperability ;
+	rdfs:comment		 "Technical and functional requirements to change or migrate service." ;
+. 
+
+trusted-cloud:serviceArchitecture
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "service architecture"@en ;
+	rdfs:domain		 trusted-cloud:ServiceOffering ;
+	rdfs:range		 trusted-cloud:ServiceArchitecture ;
+	rdfs:comment		 "Technical architecture of this service." ;
+. 
+
+################## 
+##SubContractor
+##################
+
+trusted-cloud:SubContractor
+	a		 owl:Class;
+	rdfs:label		 "Sub Contractor"@en ;
+. 
+
+trusted-cloud:legalInformation
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "legal information"@en ;
+	rdfs:domain		 trusted-cloud:SubContractor ;
+	rdfs:range		 trusted-cloud:SubContractorLegalInformation ;
+	rdfs:comment		 "Legal information of sub contractor." ;
+. 
+
+trusted-cloud:organizationProfile
+	a		 owl:ObjectProperty ;
+	rdfs:label		 "organization profile"@en ;
+	rdfs:domain		 trusted-cloud:SubContractor ;
+	rdfs:range		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:comment		 "Details on experience / knowledge of the organization in the cloud service business." ;
+. 
+
+trusted-cloud:independentSubCompany
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "independent sub company"@en ;
+	rdfs:domain		 trusted-cloud:SubContractor ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Is the sub contractor internal or his legally sovereign company?" ;
+. 
+
+################## 
+##SubcontractorCompanyProfile
+##################
+
+trusted-cloud:SubcontractorCompanyProfile
+	a		 owl:Class;
+	rdfs:label		 "Subcontractor Company Profile"@en ;
+. 
+
+trusted-cloud:employeeCount
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "employee count"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Employee count of the organization." ;
+. 
+
+trusted-cloud:salesVolume
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "sales volume"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Sales volume of the organization." ;
+. 
+
+trusted-cloud:category
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "category"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Sales volume of the organization." ;
+. 
+
+trusted-cloud:numberOfPublicCloudServices
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "number of public cloud services"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:range		 xsd:integer ;
+	rdfs:comment		 "Publicly offered cloud services." ;
+. 
+
+trusted-cloud:experienceCloudServices
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "experience cloud services"@en ;
+	rdfs:domain		 trusted-cloud:SubcontractorCompanyProfile ;
+	rdfs:range		 xsd:string ;
+	rdfs:comment		 "Experience / knowledge of the organization in the cloud service business." ;
+. 
+
+################## 
+##SubContractorLegalInformation
+##################
+
+trusted-cloud:SubContractorLegalInformation
+	a		 owl:Class;
+	rdfs:label		 "Sub Contractor Legal Information"@en ;
+	rdfs:subClassOf		trusted-cloud:LegalInformation ;
+. 
+
+trusted-cloud:independentSubCompany
+	a		 owl:DatatypeProperty ;
+	rdfs:label		 "independent sub company"@en ;
+	rdfs:domain		 trusted-cloud:SubContractorLegalInformation ;
+	rdfs:range		 xsd:boolean ;
+	rdfs:comment		 "Is the data center company internal or his legally sovereign company? Yes = Legally sovereign company, no = company internal" ;
+. 
+

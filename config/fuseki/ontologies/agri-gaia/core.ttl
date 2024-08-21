@@ -1,0 +1,107 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix : <https://www.agri-gaia.de/ontologies/core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix agrovoc: <http://aims.fao.org/aos/agrovoc/> .
+@prefix gax-core: <http://w3id.org/gaia-x/core#> .
+@prefix gax-trust-framework: <http://w3id.org/gaia-x/gax-trust-framework#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@base <https://www.agri-gaia.de/ontologies/core> .
+
+<https://www.agri-gaia.de/ontologies/core> a owl:Ontology ;
+    dct:creator "AgriGAIA Semantic Data Description Group" ;
+    dct:contributor "ansgar.bernardi@dfki.de", "Arka.Sinha@dfki.de", "d.martini@ktbl.de", "l.seuring@ktbl.de", "marian.renz@dfki.de", "Martin.Leinberger@de.bosch.com" .
+# We should add a license and potentially owl:import a few things. Placeholder for now.
+#    dct:license <https://creativecommons.org/licenses/by/4.0/> .
+#    owl:imports <http://www.w3.org/2004/02/skos/core> .
+
+:Model
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf gax-core:Resource ;
+    rdfs:comment "an algorithmical model"@en, "ein algorithmisches Modell"@de ;
+    rdfs:label "algorithmic model"@en, "algorithmisches Modell"@de ;
+    skos:prefLabel "algorithmic model"@en, "algorithmisches Modell"@de ;
+    skos:definition "A model which allows for prognosis or simulation by applying computer algorithms for example from machine learning or implementations of statistical models to data."@en .
+
+:MachineLearningModel
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf :Model ;
+    rdfs:comment "a machine learning model"@en, "ein Modell für maschinelles Lernen"@de ;
+    rdfs:label "machine learning model"@en, "Modell für maschinelles Lernen"@de ;
+    skos:prefLabel "machine learning model"@en, "Modell für maschinelles Lernen"@de ;
+    skos:definition "A model which uses machine learning algorithms (usually based on statistics or neural networks)."@en .
+
+:InputOutputControlData
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf gax-trust-framework:DataResource, prov:Entity ;
+    rdfs:comment "data related to a process like e.g. a model."@en, "Daten eines Prozesses wie z. B. eines Modell"@de ;
+    rdfs:label "data"@en, "Daten"@de ;
+    skos:prefLabel "data"@en, "Daten"@de ;
+    skos:definition "instances of input data describe the data that serves as input to a process, for example for a model."@en .
+
+:InputData
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf :InputOutputControlData ;
+    rdfs:comment "input data to a process like e.g. a model."@en, "Eingabedaten für ein Prozess wie z. B. ein Modell"@de ;
+    rdfs:label "input data"@en, "Eingabedaten"@de ;
+    skos:prefLabel "input data"@en, "Eingabedaten"@de ;
+    skos:definition "instances of input data describe the data that serves as input to a process, for example for a model."@en .
+
+:OutputData
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf :InputOutputControlData ;
+    rdfs:comment "output data to a process like model"@en, "Ausgabedaten eines Prozesses wie z. B. ein Modell"@de ;
+    rdfs:label "output data"@en, "Ausgabedaten"@de ;
+    skos:prefLabel "output data"@en, "Ausgabedaten"@de ;
+    skos:definition "instances of output data describe the data that is created as the output of a process, for example for a model."@en .
+
+# Proposal. Does this make sense?
+:ControlData
+    a rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:subClassOf :InputOutputControlData ;
+    rdfs:comment "control data to a process like e.g. configuration files controlling model parametrization"@en, "Steuerungsdaten für einen Prozess wie z. B. Konfigurationsdateien, die der Parametrisierung dienen."@de ;
+    rdfs:label "input data"@en, "Eingabedaten"@de ;
+    skos:prefLabel "input data"@en, "Eingabedaten"@de ;
+    skos:definition "instances of control data describe the data that control a process, for example configuration etc."@en .
+
+:input
+    a owl:ObjectProperty ;
+    rdfs:comment "property linking a model to its input data. A model can have several instances of input data linked to it."@en, "verknüpft ein Modell mit seiner Eingabe"@de ;
+    rdfs:label "input data"@en, "Eingabedaten"@de ;
+    rdfs:domain :Model ;
+    rdfs:range :InputData .
+
+:output
+    a owl:ObjectProperty ;
+    rdfs:comment "property linking a model to its output data. A model can have several instances of output data linked to it."@en, "verknüpft ein Modell mit seiner Ausgabe"@de ;
+    rdfs:label "output data"@en, "Ausgabedaten"@de ;
+    rdfs:domain :Model ;
+    rdfs:range :OutputData .
+
+:control
+    a owl:ObjectProperty ;
+    rdfs:comment "property linking a model to its output data"@en, "verknüpft ein Modell mit seiner Ausgabe"@de ;
+    rdfs:label "output data"@en, "Ausgabedaten"@de ;
+    rdfs:domain :Model ;
+    rdfs:range :ControlData .
+
+:datatype
+    a owl:ObjectProperty ;
+    rdfs:comment "property linking "@en, ""@de ;
+    rdfs:label "datatype"@en, "Datentyp"@de ;
+    rdfs:domain :InputOutputControlData ; # not good: instance of a DataResource should have a dcat:conformsTo property, that describes the data structure.
+    rdfs:range xsd:anyAtomicType .
