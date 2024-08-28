@@ -11,7 +11,7 @@
 
 [submodule "services/backend"]
 	path = services/backend
-	url = git@gitlab.hs-osnabrueck.de:agri-gaia/backend-release.git
+	url = git@github.com:hsos-ai-lab/agri-gaia-backend.git
 [submodule "services/frontend"]
 	path = services/frontend
-	url = git@gitlab.hs-osnabrueck.de:agri-gaia/frontend-release.git
+	url = git@github.com:hsos-ai-lab/agri-gaia-frontend.git
