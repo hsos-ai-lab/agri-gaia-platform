@@ -53,6 +53,8 @@ RUN sed -i \
 COPY config.ttl /fuseki/run/configuration/config.ttl
 
 WORKDIR "/fuseki/run/configuration"
+RUN mkdir ./datasets && wget https://github.com/hsos-ai-lab/agri-gaia-platform-assets/releases/download/v0.1/geonames.nt -O ./datasets/geonames.nt
+
 RUN \
     wget https://agrovoc.fao.org/latestAgrovoc/agrovoc_lod.nt.zip &&\
     unzip ./agrovoc_lod.nt.zip -d ./temp &&\

@@ -20,7 +20,9 @@ RUN useradd -ms /bin/bash admin
 
 WORKDIR /home
 
-COPY provider.jar config.properties vault.properties /home/
+RUN wget https://github.com/hsos-ai-lab/agri-gaia-platform-assets/releases/download/v0.1/provider.jar -O /home/provider.jar
+
+COPY config.properties vault.properties /home/
 
 RUN sed -i "\
     s,CONNECTOR_PASSWORD,${CONNECTOR_PASSWORD},g; \

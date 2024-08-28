@@ -253,6 +253,6 @@ PREFIX :        <#>
     ja:defaultGraph
       [ rdfs:label "geonames.nt" ;
         a ja:MemoryModel ;
-        ja:content [ja:externalContent <file:./imports/datasets/geonames.nt> ] ;
+        ja:content [ja:externalContent <file:./datasets/geonames.nt> ] ;
       ] ;
     .
