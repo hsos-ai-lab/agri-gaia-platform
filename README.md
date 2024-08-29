@@ -19,6 +19,8 @@ The Agri-Gaia platform created by the Working Group of Prof. Tapken at the Unive
 
 The platform uses docker compose as deployment tool.
 
+To run the platform your device should have at least 16GB RAM but 32GB RAM are recommended.
+
 ### Prerequisites
 
 #### 1. Make sure Docker is installed and running:
@@ -47,12 +49,10 @@ sudo usermod -aG docker "${USER}"
 newgrp docker
 ```
 
-#### 2. Clone this repository and `update --init` all submodules:
+#### 2. Clone this repository:
 
 ```bash
-git clone https://github.com/hsos-ai-lab/agri-gaia-platform \
-  && cd platform \
-  && git submodule update --init --recursive
+git clone https://github.com/hsos-ai-lab/agri-gaia-platform
 ```
 
 #### 3. Initialize the submodules
@@ -99,6 +99,18 @@ We support three different kinds of SSL certificates with appropriate overrides 
 -   [Let's Encrypt](./docker-compose-overrides/lets-encrypt.yml): Traefik as our reverse proxy supports automatic Let's Encrypt certificate acquisiton and renewal as part of its built-in ACME (_Automatic Certificate Management Environment_) functionality.
 -   [External Account Binding (EAB)](./docker-compose-overrides/http-acme-aeb.yml): This method also uses Traefik's ACME capabilities but with a custom Certificate Authority (CA). Certificate acquisition and renewal are perfomed over HTTP instead of DNS.
 
+#### Startup
+
+You can monitor the deployment process in your terminal using `watch`:
+
+```bash
+watch -n 0.5 "docker ps -a"
+```
+
+After all containers are `Running`, visit [app.agri-gaia.localhost](https://app.agri-gaia.localhost) in your browser and create the first user using the registration form.
+
+By default, self-signed SSL certificates will be used in development by our reverse proxy Traefik. The certificates are in `./config/traefik/certs/self-signed` and have to be installed into your browser to prevent the browser to recognize the server as insecure.
+
 #### Developing on a remote machine
 
 Due to the high RAM consumption of the platform, development on low performance systems, without the use of profiles, can be difficult or in some cases even impossible.
@@ -116,19 +128,6 @@ After that, you'll have to deploy the platform on your development system using 
 You can now work on the files inside of `/opt/agri-gaia/platform` with changes being applied in real-time to `app` and `api` if you deployed the platform in development mode.
 
 **Warning**: Do not commit files like `.env` and Keycloak's `realm-export.json` into the `development` branch as they have been changed by the deployment itself. For example, the default `PROJECT_BASE_URL` string `localhost.agri-gaia` was replaced everywhere with `agri-gaia.dev`.
-
-#### Startup
-
-You can monitor the deployment process in your terminal using `watch`:
-
-```bash
-watch -n 0.5 "docker ps -a"
-```
-
-After all containers are `Running`, visit [app.agri-gaia.localhost](https://app.agri-gaia.localhost) in your browser and create the first user using the registration form.
-
-By default, self-signed SSL certificates will be used in development by our reverse proxy Traefik. The certificates are in `./config/traefik/certs/self-signed` and have to be installed into your browser to prevent the browser to recognize the server as insecure.
-
 
 #### Testing Edge-Devices on the local instance
 
