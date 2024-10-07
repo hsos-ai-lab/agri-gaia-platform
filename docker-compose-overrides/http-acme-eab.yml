@@ -18,7 +18,7 @@ services:
         command:
             - --providers.docker=true
             - --providers.docker.exposedbydefault=false
-            - --providers.file.directory=/configuration/
+            - --providers.file.directory=/etc/traefik
             - --providers.file.watch=true
             - --entrypoints.http.address=:80
             - --entrypoints.http.http.redirections.entrypoint.to=https
