@@ -94,10 +94,10 @@ The configuration is mainly done using the environment variables the .env file.
 
 We support three different kinds of SSL certificates with appropriate overrides in the [docker-compose-overrides](./docker-compose-overrides) directory:
 
--   [Self-signed](./docker-compose-overrides/self-signed.yml): These [wildcard certificates](./config/traefik/certs/wildcard) for `*.agri-gaia.localhost` and `*.agri-gaia.dev` are used in development. They are based on elliptic curves over a 384 bit prime field (secp384r1) and [generated](./config/traefik/certs/self-signed/wildcard/generate.sh) using OpenSSL.
--   [Issued](./docker-compose-overrides/issued.yml): Trusted SSL certificate issued by a certificate authority other than Let's Encrypt. As for self-signed certificates, the name of the certificate and key must start with the `PROJECT_BASE_URL` (see [.env](./.env)) and end with `.key` or `.crt`. This is dictated by the overrides in [docker-compose-overrides](./docker-compose-overrides).
--   [Let's Encrypt](./docker-compose-overrides/lets-encrypt.yml): Traefik as our reverse proxy supports automatic Let's Encrypt certificate acquisiton and renewal as part of its built-in ACME (_Automatic Certificate Management Environment_) functionality.
--   [External Account Binding (EAB)](./docker-compose-overrides/http-acme-aeb.yml): This method also uses Traefik's ACME capabilities but with a custom Certificate Authority (CA). Certificate acquisition and renewal are perfomed over HTTP instead of DNS.
+-   [Self-signed](./docker-compose-overrides/self-signed.yml): These [wildcard certificates](./secrets/certs/self-signed) for `*.agri-gaia.localhost` and `*.agri-gaia.dev` are used in development. They are based on elliptic curves over a 384 bit prime field (secp384r1) and [generated](./secrets/certs/self-signed/generate.sh) using OpenSSL.
+-   [Issued](./docker-compose-overrides/issued.yml): Trusted SSL [wildcard or multi-domain certificates](./secrets/certs/issued) issued by a certificate authority other than Let's Encrypt. As for self-signed certificates, the name of the certificate and key must start with the `PROJECT_BASE_URL` (see [.env](./.env)) and end with `.key` or `.crt`. This is dictated by the overrides in [docker-compose-overrides](./docker-compose-overrides).
+-   Let's Encrypt [DNS-01](./docker-compose-overrides/lets-encrypt-dns.yml)/[HTTP-01](./docker-compose-overrides/lets-encrypt-http.yml) via free [Duck DNS](`https://www.duckdns.org`) domain: Traefik as our reverse proxy supports automatic Let's Encrypt wildcard certificate acquisiton and renewal as part of its built-in ACME (_Automatic Certificate Management Environment_) functionality. Certificates and private keys are stored in [`acme.json`](./secrets/certs/acme) within the `secrects` directory.
+-   [External Account Binding (EAB)](./docker-compose-overrides/http-acme-aeb.yml): This method also uses Traefik's ACME capabilities but with a custom Certificate Authority (CA).
 
 #### Startup
 
@@ -109,7 +109,7 @@ watch -n 0.5 "docker ps -a"
 
 After all containers are `Running`, visit [app.agri-gaia.localhost](https://app.agri-gaia.localhost) in your browser and create the first user using the registration form.
 
-By default, self-signed SSL certificates will be used in development by our reverse proxy Traefik. The certificates are in `./config/traefik/certs/self-signed` and have to be installed into your browser to prevent the browser to recognize the server as insecure.
+By default, self-signed SSL certificates will be used in development by our reverse proxy Traefik. The certificates are located in [`./secrets/certs/self-signed`](`./secrets/certs/self-signed`) and have to be installed into your browser to prevent the browser from recognizing the server as insecure. If no certificates are present in [`./secrets/certs/self-signed`](`./secrets/certs/self-signed`) or the certificates have expired, run `./generate.sh -d agri-gaia.localhost -f` to generate new self-signed certificates.
 
 #### Developing on a remote machine
 
@@ -123,7 +123,7 @@ In order to associate your development system's IP address (e. g. 192.168.xx.xx)
 echo '192.168.xx.xx  app.agri-gaia.dev portainer.agri-gaia.dev edge.agri-gaia.dev keycloak.agri-gaia.dev registry.agri-gaia.dev minio-console.agri-gaia.dev minio.agri-gaia.dev cvat.agri-gaia.dev nuclio.agri-gaia.dev api.agri-gaia.dev webvowl.agri-gaia.dev fuseki.agri-gaia.dev traefik.agri-gaia.dev registry.agri-gaia.dev prometheus.agri-gaia.dev monitoring.agri-gaia.dev jupyterhub.agri-gaia.dev edc-provider.agri-gaia.dev edc-provider-web.agri-gaia.dev edc-provider-ids.agri-gaia.dev' | sudo tee -a /etc/hosts
 ```
 
-After that, you'll have to deploy the platform on your development system using the `platform-deployment` repository. To generate a suitable configuration you can use the `setup-env.sh` script. Make sure not to generate new SSL certificates as the platform is shipped with pre-generated ones. Once the deployment process has started, Traefik will use the pre-generated self-signed SSL certificates for `agri-gaia.dev` from its [wildcard certs](./config/traefik/certs/self-signed/wildcard) directory. In order to avoid warnings about untrusted certificates, you'll have to add the `ca.agri-gaia.dev.crt` to your browser's trusted certificate authorities and `agri-gaia.dev.crt` to its trusted servers.
+After that, you'll have to deploy the platform on your development system using the `platform-deployment` repository. To generate a suitable configuration you can use the `setup-env.sh` script. Once the deployment process has started, Traefik will use the self-signed SSL certificates for `agri-gaia.dev` from the [secrets](./secrets/certs/self-signed) directory. In order to avoid warnings about untrusted certificates, you'll have to add the `ca.agri-gaia.dev.crt` to your browser's trusted certificate authorities and `agri-gaia.dev.crt` to its trusted servers.
 
 You can now work on the files inside of `/opt/agri-gaia/platform` with changes being applied in real-time to `app` and `api` if you deployed the platform in development mode.
 
@@ -143,8 +143,6 @@ For running the platform in WSL2 and the edge agent in a linux VM:
         - registry.agri-gaia.localhost
         - keycloak.agri-gaia.localhost
 2. Add the self signed certificate to the VM:
-    - Copy the .crt file from `./config/traefik/certs/self-signed/wildcard/agri-gaia.localhost.crt` to the folder `/usr/local/share/ca-certificates/` of the VM
+    - Copy the .crt file from `./secrets/certs/self-signed/agri-gaia.localhost.crt` to the folder `/usr/local/share/ca-certificates/` of the VM
     - execute `sudo update-ca-certificates`
 3. Add `--network=host` to the run command of the edge agent container and run the container
-
-

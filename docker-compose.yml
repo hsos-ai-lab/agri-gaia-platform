@@ -37,7 +37,7 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config/traefik/dynamic.yaml:/etc/traefik/dynamic.yaml
+      - ./services/traefik/dynamic.yaml:/etc/traefik/dynamic.yaml
     labels:
       - traefik.enable=true
 

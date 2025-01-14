@@ -12,7 +12,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 PROJECT_BASE_URL="${1}"
-WILDCARD_CERTS_PATH="./config/traefik/certs/self-signed/wildcard"
+CERTS_PATH="./secrets/certs/self-signed"
 
 JUPYTERHUB_IMAGES_PATH="./services/jupyterhub/images"
 JUPYTERHUB_VERSION="$(grep "JUPYTERHUB_VERSION=" .env | cut -d "=" -f 2)"
@@ -22,7 +22,7 @@ if [[ -z "${PROJECT_BASE_URL}" ]]; then
 fi
 
 # This won't generate new certs if matching ones are already present.
-cd "${WILDCARD_CERTS_PATH}" && ./generate.sh -d "${PROJECT_BASE_URL}"
+cd "${CERTS_PATH}" && ./generate.sh -d "${PROJECT_BASE_URL}"
 cd - || exit
 
 cd "${JUPYTERHUB_IMAGES_PATH}" && ./build-cpu-images.sh "${JUPYTERHUB_VERSION}"

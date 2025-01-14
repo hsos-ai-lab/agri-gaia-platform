@@ -12,7 +12,7 @@
 services:
     reverse_proxy:
         volumes:
-            - ./acme:/acme
+            - ./secrets/certs/acme:/acme
         labels:
             - traefik.http.routers.traefik.tls.certresolver=httpresolver
         command:
@@ -38,7 +38,7 @@ services:
 
     build_container:
         volumes:
-            - ./config/traefik/certs/acme/domains/registry.${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+            - ./secrets/certs/acme/registry.${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
 
     frontend:
         labels:

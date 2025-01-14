@@ -12,7 +12,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 PROJECT_BASE_URL="${1}"
-WILDCARD_CERTS_PATH="./config/traefik/certs/self-signed/wildcard"
+WILDCARD_CERTS_PATH="./secrets/certs/self-signed"
 
 if [[ -z "${PROJECT_BASE_URL}" ]]; then
   PROJECT_BASE_URL="agri-gaia.localhost"

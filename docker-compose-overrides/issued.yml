@@ -12,8 +12,8 @@
 services:
   reverse_proxy:
     volumes:
-      - ./config/traefik/certs/issued/:/certs/
-  
+      - ./secrets/certs/issued/:/certs/
+
   build_container:
     volumes:
-      - ./config/traefik/certs/issued/wildcard/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+      - ./secrets/certs/issued/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt

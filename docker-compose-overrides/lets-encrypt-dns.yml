@@ -14,7 +14,7 @@ services:
         environment:
             - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
         volumes:
-            - ./acme:/acme
+            - ./secrets/certs/acme:/acme
         labels:
             - traefik.http.routers.traefik.tls.certresolver=cloudflare
         command:
@@ -39,7 +39,7 @@ services:
 
     build_container:
         volumes:
-            - ./config/traefik/certs/acme/wildcard/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+            - ./secrets/certs/acme/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
 
     frontend:
         labels:

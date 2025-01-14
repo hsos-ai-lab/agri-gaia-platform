@@ -47,15 +47,15 @@ services:
 
   build_container:
     volumes:
-      - ./config/traefik/certs/self-signed/wildcard/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+      - ./secrets/certs/self-signed/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
 
   portainer:
     volumes:
-      - ./config/traefik/certs/self-signed/wildcard/ca.${PROJECT_BASE_URL}.crt:/etc/ssl/certs/ca.${PROJECT_BASE_URL}.crt
-  
+      - ./secrets/certs/self-signed/ca.${PROJECT_BASE_URL}.crt:/etc/ssl/certs/ca.${PROJECT_BASE_URL}.crt
+
   jupyterhub:
     build:
       context: services/jupyterhub
       dockerfile: Dockerfile-dev
     volumes:
-      - ./config/traefik/certs/self-signed/wildcard/ca.${PROJECT_BASE_URL}.crt:/usr/local/share/ca-certificates/extra/ca.${PROJECT_BASE_URL}.crt
+      - ./secrets/certs/self-signed/ca.${PROJECT_BASE_URL}.crt:/usr/local/share/ca-certificates/extra/ca.${PROJECT_BASE_URL}.crt

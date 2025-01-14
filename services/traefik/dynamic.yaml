@@ -13,8 +13,8 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /certs/wildcard/agri-gaia.localhost.crt
-        keyFile: /certs/wildcard/agri-gaia.localhost.key
+        certFile: /certs/agri-gaia.localhost.crt
+        keyFile: /certs/agri-gaia.localhost.key
   options:
     default:
       minVersion: VersionTLS12
