@@ -11,33 +11,22 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-PROJECT_BASE_URL="${1}"
-CERTS_PATH="./secrets/certs/self-signed"
+jupyterhub_images_path="./services/jupyterhub/images"
+jupyterhub_version="$(grep "JUPYTERHUB_VERSION=" .env | cut -d "=" -f 2)"
 
-JUPYTERHUB_IMAGES_PATH="./services/jupyterhub/images"
-JUPYTERHUB_VERSION="$(grep "JUPYTERHUB_VERSION=" .env | cut -d "=" -f 2)"
-
-if [[ -z "${PROJECT_BASE_URL}" ]]; then
-  PROJECT_BASE_URL="agri-gaia.localhost"
-fi
-
-# This won't generate new certs if matching ones are already present.
-cd "${CERTS_PATH}" && ./generate.sh -d "${PROJECT_BASE_URL}"
-cd - || exit
-
-cd "${JUPYTERHUB_IMAGES_PATH}" && ./build-cpu-images.sh "${JUPYTERHUB_VERSION}"
+cd "${jupyterhub_images_path}" && ./build-cpu-images.sh "${jupyterhub_version}"
 cd - || exit
 
 export COMPOSE_PROFILES=edge,annotation,semantics,monitoring,edc,triton
 
-OVERRIDES="-f docker-compose.yml -f docker-compose.override.yml -f docker-compose-overrides/self-signed.yml"
+overrides="-f docker-compose.yml -f docker-compose.override.yml -f docker-compose-overrides/self-signed.yml"
 if command -v nvidia-container-toolkit &> /dev/null; then
-  OVERRIDES="${OVERRIDES} -f docker-compose-overrides/backend-gpus.yml"
+  overrides="${overrides} -f docker-compose-overrides/backend-gpus.yml"
 
-  JUPYTERHUB_NGC_IMAGE_TAG="$(grep "JUPYTERHUB_NGC_IMAGE_TAG=" .env | cut -d "=" -f 2)"
-  cd "${JUPYTERHUB_IMAGES_PATH}" && ./build-gpu-images.sh "${JUPYTERHUB_VERSION}" "${JUPYTERHUB_NGC_IMAGE_TAG}"
+  jupyterhub_ngc_image_tag="$(grep "JUPYTERHUB_NGC_IMAGE_TAG=" .env | cut -d "=" -f 2)"
+  cd "${jupyterhub_images_path}" && ./build-gpu-images.sh "${jupyterhub_version}" "${jupyterhub_ngc_image_tag}"
   cd - || exit
 fi
 
 docker compose pull \
-  && eval "docker compose ${OVERRIDES} up -d --build"
+  && eval "docker compose ${overrides} up -d --build"

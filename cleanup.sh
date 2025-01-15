@@ -13,34 +13,23 @@
 
 docker compose down -v
 
-# we manually delete every container and volume matching the project name, because we create additional volumes on runtime for each user
-COMPOSE_PROJECT_NAME=$(grep "^COMPOSE_PROJECT_NAME=" .env | cut -f 2 -d '=')
+compose_project_name="$(grep "^COMPOSE_PROJECT_NAME=" .env | cut -f 2 -d '=')"
 
-CONTAINERS=$(docker container ls -a --filter name="${COMPOSE_PROJECT_NAME}" -q)
+containers=$(docker container ls -a --filter name="${compose_project_name}" -q)
+[[ -n "${containers}" ]] && docker container rm "${containers}"
 
-if [ -n "${CONTAINERS}" ]; then
-    docker container rm "${CONTAINERS}"
-else
-    echo "No Containers to remove!"
-fi
+volumes=$(docker volume ls --filter name="${compose_project_name}" -q)
+[[ -n "${volumes}" ]] && docker volume rm "${volumes}"
 
-VOLUMES=$(docker volume ls --filter name="${COMPOSE_PROJECT_NAME}" -q)
-
-if [ -n "${VOLUMES}" ]; then
-    docker volume rm "${VOLUMES}"
-else
-    echo "No Volumes to remove!"
-fi
-
-PROJECT_BASE_URL=$(grep "^PROJECT_BASE_URL=" .env | cut -f 2 -d '=')
-if [ -n "${PROJECT_BASE_URL}" ]; then
+project_base_url="$(grep "^PROJECT_BASE_URL=" .env | cut -f 2 -d '=')"
+if [[ -n "${project_base_url}" ]]; then
   docker container ls -a --format "{{.ID}} {{.Image}}" \
-    | grep "registry.${PROJECT_BASE_URL}" \
+    | grep "registry.${project_base_url}" \
     | awk '{print $1}' \
     | xargs -I {} sh -c 'docker stop {} && docker rm {}'
 
   docker image ls -a --format "{{.ID}} {{.Repository}}" \
-    | grep "registry.${PROJECT_BASE_URL}" \
+    | grep "registry.${project_base_url}" \
     | awk '{print $1}' \
     | xargs -I {} docker rmi -f {}
 fi
