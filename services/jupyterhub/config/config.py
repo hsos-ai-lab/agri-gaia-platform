@@ -12,6 +12,7 @@
 # Configuration file for JupyterHub
 c = get_config()
 
+
 # helper func to import sibling files:
 def import_class_from_file(class_name, file_name):
     with open(f"/srv/jupyterhub/config/{file_name}.py") as f:
@@ -20,8 +21,10 @@ def import_class_from_file(class_name, file_name):
         return g[class_name]
 
 
-#### Authentication #### 
-PlatformAuthenticator = import_class_from_file("PlatformAuthenticator", "platform_authenticator")
+#### Authentication ####
+PlatformAuthenticator = import_class_from_file(
+    "PlatformAuthenticator", "platform_authenticator"
+)
 c.JupyterHub.authenticator_class = PlatformAuthenticator
 
 
@@ -48,10 +51,16 @@ c.JupyterHub.load_roles = [
     {
         "name": "user",
         "description": "User Role for accessing auth_state via API",
-        "scopes": ["self", "admin:auth_state!user"]
-    }, {
+        "scopes": ["self", "admin:auth_state!user"],
+    },
+    {
         "name": "server",
         "description": "Allows parties to start and stop user servers",
-        "scopes": ["access:servers!user", "read:users:activity!user", "users:activity!user", "admin:auth_state!user"]
-    }
+        "scopes": [
+            "access:servers!user",
+            "read:users:activity!user",
+            "users:activity!user",
+            "admin:auth_state!user",
+        ],
+    },
 ]

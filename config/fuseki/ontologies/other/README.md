@@ -35,9 +35,9 @@ rapper -i rdfxml -o turtle doap.rdf > doap.ttl
 
 The Dublin Core namespace http://purl.org/dc/terms/ redirects to https://www.dublincore.org/specifications/dublin-core/dcmi-terms/. Links to RDF schemas are here: https://www.dublincore.org/schemas/rdfs/. We need the ones for:
 
-* Dublin Core Terms: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl
-* Dublin Core Abstract Model: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_abstract_model.ttl
-* Dublin Core Elements: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_elements.ttl 
+- Dublin Core Terms: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl
+- Dublin Core Abstract Model: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_abstract_model.ttl
+- Dublin Core Elements: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_elements.ttl
 
 ## The FOAF Namespace
 
@@ -72,4 +72,3 @@ The VOAF namespace http://purl.org/vocommons/voaf# redirects to http://lov.okfn.
 ## VoID Namespace
 
 The VoID Namespace http://rdfs.org/ns/void# redirects to http://vocab.deri.ie/void. The link to the turtle file at the top of the page http://vocab.deri.ie/data_file.ttl currently doesn't work and gives a 404. You can get the void vocabulary turtle file from http://vocab.deri.ie/void.ttl
-

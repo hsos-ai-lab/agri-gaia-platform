@@ -62,17 +62,17 @@ sed -f ../tools/fix-subClassOf-statements.sed gax-trust-framework_generated.ttl 
 
 You can access the GAIA-X ontology documentation by inserting the respective namespace URIs (without fragment identifier) into the address line of your browser:
 
-* Core: https://www.w3id.org/gaia-x/core
-* Resource: https://www.w3id.org/gaia-x/resource
-* Participant: https://www.w3id.org/gaia-x/participant
-* Service Offering: https://www.w3id.org/gaia-x/service 
+- Core: https://www.w3id.org/gaia-x/core
+- Resource: https://www.w3id.org/gaia-x/resource
+- Participant: https://www.w3id.org/gaia-x/participant
+- Service Offering: https://www.w3id.org/gaia-x/service
 
 At this point in time, these URIs will redirect to:
 
-* Core: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/core/core.html
-* Resource: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/resource/resource.html
-* Participant: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/participant/participant.html
-* Service Offering: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/service/service.html
+- Core: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/core/core.html
+- Resource: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/resource/resource.html
+- Participant: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/participant/participant.html
+- Service Offering: https://gaia-x.gitlab.io/technical-committee/service-characteristics/widoco/service/service.html
 
 For each of these, a set of serializations is available, including a Turtle file. See the "Download serialization:" section close to the top of each of the pages.
 

@@ -10,93 +10,93 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 services:
-    reverse_proxy:
-        environment:
-            - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
-        volumes:
-            - ./secrets/certs/acme:/acme
-        labels:
-            - traefik.http.routers.traefik.tls.certresolver=httpresolver
-        command:
-            - --providers.docker=true
-            - --providers.docker.exposedbydefault=false
-            - --providers.file.directory=/etc/traefik
-            - --providers.file.watch=true
-            - --entrypoints.http.address=:80
-            - --entrypoints.http.http.redirections.entrypoint.to=https
-            - --entrypoints.http.http.redirections.entrypoint.scheme=https
-            - --entrypoints.https.address=:443
-            - --entryPoints.https.transport.respondingTimeouts.readTimeout=0
-            - --entrypoints.edge.address=:8000
-            - --entryPoints.edge.transport.respondingTimeouts.readTimeout=0
+  reverse_proxy:
+    environment:
+      - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+    volumes:
+      - ./secrets/certs/acme:/acme
+    labels:
+      - traefik.http.routers.traefik.tls.certresolver=httpresolver
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik
+      - --providers.file.watch=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.http.http.redirections.entrypoint.to=https
+      - --entrypoints.http.http.redirections.entrypoint.scheme=https
+      - --entrypoints.https.address=:443
+      - --entryPoints.https.transport.respondingTimeouts.readTimeout=0
+      - --entrypoints.edge.address=:8000
+      - --entryPoints.edge.transport.respondingTimeouts.readTimeout=0
 
-            - --certificatesresolvers.httpresolver.acme.email=${ACME_EMAIL}
-            - --certificatesresolvers.httpresolver.acme.storage=/acme/acme.json
-            - --certificatesresolvers.httpresolver.acme.httpchallenge=true
-            - --certificatesresolvers.httpresolver.acme.httpchallenge.entrypoint=http
+      - --certificatesresolvers.httpresolver.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.httpresolver.acme.storage=/acme/acme.json
+      - --certificatesresolvers.httpresolver.acme.httpchallenge=true
+      - --certificatesresolvers.httpresolver.acme.httpchallenge.entrypoint=http
 
-    build_container:
-        volumes:
-            - ./secrets/certs/acme/registry.${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+  build_container:
+    volumes:
+      - ./secrets/certs/acme/registry.${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
 
-    frontend:
-        labels:
-            - traefik.http.routers.frontend.tls.certresolver=httpresolver
+  frontend:
+    labels:
+      - traefik.http.routers.frontend.tls.certresolver=httpresolver
 
-    backend:
-        labels:
-            - traefik.http.routers.backend.tls.certresolver=httpresolver
+  backend:
+    labels:
+      - traefik.http.routers.backend.tls.certresolver=httpresolver
 
-    keycloak:
-        labels:
-            - traefik.http.routers.keycloak.tls.certresolver=httpresolver
+  keycloak:
+    labels:
+      - traefik.http.routers.keycloak.tls.certresolver=httpresolver
 
-    portainer:
-        labels:
-            - traefik.http.routers.portainer.tls.certresolver=httpresolver
+  portainer:
+    labels:
+      - traefik.http.routers.portainer.tls.certresolver=httpresolver
 
-    fuseki:
-        labels:
-            - traefik.http.routers.fuseki.tls.certresolver=httpresolver
+  fuseki:
+    labels:
+      - traefik.http.routers.fuseki.tls.certresolver=httpresolver
 
-    webvowl:
-        labels:
-            - traefik.http.routers.webvowl.tls.certresolver=httpresolver
+  webvowl:
+    labels:
+      - traefik.http.routers.webvowl.tls.certresolver=httpresolver
 
-    minio:
-        labels:
-            - traefik.http.routers.minio.tls.certresolver=httpresolver
-            - traefik.http.routers.minio-console.tls.certresolver=httpresolver
+  minio:
+    labels:
+      - traefik.http.routers.minio.tls.certresolver=httpresolver
+      - traefik.http.routers.minio-console.tls.certresolver=httpresolver
 
-    registry:
-        labels:
-            - traefik.http.routers.registry.tls.certresolver=httpresolver
+  registry:
+    labels:
+      - traefik.http.routers.registry.tls.certresolver=httpresolver
 
-    cvat_server:
-        labels:
-            - traefik.http.routers.cvat.tls.certresolver=httpresolver
+  cvat_server:
+    labels:
+      - traefik.http.routers.cvat.tls.certresolver=httpresolver
 
-    cvat_ui:
-        labels:
-            - traefik.http.routers.cvat_ui.tls.certresolver=httpresolver
+  cvat_ui:
+    labels:
+      - traefik.http.routers.cvat_ui.tls.certresolver=httpresolver
 
-    prometheus:
-        labels:
-            - traefik.http.routers.prometheus.tls.certresolver=httpresolver
+  prometheus:
+    labels:
+      - traefik.http.routers.prometheus.tls.certresolver=httpresolver
 
-    grafana:
-        labels:
-            - traefik.http.routers.grafana.tls.certresolver=httpresolver
+  grafana:
+    labels:
+      - traefik.http.routers.grafana.tls.certresolver=httpresolver
 
-    edc_provider:
-        labels:
-            - traefik.http.routers.edc-provider.tls.certresolver=httpresolver
-            - traefik.http.routers.edc-provider-web.tls.certresolver=httpresolver
-            - traefik.http.routers.edc-provider-ids.tls.certresolver=httpresolver
+  edc_provider:
+    labels:
+      - traefik.http.routers.edc-provider.tls.certresolver=httpresolver
+      - traefik.http.routers.edc-provider-web.tls.certresolver=httpresolver
+      - traefik.http.routers.edc-provider-ids.tls.certresolver=httpresolver
 
-    nuclio:
-        labels:
-            - traefik.http.routers.nuclio.tls.certresolver=httpresolver
-    jupyterhub:
-        labels:
-            - traefik.http.routers.jupyterhub.tls.certresolver=httpresolver
+  nuclio:
+    labels:
+      - traefik.http.routers.nuclio.tls.certresolver=httpresolver
+  jupyterhub:
+    labels:
+      - traefik.http.routers.jupyterhub.tls.certresolver=httpresolver

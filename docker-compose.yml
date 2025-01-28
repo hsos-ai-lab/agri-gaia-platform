@@ -162,7 +162,7 @@ services:
       GPUS: ${GPUS}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8000/metrics" ]
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/metrics"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -228,7 +228,7 @@ services:
       - portainer-data:/data
     depends_on:
       - keycloak
-    profiles: [ "edge" ]
+    profiles: ["edge"]
 
   # The Jena Fuseki Triple Store
   fuseki:
@@ -252,7 +252,7 @@ services:
       - traefik.http.routers.fuseki.tls.options=default
       - traefik.http.routers.fuseki.middlewares=security-headers
       - traefik.http.routers.fuseki.entrypoints=https
-    profiles: [ "semantics" ]
+    profiles: ["semantics"]
 
   # The WebVOWL ontology visualizer
   webvowl:
@@ -273,7 +273,7 @@ services:
       - traefik.http.routers.webvowl.tls.options=default
       - traefik.http.routers.webvowl.middlewares=security-headers
       - traefik.http.routers.webvowl.entrypoints=https
-    profiles: [ "semantics" ]
+    profiles: ["semantics"]
 
   # The MinIO S3 Storage
   minio:
@@ -319,7 +319,7 @@ services:
       - traefik.http.routers.minio-console.rule=Host(`minio-console.${PROJECT_BASE_URL}`)
       - traefik.http.services.minio-console.loadbalancer.server.port=9001
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://minio:9000/minio/health/live" ]
+      test: ["CMD", "curl", "--fail", "http://minio:9000/minio/health/live"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -413,7 +413,7 @@ services:
     depends_on:
       - postgres_keycloak
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 15s
       timeout: 10s
       retries: 100
@@ -588,7 +588,7 @@ services:
         aliases:
           - cvat-server
     command: -c supervisord.conf
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   # CVAT UI (Client)
   cvat_ui:
@@ -605,7 +605,7 @@ services:
       - traefik.http.routers.cvat_ui.middlewares=security-headers
       - traefik.http.routers.cvat_ui.entrypoints=https
       - traefik.http.routers.cvat_ui.rule=Host(`cvat.${PROJECT_BASE_URL}`)
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   # CVAT Postgres database
   cvat_db:
@@ -617,13 +617,13 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - cvat-db:/var/lib/postgresql/data
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   # CVAT Redis database
   cvat_redis:
     image: redis:4.0-alpine
     restart: unless-stopped
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   # CVAT Open policy agent
   cvat_opa:
@@ -642,7 +642,7 @@ services:
       - --set=bundles.cvat.resource=/api/auth/rules
       - --set=bundles.cvat.polling.min_delay_seconds=5
       - --set=bundles.cvat.polling.max_delay_seconds=15
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   # CVAT Nuclio (Auto Annotation)
   nuclio:
@@ -675,7 +675,7 @@ services:
       - traefik.http.middlewares.nuclio-auth.basicauth.removeHeader=true
       - traefik.http.middlewares.nuclio-auth.basicauth.users=${REALM_SERVICE_ACCOUNT_USERNAME}:${REALM_SERVICE_ACCOUNT_HTPASSWD}
       - traefik.http.services.nuclio.loadbalancer.server.port=8070
-    profiles: [ "annotation" ]
+    profiles: ["annotation"]
 
   ##### MONITORING #####
 
@@ -704,7 +704,7 @@ services:
       - traefik.http.routers.prometheus.tls.options=default
       - traefik.http.routers.prometheus.middlewares=security-headers
       - traefik.http.routers.prometheus.entrypoints=https
-    profiles: [ "monitoring" ]
+    profiles: ["monitoring"]
 
   # Host System Monitoring
   node-exporter:
@@ -718,7 +718,7 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     expose:
       - "9100"
-    profiles: [ "monitoring" ]
+    profiles: ["monitoring"]
 
   # Container Monitoring
   cadvisor:
@@ -734,7 +734,7 @@ services:
       #- /mnt/windows_docker/:/rootfs/var/lib/docker:ro
     expose:
       - "8080"
-    profiles: [ "monitoring" ]
+    profiles: ["monitoring"]
 
   # Grafana
   grafana:
@@ -760,7 +760,7 @@ services:
       - traefik.http.routers.grafana.middlewares=security-headers
       - traefik.http.routers.grafana.entrypoints=https
       - traefik.http.routers.grafana.rule=Host(`monitoring.${PROJECT_BASE_URL}`)
-    profiles: [ "monitoring" ]
+    profiles: ["monitoring"]
 
   ##EDC Provider
   edc_provider:
@@ -800,7 +800,7 @@ services:
       - traefik.http.routers.edc-provider-ids.entrypoints=https
       - traefik.http.routers.edc-provider-ids.rule=Host(`edc-provider-ids.${PROJECT_BASE_URL}`)
       - traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282
-    profiles: [ "edc" ]
+    profiles: ["edc"]
 
   triton:
     image: nvcr.io/nvidia/tritonserver:23.12-py3
@@ -814,8 +814,13 @@ services:
     depends_on:
       - minio
     restart: unless-stopped
-    command: [ "tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll" ]
-    profiles: [ "triton" ]
+    command:
+      [
+        "tritonserver",
+        "--model-repository=s3://minio:9000/triton",
+        "--model-control-mode=poll",
+      ]
+    profiles: ["triton"]
 
 volumes:
   fuseki-data:

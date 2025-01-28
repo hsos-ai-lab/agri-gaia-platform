@@ -13,42 +13,44 @@
 
 /* Main Color */
 :root {
-    --pf-global--primary-color--100: #0f5432;
-    --pf-global--primary-color--dark-100: #0f5432;
+  --pf-global--primary-color--100: #0f5432;
+  --pf-global--primary-color--dark-100: #0f5432;
 }
 
 /* Login / Register Button on hover */
 .pf-m-primary:hover {
-    background-color: #09331e
+  background-color: #09331e;
 }
 
 /* Background Image */
 .login-pf body {
-    background-image: url('../img/login.png');
-    background-size: cover;
+  background-image: url("../img/login.png");
+  background-size: cover;
 }
 
 /* Remove Realm Name Header */
 #kc-header-wrapper {
-    display: none;
+  display: none;
 }
 
 /* and fill up the space */
 .card-pf {
-    margin-top: 250px;
+  margin-top: 250px;
 }
 
 /* Link color */
 a {
-    color: #0f5432;
+  color: #0f5432;
 }
 
 /* Link color on hover */
 a:hover {
-    color: #09331e !important;
+  color: #09331e !important;
 }
 
 /* Remove TextField borders (black in Chrome, Blue in FireFox)*/
-*,*:focus,*:hover{
-    outline:none;
+*,
+*:focus,
+*:hover {
+  outline: none;
 }

@@ -26,10 +26,10 @@
       "prohibitions": [],
       "obligations": [],
       "extensibleProperties": {},
-      "inheritsFrom":null,
-      "assigner":null,
-      "assignee":null,
-      "target":"",
+      "inheritsFrom": null,
+      "assigner": null,
+      "assignee": null,
+      "target": "",
       "type": {
         "type": "set"
       }

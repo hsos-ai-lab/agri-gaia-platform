@@ -17,12 +17,12 @@ from setuptools import setup
 
 setup(
     name="platformtools",
-    author='Maik Fruhner',
-    author_email='m.fruhner@hs-osnabrueck.de',
+    author="Maik Fruhner",
+    author_email="m.fruhner@hs-osnabrueck.de",
     version="0.1",
     extras_require={"dev": ["black"]},
-    packages=['platformtools'],
+    packages=["platformtools"],
     install_requires=[
-        'minio',
+        "minio",
     ],
 )

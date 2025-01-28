@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # Apache Jena Fuseki
 
 ## Build and run
+
 ```bash
 DOCKER_BUILDKIT=1 docker build --build-arg JENA_VERSION=4.3.1 --build-arg JVM_ARGS="-Xmx8G" -t fuseki .
 

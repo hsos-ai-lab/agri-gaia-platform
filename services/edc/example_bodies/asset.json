@@ -1,12 +1,12 @@
 {
   "asset": {
-    "id" : "test-asset.txt",
+    "id": "test-asset.txt",
     "properties": {
-      "asset:prop:id" : "test-asset.txt",
-      "asset:prop:name" : "asset-name.txt",
-      "asset:prop:description" : "Some description",
-      "asset:prop:version" : "1.0",
-      "asset:prop:contenttype" : "dataset"
+      "asset:prop:id": "test-asset.txt",
+      "asset:prop:name": "asset-name.txt",
+      "asset:prop:description": "Some description",
+      "asset:prop:version": "1.0",
+      "asset:prop:contenttype": "dataset"
     }
   },
   "dataAddress": {
