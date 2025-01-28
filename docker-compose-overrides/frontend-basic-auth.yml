@@ -9,7 +9,8 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-reverse_proxy:    
+services:
+  reverse_proxy:    
     labels:
       - traefik.http.routers.traefik.middlewares[1]=traefik-auth
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_HTPASSWD}
