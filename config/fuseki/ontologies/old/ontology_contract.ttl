@@ -1,0 +1,284 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix : <http://w3id.org/gaia-x/contract#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://w3id.org/gaia-x/contract#> .
+
+<http://w3id.org/gaia-x/contract#> rdf:type owl:Ontology ;
+                                    <http://creativecommons.org/ns#license> <http://www.apache.org/licenses/LICENSE-2.0> ;
+                                    <http://purl.org/dc/terms/abstract> """The GAIA-X contract ontology contains the components needed to model a contract in the GAIA-X architecture.
+
+The different ontology modules can be found here: 
+
+Core: <a href=\"https://www.w3id.org/gaia-x/core\">https://www.w3id.org/gaia-x/core</a> 
+
+Resource: <a href=\"https://www.w3id.org/gaia-x/resource\">https://www.w3id.org/gaia-x/resource</a> 
+
+Contract: <a href=\"https://www.w3id.org/gaia-x/contract\">https://www.w3id.org/gaia-x/contract</a> 
+
+Node: <a href=\"https://www.w3id.org/gaia-x/node\">https://www.w3id.org/gaia-x/node</a> 
+
+Participant: <a href=\"https://www.w3id.org/gaia-x/participant\">https://www.w3id.org/gaia-x/participant</a> 
+
+Service: <a href=\"https://www.w3id.org/gaia-x/service\">https://www.w3id.org/gaia-x/service</a> 
+
+The defined constraints for these modules can be found here:
+
+Constraint overview: <a href=\"https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/constraints.html\">https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/constraints.html</a>""" ;
+                                    <http://purl.org/dc/terms/contributor> <https://github.com/JohannesLipp> ,
+                                                                           <https://github.com/clange> ,
+                                                                           <https://github.com/jlangkau> ,
+                                                                           <https://github.com/jpfr> ,
+                                                                           <https://github.com/moosmannp> ;
+                                    <http://purl.org/dc/terms/created> "2021-10-18T12:00:00+01:00"^^xsd:dateTimeStamp ;
+                                    <http://purl.org/dc/terms/creator> "GAIA-X Open Work Package 'Self-Description'" ;
+                                    <http://purl.org/dc/terms/modified> "2022-02-15T12:00:00+01:00"^^xsd:dateTimeStamp ;
+                                    <http://purl.org/dc/terms/title> "GAIA-X Contract Ontology"@en ;
+                                    <http://purl.org/vocab/vann/preferredNamespacePrefix> "gax-contract" ;
+                                    <http://purl.org/vocab/vann/preferredNamespaceUri> "http://w3id.org/gaia-x/contract#" ;
+                                    <http://rdfs.org/ns/void#vocabulary> <http://purl.org/dc/terms/> ,
+                                                                         <http://purl.org/vocab/vann/> ,
+                                                                         <http://purl.org/vocommons/voaf#> ,
+                                                                         <http://rdfs.org/ns/void#> ;
+                                    rdfs:label "GAIA-X Contract Ontology"@en ;
+                                    owl:versionInfo "21/12" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://creativecommons.org/ns#license
+<http://creativecommons.org/ns#license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/abstract
+<http://purl.org/dc/terms/abstract> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/contributor
+<http://purl.org/dc/terms/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/modified
+<http://purl.org/dc/terms/modified> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://rdfs.org/ns/void#vocabulary
+<http://rdfs.org/ns/void#vocabulary> rdf:type owl:AnnotationProperty .
+
+
+###  http://w3id.org/gaia-x/contract#obligation
+:obligation rdf:type owl:AnnotationProperty ;
+            rdfs:subPropertyOf <http://www.w3.org/ns/odrl/2/obligation> .
+
+
+###  http://w3id.org/gaia-x/contract#permission
+:permission rdf:type owl:AnnotationProperty ;
+            rdfs:subPropertyOf <http://www.w3.org/ns/odrl/2/permission> .
+
+
+###  http://w3id.org/gaia-x/contract#prohibition
+:prohibition rdf:type owl:AnnotationProperty ;
+             rdfs:subPropertyOf <http://www.w3.org/ns/odrl/2/prohibition> .
+
+
+###  http://www.w3.org/ns/odrl/2/obligation
+<http://www.w3.org/ns/odrl/2/obligation> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/odrl/2/permission
+<http://www.w3.org/ns/odrl/2/permission> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/odrl/2/prohibition
+<http://www.w3.org/ns/odrl/2/prohibition> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://w3id.org/gaia-x/contract#consumer
+:consumer rdf:type owl:ObjectProperty ;
+          rdfs:domain :Contract ;
+          rdfs:range <http://w3id.org/gaia-x/participant#Participant> ;
+          rdfs:comment "Consumer of a Resource or Service that is the subject matter of the Contract. This party may differ from the Assignee specified by the Contract rules."@en ;
+          rdfs:label "Consumer" .
+
+
+###  http://w3id.org/gaia-x/contract#contractDocument
+:contractDocument rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Contract ;
+                  rdfs:range <http://www.w3.org/ns/dcat#Resource> ;
+                  rdfs:comment "Equivalent human-readable encoding of this machine-interpretable Contract."@en ;
+                  rdfs:label "Contract document"@en .
+
+
+###  http://w3id.org/gaia-x/contract#contractProvider
+:contractProvider rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Contract ;
+                  rdfs:range <http://w3id.org/gaia-x/participant#Participant> ;
+                  rdfs:comment "Provider of a Resource or Service that is the subject matter of the contract. This party may differ from the Assigner specified by the Contract rules."@en ;
+                  rdfs:label "Contract Provider" .
+
+
+###  http://w3id.org/gaia-x/contract#loggingMode
+:loggingMode rdf:type owl:ObjectProperty ;
+             rdfs:domain :Contract ;
+             rdfs:range :LoggingMode ;
+             rdfs:comment "Defines the logging policy for the data resource."@en ;
+             rdfs:label "Logging Mode"@en .
+
+
+###  http://w3id.org/gaia-x/contract#obligation
+:obligation rdf:type owl:ObjectProperty ;
+            rdfs:domain :Contract ;
+            rdfs:range :Duty .
+
+
+###  http://w3id.org/gaia-x/contract#permission
+:permission rdf:type owl:ObjectProperty ;
+            rdfs:domain :Contract ;
+            rdfs:range :Permission .
+
+
+###  http://w3id.org/gaia-x/contract#prohibition
+:prohibition rdf:type owl:ObjectProperty ;
+             rdfs:domain :Contract ;
+             rdfs:range :Prohibition .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://w3id.org/gaia-x/contract#choiceOfLaw
+:choiceOfLaw rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Contract ;
+             rdfs:range xsd:anyURI ;
+             rdfs:comment "A data provider can express the country of the law this contract will follow. The name of the country must be represented by ISO3166-1 ontology. For example: Germany is represented as iso:Germany ."@en ;
+             rdfs:label "Choice of Law"@en .
+
+
+###  http://w3id.org/gaia-x/contract#confirmationRequired
+:confirmationRequired rdf:type owl:DatatypeProperty ;
+                      rdfs:domain :Contract ;
+                      rdfs:range xsd:boolean ;
+                      rdfs:comment "Indicates whether automated data access or manual confirmation is required."@en ;
+                      rdfs:label "Information Required"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/vocommons/voaf#Vocabulary
+<http://purl.org/vocommons/voaf#Vocabulary> rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/contract#Contract
+:Contract rdf:type owl:Class ;
+          rdfs:subClassOf <http://www.w3.org/ns/odrl/2/Policy> ;
+          rdfs:comment "Contract means the binding legal agreement describing a Service Instance and includes all rights and obligations."@en ;
+          rdfs:label "Contract"@en .
+
+
+###  http://w3id.org/gaia-x/contract#ContractOffer
+:ContractOffer rdf:type owl:Class ;
+               rdfs:subClassOf :Contract ,
+                               <http://www.w3.org/ns/odrl/2/Offer> ;
+               rdfs:comment "Contract issued by the Data Provider offering the usage of a Resource at particular conditions."@en ;
+               rdfs:label "Contract offer"@en .
+
+
+###  http://w3id.org/gaia-x/contract#Duty
+:Duty rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/contract#LoggingMode
+:LoggingMode rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/contract#Permission
+:Permission rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/contract#Prohibition
+:Prohibition rdf:type owl:Class .
+
+
+###  http://w3id.org/gaia-x/participant#Participant
+<http://w3id.org/gaia-x/participant#Participant> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/dcat#Resource
+<http://www.w3.org/ns/dcat#Resource> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/odrl/2/Offer
+<http://www.w3.org/ns/odrl/2/Offer> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/odrl/2/Policy
+<http://www.w3.org/ns/odrl/2/Policy> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://w3id.org/gaia-x/contract#
+<http://w3id.org/gaia-x/contract#> rdf:type owl:NamedIndividual ,
+                                            <http://purl.org/vocommons/voaf#Vocabulary> .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+:obligation rdfs:comment "A Duty imposed by the Contract."@en ;
+            rdfs:label "obligation"@en .
+
+
+:permission rdfs:comment "A Permission granted by the Contract."@en ;
+            rdfs:label "permission"@en .
+
+
+:prohibition rdfs:comment "A Prohibition imposed by the Contract."@en ;
+             rdfs:label "prohibition"@en .
+
+
+###  Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/

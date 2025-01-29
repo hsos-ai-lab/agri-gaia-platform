@@ -1,0 +1,697 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@base <http://w3id.org/agri-gaia-x/asset> .
+
+@prefix : <http://w3id.org/agri-gaia-x/asset#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix voaf:       <http://purl.org/vocommons/voaf#> .
+@prefix dct:        <http://purl.org/dc/terms/> .
+@prefix dcat:       <http://www.w3.org/ns/dcat#> .
+@prefix cc:         <http://creativecommons.org/ns#> .
+@prefix vann:       <http://purl.org/vocab/vann/> .
+@prefix void:       <http://rdfs.org/ns/void#> .
+@prefix skos:       <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov:   <http://www.w3.org/ns/prov#>.
+@prefix gax-trust-framework:  <http://w3id.org/gaia-x/gax-trust-framework#> .
+@prefix trusted-cloud: <http://w3id.org/gaia-x/trusted-cloud#> .
+@prefix weat: <https://bimerr.iot.linkeddata.es/def/weather>.
+@prefix agro: <http://purl.obolibrary.org/obo/>.
+@prefix ppdo: <http://ontology.inrae.fr/ppdo/ontology/>.
+@prefix sosa: <http://www.w3.org/ns/sosa/>.
+@prefix strdf: <http://strdf.di.uoa.gr/ontology#> .
+@prefix strdf: <http://strdf.di.uoa.gr/ontology#> .
+@prefix csvw:   <http://www.w3.org/ns/csvw#>    .
+@prefix hydra:  <http://www.w3.org/ns/hydra/core#> .
+@prefix agri-gax: <http://w3id.org/agri-gaia-x/asset#>.
+
+
+
+<http://w3id.org/agri-gaia-x/asset>
+    a                             voaf:Vocabulary, owl:Ontology ;
+    rdfs:label                    "AGRIGAIA-X Resource Ontology"@en ;
+    dct:title                     "AGRIGAIA-X Resource Ontology"@en ;
+    dct:abstract                  "The AGRIGAIA-X asset ontology contains the components needed to model a resource in agricultural domain inside the GAIA-X architecture.";
+    cc:license                    <http://www.apache.org/licenses/LICENSE-2.0> ;
+    dct:creator                   "Semantic Data Description Group" ;
+    dct:contributor               "ansgar.bernardi@dfki.de", "Arka.Sinha@dfki.de", "d.martini@ktbl.de", "l.seuring@ktbl.de", "marian.renz@dfki.de", "Martin.Leinberger@de.bosch.com" ;
+    dct:created                   "2022-05-03T12:00:00+01:00"^^xsd:dateTimeStamp ;
+    dct:modified                  "2021-05-03T12:00:00+01:00"^^xsd:dateTimeStamp ;
+    owl:versionInfo               "0.1" ;
+    vann:preferredNamespaceUri    "http://w3id.org/agri-gaia-x/asset#" ;
+    vann:preferredNamespacePrefix "agri-gax" ;
+    void:vocabulary               vann:, void:, voaf:, dct: .
+
+
+
+:AgriDataResource
+      a          rdfs:Class, owl:Class, skos:Concept ;
+      rdfs:label "AgriDataResource"@en, "AgriDatensatz"@de ;
+      rdfs:comment "A subclass of Gaiax DataResource that is specifically designed for data set in agriculture domain." ;
+      rdfs:subClassOf gax-trust-framework:DataResource, dcat:Dataset.
+
+
+
+:AgriDataResourceCollection
+      a          rdfs:Class, owl:Class, skos:Concept ;
+      rdfs:label "AgriDataResource"@en, "AgriDatensatz"@de ;
+      rdfs:comment "A subclass of Gaiax DataResource that is specifically designed for data set in agriculture domain." ;
+      rdfs:subClassOf gax-trust-framework:DataResource, prov:Collection, dcat:Dataset.
+
+
+:AgriImageDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriImageDataResource"@en, "AgriBildDatensatz"@de ;
+    rdfs:comment "A subclass of AgriDataResource class and primarily comprises of images." ;
+    rdfs:subClassOf :AgriDataResource.
+
+
+:AgriCsvDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriCsvDataResource"@en, "AgriCsvDatensatz"@de ;
+    rdfs:comment "A CSV dataset from agriculture domain and a subclass of AgriDataResource class." ;
+    rdfs:subClassOf :AgriDataResource, csvw:TableGroup.
+
+
+:AgriJsonDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriJsonDataResource"@en, "AgriJsonDatensatz"@de ;
+    rdfs:comment "A JSON dataset from agriculture domain and a subclass of AgriDataResource class." ;
+    rdfs:subClassOf :AgriDataResource.
+
+
+:AgriSyntheticDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriSyntheticDataResource"@en, "AgriSynthetikDatensatz"@de ;
+    rdfs:comment "A Synthetic/Simulated dataset for agriculture domain and a subclass of AgriDataResource class." ;
+    rdfs:subClassOf :AgriDataResource.
+
+
+:AgriSyntheticImageDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriSyntheticImageDataResource"@en, "AgriSynthetikBildDatensatz"@de ;
+    rdfs:comment "A Synthetic/Simulated Image dataset for agriculture domain." ;
+    rdfs:subClassOf :AgriImageDataResource, :AgriSyntheticDataResource.
+    
+
+:AgriSyntheticCsvDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriSyntheticCsvDataResource"@en, "AgriSynthetikCsvDatensatz"@de ;
+    rdfs:comment "A Synthetic/Simulated CSV dataset for agriculture domain." ;
+    rdfs:subClassOf :AgriCsvDataResource, :AgriSyntheticDataResource.
+
+
+:AgriSyntheticJsonDataResource
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "AgriSyntheticJsonDataResource"@en, "AgriSynthetikJsonDatensatz"@de ;
+    rdfs:comment "A Synthetic/Simulated JSON dataset for agriculture domain." ;
+    rdfs:subClassOf :AgriJsonDataResource, :AgriSyntheticDataResource.
+
+
+:Device
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Device"@en, "Gerät"@de ;
+    rdfs:comment "Devices that were used during data collection. This can be tractors, hoe, camera, sensors etc." ;
+    rdfs:subClassOf agro:AGRO_00000416, sosa:Platform.
+# agro:AGRO_00000416 is "agricultural implement". a camera is not an implement! check subclass modeling!
+# we assume that devices mentioned here will hold some sensors
+
+
+#:VirtualDevice
+#    a          rdfs:Class, owl:Class, skos:Concept ;
+#    rdfs:label "VirtualDevice"@en, "VirtuellGerät"@de ;
+#    rdfs:comment "Virtual devices that were configured during the generation of synthetic data. This can be tractors, hoe, camera, sensors etc." ;
+#    rdfs:subClassOf agro:AGRO_00000416, sosa:Platform, :Device.
+
+
+:DeviceData
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "DeviceData"@en, "GeräteDatum"@de ;
+    rdfs:comment "Observation or measurement data from a device." ;
+    rdfs:subClassOf gax-trust-framework:DataResource.
+
+
+:Camera
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Camera"@en, "Kamera"@de ;
+    rdfs:comment "Camera that was used during data collection." ;
+    rdfs:subClassOf :Device.
+# Camera is a sensor platform, not a device (as device is defined as an agricultural implement (in conformance to ISOBUS)
+
+
+:VirtualCamera
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "VirtualCamera"@en, "VirtuellKamera"@de ;
+    rdfs:comment "Virtual camera that was configured during the generation of synthetic data." ;
+    rdfs:subClassOf :camera.
+
+
+:Vehicle
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Vehicle"@en, "Fahrzeug"@de ;
+    rdfs:comment "Vehicle that was used during data collection." ;
+    rdfs:subClassOf :Device.
+# being a subclass of sosa:Platform, vehicles can act as a platform where sosa:Sensor will be mounted
+
+
+
+:imageCount rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Number of images available in the dataset."@en ;
+        rdfs:label "imageCount"@en .
+
+
+:avgImageWidth rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Average image width count in pixel"@en ;
+        rdfs:label "cameraImageWidth"@en .
+
+
+:avgImageHeight rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Average image height count in pixel"@en ;
+        rdfs:label "cameraImageHeight"@en .
+
+
+
+:avgImageSize rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Average size of each images in bytes, kilobytes or megabytes"@en ;
+        rdfs:label "averageImageSize"@en .
+
+
+:imageFormat rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Format or codec information of the images."@en ;
+        rdfs:label "imageFormat"@en ;
+        rdfs:subPropertyOf dct:format.
+
+
+:imageColorScheme rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Color scheme of the images, e.g. RGB, CMYK, grayscale, monochrome etc. "@en ;
+        rdfs:label "ImageColorScheme"@en .
+
+
+:imageDepthofField rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Description that defines the depth of field of the images e.g. focal length and aperature. "@en ;
+        rdfs:label "imageDepthofField"@en .
+
+
+:imageExposure rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Description that defines the exposure of the images e.g. focal length and aperature. "@en ;
+        rdfs:label "imageExposure"@en .
+
+## Synthetic Data properties
+:objectsInTheScene rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Objects that can be found in the images"@en ;
+        rdfs:label "objectsInTheScene"@en .
+
+
+:renderDevice rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticDataResource ;
+        rdfs:range      gax-trust-framework:HardwareSpec ;
+        rdfs:comment "Physical device or hardware that was used to generate the synthetic data."@en ;
+        rdfs:label "renderDevice"@en .
+
+
+:renderSoftwareUsed rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Render engine used to generate the synthetic data."@en ;
+        rdfs:label "renderEngineUsed"@en .
+
+
+:boundingBoxFormat rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "The type of deep learning algorithm that the bounding box in the images are suitable for. "@en ;
+        rdfs:label "boundingBoxFormat"@en .
+
+## 22-02-2023: could be more generic as it can be applied to twin data as well
+:annotatedClass rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticDataResource ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "The list of classes that are annotated in the dataset. "@en ;
+        rdfs:label "annotatedClass"@en .
+
+## 22-02-2023: could be more generic as it can be applied to twin data as well
+# or, can we replace it totally with dcat:distribution and have multiple dcat:Distribution objects as different modalities of data
+# or, we can keep it because it's range can be a dcat:Distribution or just some strings describing what the modalities are.
+# with dcat:distribution has only dcat:Distribution as range
+#:availableModalities rdf:type owl:DatatypeProperty ;
+#        rdfs:domain :AgriSyntheticImageDataResource ;
+#        rdfs:range xsd:anyType ;
+#        rdfs:comment "The type of data that are available in the dataset (e.g. point cloud, heat map, Lidar data, depth map etc.)."@en ;
+#        rdfs:label "availableModalities"@en .
+## 22-08-2023: Problem solved by using collection concept from Prov-O
+
+:segmentationLevel rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriSyntheticImageDataResource ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Information about the segmentation level in the dataset i.e. if the dataset only consists bounding boxes or does it also provides semantic segmentation and instance segmentation."@en ;
+        rdfs:label "segmentationLevel"@en .
+
+### CSV Properties
+:totalNumberOfColumns rdf:type owl:DatatypeProperty ;
+        rdfs:domain csvw:Table ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Total number of columns present in a single table in the data set, including columns that might be specified to be skipped using the csvw:skipColumns property."@en ;
+        rdfs:label "total number of columns"@en .
+
+
+:totalNumberOfRows rdf:type owl:DatatypeProperty ;
+        rdfs:domain csvw:Table ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Total number of rows present in a single table in the data set, including header columns specified using csvw:headerRowCount and/or columns that might be specifed to be skipped using the csvw:skipRows propoerty. "@en ;
+        rdfs:label "numberOfRecords"@en .
+# numberOfFields and numberOfRecords can be automatically filled in by the platform backend
+
+
+:deviceName rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Name or make of the device"@en ;
+        rdfs:label "deviceName"@en ;
+        rdfs:subPropertyOf rdfs:label.
+
+
+:deviceType rdf:type owl:ObjectProperty ;
+        rdfs:domain :Device ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "Category or type of device used like sensors, vehicles, tractors etc"@en ;
+        rdfs:label "deviceType"@en .
+
+
+:deviceManufacturer rdf:type owl:ObjectProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:anyUri;
+        rdfs:comment "Name or URI of the manufacturer of the sensors, vehicles, tractors etc"@en ;
+        rdfs:label "deviceManufacturer"@en .
+
+
+:deviceInfoURI rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:anyUri ;
+        rdfs:comment "URI that points to the info page of the device."@en ;
+        rdfs:label "deviceInfoURI"@en .
+
+
+:deviceDimension rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Physical dimension of the device."@en ;
+        rdfs:label "deviceDimension"@en .
+
+
+:deviceHeight rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceDimension;
+        rdfs:domain :Device ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Physical height of the device in mm."@en ;
+        rdfs:label "deviceHeight"@en .
+
+
+:deviceWidth rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceDimension;
+        rdfs:domain :Device ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Physical width of the device in mm."@en ;
+        rdfs:label "deviceWidth"@en .
+
+
+:deviceLength rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceDimension;
+        rdfs:domain :Device ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Physical length of the device in mm."@en ;
+        rdfs:label "deviceLength"@en .
+
+
+:devicePosition rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Position of where the device was mounted"@en ;
+        rdfs:label "devicePosition"@en .
+
+:deviceCulturalPractice rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "Cultural practice of the device"@en ;
+        rdfs:label "deviceCulturalPractice"@en .
+
+:deviceOperationTechnique rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range skos:Concept;
+        rdfs:comment "Operation technique of the device"@en ;
+        rdfs:label "deviceOperationTechnique"@en .
+
+:deviceMaxLoad rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Device ;
+        rdfs:range xsd:integer;
+        rdfs:comment "Maximum operational load (in Kilograms) of the device"@en ;
+        rdfs:label "deviceMaxLoad"@en .
+
+:sensorPosition rdf:type owl:DatatypeProperty ;
+	rdfs:subPropertyOf :devicePosition;
+        rdfs:domain :Device ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Position of where the sensor device was mounted"@en ;
+        rdfs:label "sensorPosition"@en .
+
+
+:cameraName rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceName ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Name or make of the camera"@en ;
+        rdfs:label "cameraName"@en .
+
+
+:cameraInfoURI rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceInfoURI ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:anyUri ;
+        rdfs:comment "URI that points to the info page of the camera."@en ;
+        rdfs:label "deviceInfoURI"@en .
+
+
+:cameraSensor rdf:type owl:DatatypeProperty ;
+        rdfs:domain :camera ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Size of the sensor in the camera. Could be expressed in type (e.g. crop-sensor, full frame, APS-C etc.) or in inches (e.g. 1 inch, 1/1.8 inch, 2/3 inch etc.)"@en ;
+        rdfs:label "cameraSensor"@en .
+
+
+:cameraImageWidth rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Image width count in pixel"@en ;
+        rdfs:label "cameraImageWidth"@en .
+
+
+:cameraImageHeight rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Image height count in pixel"@en ;
+        rdfs:label "cameraImageHeight"@en .
+
+
+:cameraPixelSize rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:float ;
+        rdfs:comment "height or width of each pixels. Usually measured in µm."@en ;
+        rdfs:label "cameraPixelSize"@en .
+
+
+:cameraLense rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "View angle or focal length or any other properties of the lense."@en ;
+        rdfs:label "cameraLense"@en .
+
+
+:cameraShutter rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Camera ;
+        rdfs:range xsd:anyType ;
+        rdfs:comment "Shutter speed or type or any other properties of the shutter."@en ;
+        rdfs:label "cameraShutter"@en .
+
+
+:vehicleName rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceName ;
+        rdfs:domain :Vehicle ;
+        rdfs:range xsd:string ;
+        rdfs:comment "Name or make of the vehicle"@en ;
+        rdfs:label "vehicleName"@en .
+
+
+:vehicleInfoURI rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceInfoURI ;
+        rdfs:domain :Vehicle ;
+        rdfs:range xsd:anyUri ;
+        rdfs:comment "URI that points to the info page of the vehicle."@en ;
+        rdfs:label "vehicleInfoURI"@en .
+
+
+:vehicleType rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :deviceType ;
+        rdfs:domain :Vehicle ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "Type of the vehicle"@en ;
+        rdfs:label "vehicleType"@en .
+
+
+:deviceUsed rdf:type owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range :Device ;
+        rdfs:comment "A description of the devices used like sensors, vehicles, tractors etc"@en ;
+        rdfs:label "deviceUsed"@en .
+
+:relatedDeviceData rdf:type owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range :DeviceData ;
+        rdfs:comment "Associates data or observation from a particular device to a dataset"@en ;
+        rdfs:label "relatedDeviceData"@en .
+
+:sample rdf:type owl:ObjectProperty ;
+        rdfs:domain gax-trust-framework:DataResource ;
+        rdfs:range gax-trust-framework:DataResource ;
+        rdfs:comment "Sample of the offered Data Asset. The sample itself is a Data Asset and allows but not necessary requires all fields of the gax-trust-framework:DataResource"@en ;
+        rdfs:label "sample"@en .
+
+
+:sampleURL rdf:type owl:DatatypeProperty ;
+        rdfs:domain gax-trust-framework:DataResource ;
+        rdfs:range xsd:anyUri ;
+        rdfs:comment "URL to access the sample version of the dataset if available"@en ;
+        rdfs:label "sampleURL"@en .
+
+
+:weatherCondition rdf:type owl:ObjectProperty ;
+        rdfs:domain     :AgriDataResource ;
+        rdfs:range weat:WeatherProperty ;
+        rdfs:comment "Weather condition under which the dataset was recorded"@en ;
+        rdfs:label "weatherCondition"@en .
+
+
+####################
+### 22-02-2023: croptypes domain needs to be more generic as it applies to many more datatypes
+# maybe we can delete the domain property?
+:cropTypes rdf:type owl:ObjectProperty ;
+        rdfs:domain  :Infield ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "A description of the crop types for which this data was collected"@en ;
+        rdfs:label "cropTypes"@en .
+
+:soilType rdf:type owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range agro:ENVO_00001998 ;
+        rdfs:comment "A description of the soil types on which this data was collected"@en ;
+        rdfs:label "soilType"@en .
+
+
+:surfaceAndTerrain rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range xsd:string;
+        rdfs:comment "Type of terrain on which this data was collected"@en ;
+        rdfs:label "surfaceAndTerrain"@en .
+
+
+:calibrationData rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriDataResource ;
+        #rdfs:range xsd:boolean ;
+        rdfs:range dcat:Dataset;
+        rdfs:comment "Specifies if calibration data is included in the dataset"@en ;
+        rdfs:label "calibrationData"@en .
+
+
+:cameraCalibrationData rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :calibrationData;
+        rdfs:domain :AgriDataResource ;
+        #rdfs:range xsd:boolean ;
+        rdfs:range dcat:Dataset;
+        rdfs:comment "Specifies if camera calibration data is included in the dataset"@en ;
+        rdfs:label "cameraCalibrationData"@en .
+
+
+:telematicsData rdf:type owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        #rdfs:range xsd:boolean ;
+        rdfs:range dcat:Dataset;
+        rdfs:comment "Specifies if telematics data is included in the dataset"@en ;
+        rdfs:label "telematicsData"@en .
+
+
+:plantPrincipalGrowthStage rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range ppdo:PrincipalGrowthStage ;
+        rdfs:comment "Specifies the principal growth stage of the plant in BBCH scale when the data was recorded"@en ;
+        rdfs:label "plantPrincipalGrowthStage"@en .
+
+
+:plantSecondaryGrowthStage rdf:type owl:DatatypeProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range ppdo:SecondaryGrowthStage ;
+        rdfs:comment "Specifies the secondary growth stage of the plant in BBCH scale when the data was recorded"@en ;
+        rdfs:label "plantSecondaryGrowthStage"@en .
+
+:availableObservations		rdf:type owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range sosa:Observation ;
+        rdfs:comment "Weather condition under which the dataset was recorded"@en ;
+        rdfs:label "weatherCondition"@en .
+
+:Area
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Area"@en, "Bereich"@de ;
+    rdfs:comment "Area on which the data or observations are being made.".
+
+:Infield
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Infield"@en, "Innenfeld"@de ;
+    rdfs:comment "A type of area that refers to the field where crops are cultivated." ;
+    rdfs:subClassOf :Area.
+
+:Outfield
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Outfield"@en, "Außenfeld"@de ;
+    rdfs:comment "A type of area that refers to the field where crops are cultivated." ;
+    rdfs:subClassOf :Area.
+
+:Street
+    a          rdfs:Class, owl:Class, skos:Concept ;
+    rdfs:label "Street"@en, "Straße"@de ;
+    rdfs:comment "A type of area that refers to the street." ;
+    rdfs:subClassOf :Area.
+# street may be not required, it is basically outfield
+
+:listOfAreas	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :AgriDataResource ;
+        rdfs:range skos:Concept ;
+        rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "listOfArea"@en .
+
+:startIdx	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range xsd:integer;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "startIdx"@en .
+
+:endIdx	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range xsd:integer;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "endIdx"@en .
+# start index and end index is not required.. it's just an internal sequence number
+
+
+:fromCoord	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range strdf:WKT;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "fromCoord"@en .
+
+
+:toCoord	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Outfield ;
+        rdfs:range strdf:WKT;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "toCoord"@en .
+
+:startTime	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range xsd:dateTimeStamp;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "startTime"@en .
+
+:endTime	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range xsd:dateTimeStamp;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "endTime"@en .
+
+:durationMin	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Area ;
+        rdfs:range xsd:float;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "durationMin"@en .
+
+:distance	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Outfield ;
+        rdfs:range xsd:float;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "distance"@en .
+
+:avgSpeedKmh	rdf:type        owl:ObjectProperty ;
+        rdfs:domain :Outfield ;
+        rdfs:range xsd:float;
+        #rdfs:comment "Areas for which the dataset was recorded. Can contain 0 or more Area objects"@en ;
+        rdfs:label "avgSpeedKmh"@en .
+
+
+:AgriApiDescription
+      a          rdfs:Class, owl:Class, skos:Concept ;
+      rdfs:label "AgriApiDescription"@en, "AgriApiBeschreibung"@de ;
+      rdfs:comment "A class designed to describe API services for agricultural domain." ;
+      rdfs:subClassOf trusted-cloud:ServiceOffering, dcat:DataService, agri-gax:AgriDataResource, hydra:ApiDocumentation.  
+
+:ApiPath
+      a          rdfs:Class, owl:Class, skos:Concept ;
+      rdfs:label        "ApiPath"@en;
+      rdfs:comment      "A class designed to describe different paths in an API service." ;
+      rdfs:subClassOf   hydra:Class.
+
+:ResponseObject
+      a          rdfs:Class, owl:Class, skos:Concept ;
+      rdfs:label        "ResponseObject"@en;
+      rdfs:comment      "A class designed to describe the returned response from the API service" ;
+      rdfs:subClassOf   hydra:Class.
+
+
+:availablePath   rdf:type owl:DatatypeProperty ;
+        rdfs:domain     :AgriApiDescription ;
+        rdfs:range       :ApiPath;
+        rdfs:comment    "Describes what are the different paths available for the API service."@en ;
+        rdfs:label      "availablePath"@en .   
+
+:apiDocumentLocation   rdf:type owl:DatatypeProperty ;
+        rdfs:domain     :AgriApiDescription ;
+        rdfs:range       xsd:anyUri ;
+        rdfs:comment    "Location of the API document (e.g. openAPI document) for more information on the services."@en ;
+        rdfs:label      "apiDocumentLocation"@en .          
+
+:queryParameterMapping   rdf:type owl:DatatypeProperty ;
+        rdfs:domain     :ApiPath ;
+        rdfs:range       hydra:IriTemplate;
+        rdfs:comment    "Describes what are the different path parameters available for the API."@en ;
+        rdfs:label      "queryParameterMapping"@en .         
+       
+:responseSerialization   rdf:type owl:DatatypeProperty ;
+        rdfs:domain      hydra:Operation  ;
+        rdfs:range       xsd:anyType;
+        rdfs:comment    "Describes how the returned object is serialized"@en ;
+        rdfs:label      "responseSerialization"@en .        

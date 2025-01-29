@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+services:
+  backend:
+    build:
+      context: services/backend
+      dockerfile: Dockerfile-dev
+    environment:
+      DEBUG: "true"
+    volumes:
+      - ./services/backend:/code
+
+  frontend:
+    build:
+      context: services/frontend
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./services/frontend/public:/code/public
+      - ./services/frontend/src:/code/src
+
+  build_container:
+    volumes:
+      - ./secrets/certs/self-signed/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+
+  portainer:
+    volumes:
+      - ./secrets/certs/self-signed/ca.${PROJECT_BASE_URL}.crt:/etc/ssl/certs/ca.${PROJECT_BASE_URL}.crt
+
+  jupyterhub:
+    build:
+      context: services/jupyterhub
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./secrets/certs/self-signed/ca.${PROJECT_BASE_URL}.crt:/usr/local/share/ca-certificates/extra/ca.${PROJECT_BASE_URL}.crt

@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+ARG JUPYTERHUB_VERSION="5.1.0"
+ARG NOTEBOOK_TYPE="minimal"
+
+FROM quay.io/jupyter/${NOTEBOOK_TYPE}-notebook:hub-${JUPYTERHUB_VERSION}
+
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+RUN apt install -y s3fs
+RUN sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
+
+COPY mount-s3.sh /usr/bin/
+RUN chmod +x /usr/bin/mount-s3.sh
+
+COPY platformtools/lib .platformtools/lib
+COPY platformtools/examples examples
+RUN chown -R jovyan .platformtools examples
+
+WORKDIR /home/jovyan
+USER jovyan
+
+COPY jupyter_server_config.py .jupyter/
+RUN pip3 install ipywidgets~=8.1.3 .platformtools/lib
+RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"

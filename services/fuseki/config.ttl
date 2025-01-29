@@ -1,0 +1,258 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
+
+## Fuseki Server configuration file.
+
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX tdb1:    <http://jena.hpl.hp.com/2008/tdb#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+PREFIX :        <#>
+
+<#service1> rdf:type fuseki:Service ;
+    fuseki:name   "shapes" ;
+    fuseki:endpoint [ 
+         # SPARQL query service
+        fuseki:operation fuseki:query ; 
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [ 
+         # SPARQL query service (alt name)
+        fuseki:operation fuseki:query ; 
+        fuseki:name "query" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL update service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # HTML file upload service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL Graph Store Protocol (read)
+        fuseki:operation fuseki:gsp_r ; 
+        fuseki:name "get" 
+    ] ;
+    fuseki:endpoint [ 
+        # SPARQL Graph Store Protcol (read and write)
+        fuseki:operation fuseki:gsp_rw ; 
+        fuseki:name "data" 
+    ] ;
+
+    fuseki:dataset <#shapes> ;
+    .
+
+<#service2> rdf:type fuseki:Service ;
+    fuseki:name   "ontologies" ;
+    fuseki:endpoint [ 
+         # SPARQL query service
+        fuseki:operation fuseki:query ; 
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [ 
+         # SPARQL query service (alt name)
+        fuseki:operation fuseki:query ; 
+        fuseki:name "query" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL update service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # HTML file upload service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL Graph Store Protocol (read)
+        fuseki:operation fuseki:gsp_r ; 
+        fuseki:name "get" 
+    ] ;
+    fuseki:endpoint [ 
+        # SPARQL Graph Store Protcol (read and write)
+        fuseki:operation fuseki:gsp_rw ; 
+        fuseki:name "data" 
+    ] ;
+
+    fuseki:dataset <#ontologies> ;
+    .
+
+<#service3> rdf:type fuseki:Service ;
+    fuseki:name   "agrovoc" ;
+    fuseki:endpoint [ 
+         # SPARQL query service
+        fuseki:operation fuseki:query ; 
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [ 
+         # SPARQL query service (alt name)
+        fuseki:operation fuseki:query ; 
+        fuseki:name "query" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL update service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # HTML file upload service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL Graph Store Protocol (read)
+        fuseki:operation fuseki:gsp_r ; 
+        fuseki:name "get" 
+    ] ;
+    fuseki:endpoint [ 
+        # SPARQL Graph Store Protcol (read and write)
+        fuseki:operation fuseki:gsp_rw ; 
+        fuseki:name "data" 
+    ] ;
+
+    fuseki:dataset <#agrovoc> ;
+    .
+
+<#service4> rdf:type fuseki:Service ;
+    fuseki:name   "geonames" ;
+    fuseki:endpoint [ 
+         # SPARQL query service
+        fuseki:operation fuseki:query ; 
+        fuseki:name "sparql"
+    ] ;
+    fuseki:endpoint [ 
+         # SPARQL query service (alt name)
+        fuseki:operation fuseki:query ; 
+        fuseki:name "query" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL update service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # HTML file upload service
+        fuseki:operation fuseki:update ; 
+        fuseki:name "update" 
+    ] ;
+
+    fuseki:endpoint [ 
+         # SPARQL Graph Store Protocol (read)
+        fuseki:operation fuseki:gsp_r ; 
+        fuseki:name "get" 
+    ] ;
+    fuseki:endpoint [ 
+        # SPARQL Graph Store Protcol (read and write)
+        fuseki:operation fuseki:gsp_rw ; 
+        fuseki:name "data" 
+    ] ;
+
+    fuseki:dataset <#geonames> ;
+    .
+
+[] rdf:type fuseki:Server ;
+   # Server-wide context parameters can be given here.
+   # For example, to set query timeouts: on a server-wide basis:
+   # Format 1: "1000" -- 1 second timeout
+   # Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
+   # See java doc for ARQ.queryTimeout
+   # ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "10000" ] ;
+
+   # Explicitly choose which services to add to the server.
+   # If absent, include all descriptions of type `fuseki:Service`.
+   # fuseki:services (<#service1>)
+   .
+
+<#shapes>    rdf:type ja:RDFDataset ;
+    rdfs:label "shapes" ;
+    ja:defaultGraph
+      [ rdfs:label "shapes.ttl" ;
+        a ja:MemoryModel ;
+        ja:content [
+            ja:externalContent <file:./imports/shapes/fieldlogdatashapes.ttl> ;
+            ja:externalContent <file:./imports/shapes/shapes.ttl> ;
+        ] ;
+      ] ;
+    .
+    
+<#ontologies>    rdf:type ja:RDFDataset ;
+    rdfs:label "ontologies" ;
+    ja:defaultGraph
+      [ rdfs:label "ontologies.ttl" ;
+        a ja:MemoryModel ;
+        ja:content [
+            ja:externalContent <file:./imports/ontologies/gaia-x/gax-core_generated.ttl> ;
+            ja:externalContent <file:./imports/ontologies/gaia-x/gax-trust-framework_generated.ttl> ;
+            ja:externalContent <file:./imports/ontologies/gaia-x/trusted-cloud_generated.ttl> ;
+            
+            ja:externalContent <file:./imports/ontologies/agri-gaia/core.ttl> ;
+            ja:externalContent <file:./imports/ontologies/agri-gaia/agri-gaia-onto.ttl> ;
+            ja:externalContent <file:./imports/ontologies/agri-gaia/fieldlogdata.ttl> ;
+
+            ja:externalContent <file:./imports/ontologies/w3c/22-rdf-syntax-ns.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/data-view.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/org.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/owl.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/prov.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/rdf-schema.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/skos.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/vcard.ttl> ;
+            ja:externalContent <file:./imports/ontologies/w3c/vs.ttl> ;
+
+            ja:externalContent <file:./imports/ontologies/other/creativecommons.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/doap.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/dublin_core_abstract_model.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/dublin_core_elements.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/dublin_core_terms.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/foaf.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/goodrelations.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/vann.ttl> ;
+            ja:externalContent <file:./imports/ontologies/other/void.ttl> ;
+        ] ;
+      ] ;
+    .
+
+<#agrovoc>    rdf:type ja:RDFDataset ;
+    rdfs:label "agrovoc" ;
+    ja:defaultGraph
+      [ rdfs:label "agrovoc.nt" ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent <file:./agrovoc/agrovoc.nt> ] ;
+      ] ;
+    .
+
+<#geonames>    rdf:type ja:RDFDataset ;
+    rdfs:label "geonames" ;
+    ja:defaultGraph
+      [ rdfs:label "geonames.nt" ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent <file:./datasets/geonames.nt> ] ;
+      ] ;
+    .

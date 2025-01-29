@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+stages:
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "development"
+
+deploy-job:
+  stage: deploy
+  tags:
+    - dev
+  script:
+    - 'sh /home/user/.agri-gaia/curl-deploy.sh $CI_COMMIT_BRANCH &&
+      docker wait agri_gaia-backend-1;
+      until docker inspect --format "{{json .State.Health.Status }}" agri_gaia-backend-1 | grep -m 1 \"healthy\"; do sleep 1 ; done'
+  environment:
+    name: development
+    url: https://app.dev.agri-gaia.edvsz.hs-osnabrueck.de

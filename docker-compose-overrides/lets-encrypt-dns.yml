@@ -1,0 +1,121 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+services:
+  traefik:
+    environment:
+      DUCKDNS_TOKEN: ${DUCKDNS_TOKEN}
+    volumes:
+      - ./secrets/certs/acme:/acme
+    labels:
+      - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
+    command:
+      - "--accesslog"
+      - "--log.level=INFO"
+
+      - "--api.insecure=false"
+      - "--api.dashboard=true"
+
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.watch=true"
+      - "--providers.file.directory=/etc/traefik"
+
+      - "--entrypoints.web.address=:80/tcp"
+      - "--entrypoints.web.reuseport=true"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
+      - "--entrypoints.websecure.address=:443/tcp"
+      - "--entrypoints.websecure.reuseport=true"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.options=default"
+      - "--entrypoints.websecure.http3"
+
+      - "--entrypoints.edge.address=:8000/tcp"
+      - "--entrypoints.edge.reuseport=true"
+
+      - "--entrypoints.websecure.http.tls.options.certresolver=cloudflare"
+      - "--entrypoints.websecure.http.tls.domains[0].main=${PROJECT_BASE_URL}"
+      - "--entrypoints.websecure.http.tls.domains[0].sans=*.${PROJECT_BASE_URL}"
+
+      - "--certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.cloudflare.acme.storage=/acme/acme.json"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=${ACME_DNS_CHALLENGE_PROVIDER}"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53"
+
+  build_container:
+    volumes:
+      - ./secrets/certs/acme/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+
+  frontend:
+    labels:
+      - "traefik.http.routers.frontend.tls.certresolver=cloudflare"
+
+  backend:
+    labels:
+      - "traefik.http.routers.backend.tls.certresolver=cloudflare"
+
+  keycloak:
+    labels:
+      - "traefik.http.routers.keycloak.tls.certresolver=cloudflare"
+
+  portainer:
+    labels:
+      - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
+
+  fuseki:
+    labels:
+      - "traefik.http.routers.fuseki.tls.certresolver=cloudflare"
+
+  webvowl:
+    labels:
+      - "traefik.http.routers.webvowl.tls.certresolver=cloudflare"
+
+  minio:
+    labels:
+      - "traefik.http.routers.minio.tls.certresolver=cloudflare"
+      - "traefik.http.routers.minio-console.tls.certresolver=cloudflare"
+
+  registry:
+    labels:
+      - "traefik.http.routers.registry.tls.certresolver=cloudflare"
+
+  cvat_server:
+    labels:
+      - "traefik.http.routers.cvat.tls.certresolver=cloudflare"
+
+  cvat_ui:
+    labels:
+      - "traefik.http.routers.cvat_ui.tls.certresolver=cloudflare"
+
+  prometheus:
+    labels:
+      - "traefik.http.routers.prometheus.tls.certresolver=cloudflare"
+
+  grafana:
+    labels:
+      - "traefik.http.routers.grafana.tls.certresolver=cloudflare"
+
+  edc_provider:
+    labels:
+      - "traefik.http.routers.edc-provider.tls.certresolver=cloudflare"
+      - "traefik.http.routers.edc-provider-web.tls.certresolver=cloudflare"
+      - "traefik.http.routers.edc-provider-ids.tls.certresolver=cloudflare"
+
+  nuclio:
+    labels:
+      - "traefik.http.routers.nuclio.tls.certresolver=cloudflare"
+
+  jupyterhub:
+    labels:
+      - "traefik.http.routers.jupyterhub.tls.certresolver=cloudflare"

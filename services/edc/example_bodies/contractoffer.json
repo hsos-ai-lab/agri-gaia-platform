@@ -1,0 +1,45 @@
+{
+  "connectorId": "provider",
+  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
+  "protocol": "ids-multipart",
+  "offer": {
+    "offerId": "3a75736e-001d-4364-8bd4-9888490edb58:1",
+    "assetId": "test-asset.txt",
+    "policy": {
+      "uid": "use-eu",
+      "permissions": [
+        {
+          "edctype": "dataspaceconnector:permission",
+          "uid": null,
+          "target": "test-asset.txt",
+          "action": {
+            "type": "USE",
+            "includedIn": null,
+            "constraint": null
+          },
+          "assignee": null,
+          "assigner": null,
+          "constraints": [],
+          "duties": []
+        }
+      ],
+      "prohibitions": [],
+      "obligations": [],
+      "extensibleProperties": {},
+      "inheritsFrom": null,
+      "assigner": null,
+      "assignee": null,
+      "target": "",
+      "type": {
+        "type": "set"
+      }
+    },
+    "asset": {
+      "properties": {
+        "ids:byteSize": null,
+        "asset:prop:id": "test-asset.txt",
+        "ids:fileName": null
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+@prefix : <https://www.agri-gaia.de/ontologies/core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix agrovoc: <http://aims.fao.org/aos/agrovoc/> .
+@prefix gax-resource: <http://w3id.org/gaia-x/resource#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@base <https://www.agri-gaia.de/ontologies/core> .
+
+:FieldLogDatasetShape
+    a sh:NodeShape ;
+    sh:targetClass :FieldLogDataset ;
+    sh:property :PlantedProductShape ;
+    sh:property :PlantStatusShape ;
+    sh:property :InFieldRecordShape ;
+    # special case, bec. we want to be more precise than SpatialCoverageShape
+    sh:property [
+        sh:path :spatialCoverage ;
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:class :Field ;
+    ].
+
+
+:FieldShape
+    a sh:NodeShape ;
+    sh:targetClass :Field ;
+    sh:property [
+        sh:path :centroid ;
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:class :GeoPoint ;
+    ] ;
+    sh:property [
+        sh:path :geometry ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype geo:wktLiteral ;
+    ] .
+
+
+:GeoPointShape
+    a sh:NodeShape ;
+    sh:targetClass :GeoPoint ;
+    sh:property [
+        sh:path :latitude ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+    ] ;
+    sh:property [
+        sh:path :longitude ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+    ] .
+
+
+:PlantedProductShape
+    a sh:PropertyShape ;
+    sh:path :plantedProduct ;
+    sh:maxCount 1;
+    sh:class skos:Concept .
+
+
+# sh:class kind of redundant bec. rdfs:range logically implies that already
+:PlantStatusShape
+    a sh:PropertyShape ;
+    sh:path :plantStatus ;
+    sh:class skos:Concept .
+
+:InFieldRecordShape
+    a sh:PropertShape ;
+    sh:path :inFieldRecord ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:class :FieldRecord .
+
+:SpatialCoverageShape
+    a sh:PropertyShape ;
+    sh:path :spatialCoverage ;
+    sh:minCount 1;
+    sh:maxCount 1;
+    sh:class :Location .
+
+:usesEquipmentShape
+    a sh:PropertyShape ;
+    sh:path :usesEquipment ;
+    sh:class :AgriculturalMachine .

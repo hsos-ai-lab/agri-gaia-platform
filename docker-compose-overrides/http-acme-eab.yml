@@ -1,0 +1,117 @@
+# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileContributor: Andreas Schliebitz
+# SPDX-FileContributor: Henri Graf
+# SPDX-FileContributor: Jonas Tüpker
+# SPDX-FileContributor: Lukas Hesse
+# SPDX-FileContributor: Maik Fruhner
+# SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
+# SPDX-FileContributor: Tobias Wamhof
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+services:
+  traefik:
+    volumes:
+      - ./secrets/certs/acme:/acme
+    labels:
+      - "traefik.http.routers.traefik.tls.certresolver=httpresolver"
+    command:
+      - "--accesslog"
+      - "--log.level=INFO"
+
+      - "--api.insecure=false"
+      - "--api.dashboard=true"
+
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.watch=true"
+      - "--providers.file.directory=/etc/traefik"
+
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.reuseport=true"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.reuseport=true"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.options=default"
+      - "--entrypoints.websecure.http3"
+
+      - "--entrypoints.edge.address=:8000"
+      - "--entrypoints.edge.reuseport=true"
+
+      - "--certificatesresolvers.httpresolver.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.httpresolver.acme.caserver=${ACME_CASERVER}"
+      - "--certificatesresolvers.httpresolver.acme.eab.kid=${ACME_EAB_KID}"
+      - "--certificatesresolvers.httpresolver.acme.eab.hmacencoded=${ACME_EAB_HMACENCODED}"
+      - "--certificatesresolvers.httpresolver.acme.storage=/acme/acme.json"
+      - "--certificatesresolvers.httpresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.httpresolver.acme.httpchallenge.entrypoint=web"
+
+  build_container:
+    volumes:
+      - ./secrets/certs/acme/registry.${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+
+  frontend:
+    labels:
+      - "traefik.http.routers.frontend.tls.certresolver=httpresolver"
+
+  backend:
+    labels:
+      - "traefik.http.routers.backend.tls.certresolver=httpresolver"
+
+  keycloak:
+    labels:
+      - "traefik.http.routers.keycloak.tls.certresolver=httpresolver"
+
+  portainer:
+    labels:
+      - "traefik.http.routers.portainer.tls.certresolver=httpresolver"
+
+  fuseki:
+    labels:
+      - "traefik.http.routers.fuseki.tls.certresolver=httpresolver"
+
+  webvowl:
+    labels:
+      - "traefik.http.routers.webvowl.tls.certresolver=httpresolver"
+
+  minio:
+    labels:
+      - "traefik.http.routers.minio.tls.certresolver=httpresolver"
+      - "traefik.http.routers.minio-console.tls.certresolver=httpresolver"
+
+  registry:
+    labels:
+      - "traefik.http.routers.registry.tls.certresolver=httpresolver"
+
+  cvat_server:
+    labels:
+      - "traefik.http.routers.cvat.tls.certresolver=httpresolver"
+
+  cvat_ui:
+    labels:
+      - "traefik.http.routers.cvat_ui.tls.certresolver=httpresolver"
+
+  prometheus:
+    labels:
+      - "traefik.http.routers.prometheus.tls.certresolver=httpresolver"
+
+  grafana:
+    labels:
+      - "traefik.http.routers.grafana.tls.certresolver=httpresolver"
+
+  edc_provider:
+    labels:
+      - "traefik.http.routers.edc-provider.tls.certresolver=httpresolver"
+      - "traefik.http.routers.edc-provider-web.tls.certresolver=httpresolver"
+      - "traefik.http.routers.edc-provider-ids.tls.certresolver=httpresolver"
+
+  nuclio:
+    labels:
+      - "traefik.http.routers.nuclio.tls.certresolver=httpresolver"
+
+  jupyterhub:
+    labels:
+      - "traefik.http.routers.jupyterhub.tls.certresolver=httpresolver"
