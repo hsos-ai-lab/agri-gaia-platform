@@ -15,6 +15,7 @@ ARG PROJECT_BASE_URL
 ARG CONNECTOR_PASSWORD
 ARG MINIO_ROOT_USER
 ARG MINIO_ROOT_PASSWORD
+ARG KEYSTORE_PASSWORD
 
 RUN useradd -ms /bin/bash admin
 
@@ -41,4 +42,6 @@ RUN chown -R admin:admin /home
 RUN chmod -R 777 /home
 USER admin
 
-CMD ["java","-Dedc.fs.config=/home/config.properties", "-Dedc.keystore=/home/secrets/keystore.jks", "-Dedc.keystore.password=test123", "-Dedc.vault=/home/vault.properties", "-jar","/home/provider.jar"]
+ENV KEYSTORE_PASSWORD_ENV=${KEYSTORE_PASSWORD}
+
+ENTRYPOINT java -Dedc.fs.config=/home/config.properties -Dedc.keystore=/home/secrets/keystore.jks -Dedc.keystore.password=${KEYSTORE_PASSWORD_ENV} -Dedc.vault=/home/vault.properties -jar /home/provider.jar
