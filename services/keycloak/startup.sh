@@ -33,9 +33,9 @@ done
 
 # Führe das Skript zum Anlegen des Realms und der Nutzer aus
 /opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD
-/opt/keycloak/bin/kcadm.sh create users -r test-realm -s username=$REALM_SERVICE_ACCOUNT_USERNAME -s enabled=true
-USER_ID=$(/opt/keycloak/bin/kcadm.sh get users -r test-realm -q username=$REALM_SERVICE_ACCOUNT_USERNAME --fields id | grep -o '"id" : "[^"]*' | sed 's/"id" : "//')
-/opt/keycloak/bin/kcadm.sh set-password -r test-realm --userid $USER_ID --new-password $REALM_SERVICE_ACCOUNT_PASSWORD
+/opt/keycloak/bin/kcadm.sh create users -r ${REALM_NAME} -s username=$REALM_SERVICE_ACCOUNT_USERNAME -s enabled=true
+USER_ID=$(/opt/keycloak/bin/kcadm.sh get users -r ${REALM_NAME} -q username=$REALM_SERVICE_ACCOUNT_USERNAME --fields id | grep -o '"id" : "[^"]*' | sed 's/"id" : "//')
+/opt/keycloak/bin/kcadm.sh set-password -r ${REALM_NAME} --userid $USER_ID --new-password $REALM_SERVICE_ACCOUNT_PASSWORD
 
 # Halte den Container am Laufen
 tail -f /dev/null

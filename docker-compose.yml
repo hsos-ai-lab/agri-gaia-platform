@@ -12,7 +12,6 @@
 networks:
   default:
     name: ${COMPOSE_PROJECT_NAME}_network
-
 services:
   reverse_proxy:
     image: traefik:v2.11
@@ -40,7 +39,6 @@ services:
       - ./services/traefik/dynamic.yaml:/etc/traefik/dynamic.yaml
     labels:
       - traefik.enable=true
-
       # Dashboard
       - traefik.http.routers.traefik.rule=Host(`traefik.${PROJECT_BASE_URL}`)
       - traefik.http.routers.traefik.service=api@internal
@@ -48,7 +46,6 @@ services:
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.tls.options=default
       - traefik.http.routers.traefik.middlewares[0]=security-headers
-
       # New middleware to disable external access to /metrics paths
       # - traefik.http.middlewares.block-metrics.replacepathregex.regex=^/metrics
       # - traefik.http.middlewares.block-metrics.replacepathregex.replacement=/
@@ -62,7 +59,6 @@ services:
       - traefik.http.middlewares.security-headers.headers.stsPreload=true
       - traefik.http.middlewares.security-headers.headers.forceSTSHeader=true
       - traefik.http.middlewares.security-headers.headers.stsIncludeSubdomains=true
-
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
@@ -75,7 +71,6 @@ services:
       - --entryPoints.https.transport.respondingTimeouts.readTimeout=0
       - --entrypoints.edge.address=:8000
       - --entryPoints.edge.transport.respondingTimeouts.readTimeout=0
-
   # The Backend-Webserver by FastAPI
   backend:
     build:
@@ -84,6 +79,7 @@ services:
         - DOCKER_VERSION=${DOCKER_VERSION}
         - NUCLIO_VERSION=${NUCLIO_VERSION}
         - NVIDIA_NGC_API_KEY=${NVIDIA_NGC_API_KEY}
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     expose:
       - "8000"
@@ -110,55 +106,40 @@ services:
     environment:
       PROJECT_BASE_URL: ${PROJECT_BASE_URL}
       PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
-
       BACKEND_OPENID_CLIENT_ID: ${BACKEND_OPENID_CLIENT_ID}
       BACKEND_OPENID_CLIENT_SECRET: ${BACKEND_OPENID_CLIENT_SECRET}
-
       BACKEND_VERIFY_SSL: ${BACKEND_VERIFY_SSL}
-
       KEYCLOAK_INTERNAL_URL: "http://keycloak:8080"
       KEYCLOAK_REALM_NAME: ${KEYCLOAK_REALM_NAME}
-
       KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
-
       REALM_SERVICE_ACCOUNT_USERNAME: ${REALM_SERVICE_ACCOUNT_USERNAME}
       REALM_SERVICE_ACCOUNT_PASSWORD: ${REALM_SERVICE_ACCOUNT_PASSWORD}
-
       REGISTRY_URL: registry.${PROJECT_BASE_URL}
       REGISTRY_TOKEN: ${BACKEND_REGISTRY_TOKEN}
-
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_ENDPOINT: "minio:9000"
-
       FUSEKI_ENDPOINT: "http://fuseki:3030/"
       FUSEKI_ADMIN_USER: ${FUSEKI_ADMIN_USER}
       FUSEKI_ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD}
-
       CONNECTOR_PASSWORD: ${CONNECTOR_PASSWORD}
-
       PROVIDER_DATA_ENDPOINT: "http://edc_provider:8182"
-
       POSTGRES_DB: ${BACKEND_POSTGRES_DB}
       POSTGRES_USER: ${BACKEND_POSTGRES_USER}
       POSTGRES_PASSWORD: ${BACKEND_POSTGRES_PASSWORD}
-
       POSTGIS_DB: ${BACKEND_POSTGIS_DB}
       POSTGIS_USER: ${BACKEND_POSTGIS_USER}
       POSTGIS_PASSWORD: ${BACKEND_POSTGIS_PASSWORD}
-
       CVAT_SUPERUSER: ${CVAT_SUPERUSER}
       CVAT_SUPERUSER_PASSWORD: ${CVAT_SUPERUSER_PASSWORD}
       NUCLIO_CVAT_PROJECT_NAME: ${NUCLIO_CVAT_PROJECT_NAME}
-
       PORTAINER_VERSION: ${PORTAINER_VERSION}
       PORTAINER_OPENID_CLIENT_ID: ${PORTAINER_OPENID_CLIENT_ID}
       PORTAINER_OPENID_CLIENT_SECRET: ${PORTAINER_OPENID_CLIENT_SECRET}
       PORTAINER_ADMIN_USERNAME: admin
       PORTAINER_ADMIN_PASSWORD: ${PORTAINER_ADMIN_PASSWORD}
       PORTAINER_EDGE_PORT: ${PORTAINER_EDGE_PORT}
-
       GPUS: ${GPUS}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
     healthcheck:
@@ -167,7 +148,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
-
   # The Frontend-Webserver with React
   frontend:
     build:
@@ -189,7 +169,6 @@ services:
     depends_on:
       - keycloak
       - cvat_server
-
   # Portainer
   portainer:
     build:
@@ -201,7 +180,6 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-
       # Frontend
       - traefik.http.routers.portainer.service=portainer
       - traefik.http.routers.portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)
@@ -210,7 +188,6 @@ services:
       - traefik.http.routers.portainer.tls.options=default
       - traefik.http.routers.portainer.middlewares=security-headers
       - traefik.http.routers.portainer.entrypoints=https
-
       # Edge
       - traefik.http.routers.edge.service=edge
       - traefik.http.routers.edge.rule=Host(`edge.${PROJECT_BASE_URL}`)
@@ -223,13 +200,11 @@ services:
       #- traefik.http.services.edge.loadbalancer.server.port=8000
       #- traefik.http.routers.edge.tls=true
       #- traefik.http.routers.edge.entrypoints=https
-
     volumes:
       - portainer-data:/data
     depends_on:
       - keycloak
     profiles: ["edge"]
-
   # The Jena Fuseki Triple Store
   fuseki:
     restart: unless-stopped
@@ -253,7 +228,6 @@ services:
       - traefik.http.routers.fuseki.middlewares=security-headers
       - traefik.http.routers.fuseki.entrypoints=https
     profiles: ["semantics"]
-
   # The WebVOWL ontology visualizer
   webvowl:
     restart: unless-stopped
@@ -274,7 +248,6 @@ services:
       - traefik.http.routers.webvowl.middlewares=security-headers
       - traefik.http.routers.webvowl.entrypoints=https
     profiles: ["semantics"]
-
   # The MinIO S3 Storage
   minio:
     build:
@@ -302,7 +275,6 @@ services:
       MINIO_IDENTITY_OPENID_SCOPES: openid
     labels:
       - traefik.enable=true
-
       - traefik.http.routers.minio.service=minio
       - traefik.http.routers.minio.tls=true
       - traefik.http.routers.minio.tls.options=default
@@ -310,7 +282,6 @@ services:
       - traefik.http.routers.minio.entrypoints=https
       - traefik.http.routers.minio.rule=Host(`minio.${PROJECT_BASE_URL}`)
       - traefik.http.services.minio.loadbalancer.server.port=9000
-
       - traefik.http.routers.minio-console.service=minio-console
       - traefik.http.routers.minio-console.tls=true
       - traefik.http.routers.minio-console.tls.options=default
@@ -324,7 +295,6 @@ services:
       timeout: 10s
       retries: 10
       start_period: 5s
-
   # The DB for storing geographical data
   postgis_backend:
     image: postgis/postgis:14-3.3
@@ -340,7 +310,6 @@ services:
     volumes:
       - postgis-data:/var/lib/postgresql/data
       - ./data/geo:/tmp/data
-
   # The main DB used by the Backend
   postgres_backend:
     image: postgres:14
@@ -353,7 +322,6 @@ services:
       - "5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-
   # The Database for keycloak
   postgres_keycloak:
     image: postgres:14
@@ -366,7 +334,6 @@ services:
       - "5432"
     volumes:
       - postgres-keycloak-data:/var/lib/postgresql/data
-
   keycloak:
     build:
       context: services/keycloak
@@ -418,10 +385,11 @@ services:
       timeout: 10s
       retries: 100
       start_period: 15s
-
   registry:
     build:
       context: services/docker-registry
+      args:
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     volumes:
       - registry-data:/data
@@ -429,31 +397,15 @@ services:
     expose:
       - 5000
     environment:
-      CERT_ENDPOINT: http://keycloak:8080/realms/test-realm/protocol/openid-connect/certs
-
+      CERT_ENDPOINT: http://keycloak:8080/realms/${KEYCLOAK_REALM_NAME}/protocol/openid-connect/certs
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
-
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /opt/certs/registry_trust_chain.pem
-      REGISTRY_AUTH_TOKEN_REALM: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm/protocol/docker-v2/auth
+      REGISTRY_AUTH_TOKEN_REALM: https://keycloak.${PROJECT_BASE_URL}/realms/${KEYCLOAK_REALM_NAME}/protocol/docker-v2/auth
       REGISTRY_AUTH_TOKEN_SERVICE: docker-registry
-      REGISTRY_AUTH_TOKEN_ISSUER: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm
-
+      REGISTRY_AUTH_TOKEN_ISSUER: https://keycloak.${PROJECT_BASE_URL}/realms/${KEYCLOAK_REALM_NAME}
       LOG_LEVEL: debug
-
-      REGISTRY_NOTIFICATIONS_ENDPOINTS: "- name: pushlistener
-
-        \  url: http://backend:8000/service/registry-event
-
-        \  headers:
-
-        \    Authorization: [Bearer ${BACKEND_REGISTRY_TOKEN}]
-
-        \  timeout: 10s
-
-        \  threshold: 5
-
-        \  backoff: 2s"
+      REGISTRY_NOTIFICATIONS_ENDPOINTS: "- name: pushlistener\n  url: http://backend:8000/service/registry-event\n  headers:\n    Authorization: [Bearer ${BACKEND_REGISTRY_TOKEN}]\n  timeout: 10s\n  threshold: 5\n  backoff: 2s"
     labels:
       - traefik.enable=true
       - traefik.http.routers.registry.service=registry
@@ -466,7 +418,6 @@ services:
     depends_on:
       keycloak:
         condition: service_healthy
-
   build_container:
     build:
       context: services/build-container
@@ -483,7 +434,6 @@ services:
           - build-container
     volumes:
       - build-container-certs:/certs
-
   ### Jupyter Hub ###
   jupyterhub:
     build:
@@ -502,20 +452,16 @@ services:
       - "jupyterhub-data:/data"
     environment:
       ROOT_URL: ${PROJECT_BASE_URL}
-
       OAUTH_URL: ${KEYCLOAK_FRONTEND_URL}
       OAUTH_REALM: ${KEYCLOAK_REALM_NAME}
       OAUTH_CLIENT_ID: ${JUPYTERHUB_OPENID_CLIENT_ID}
       OAUTH_CLIENT_SECRET: ${JUPYTERHUB_OPENID_CLIENT_SECRET}
-
       PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_network
-
       NGC_IMAGE_TAG: ${JUPYTERHUB_NGC_IMAGE_TAG}
       JUPYTERHUB_VERSION: ${JUPYTERHUB_VERSION}
       JUPYTERHUB_CRYPT_KEY: ${JUPYTERHUB_CRYPT_KEY}
       GPUS: ${GPUS}
-
     labels:
       - traefik.enable=true
       - traefik.http.routers.jupyterhub.service=jupyterhub
@@ -526,7 +472,6 @@ services:
       - traefik.http.routers.jupyterhub.entrypoints=https
       #- traefik.http.routers.jupyterhub.middlewares=block-metrics
       - traefik.http.services.jupyterhub.loadbalancer.server.port=8000
-
   ##### CVAT #####
 
   # CVAT Server
@@ -562,7 +507,6 @@ services:
       NUMPROCS: 1
       CVAT_ANALYTICS: 0
       CVAT_BASE_URL: "https://cvat.${PROJECT_BASE_URL}"
-
       CVAT_SUPERUSER: ${CVAT_SUPERUSER}
       CVAT_SUPERUSER_PASSWORD: ${CVAT_SUPERUSER_PASSWORD}
       CVAT_SUPERUSER_EMAIL: ${CVAT_SUPERUSER_EMAIL}
@@ -589,7 +533,6 @@ services:
           - cvat-server
     command: -c supervisord.conf
     profiles: ["annotation"]
-
   # CVAT UI (Client)
   cvat_ui:
     image: cvat/ui:v2.4.2
@@ -606,7 +549,6 @@ services:
       - traefik.http.routers.cvat_ui.entrypoints=https
       - traefik.http.routers.cvat_ui.rule=Host(`cvat.${PROJECT_BASE_URL}`)
     profiles: ["annotation"]
-
   # CVAT Postgres database
   cvat_db:
     image: postgres:15-alpine
@@ -618,13 +560,11 @@ services:
     volumes:
       - cvat-db:/var/lib/postgresql/data
     profiles: ["annotation"]
-
   # CVAT Redis database
   cvat_redis:
     image: redis:4.0-alpine
     restart: unless-stopped
     profiles: ["annotation"]
-
   # CVAT Open policy agent
   cvat_opa:
     image: openpolicyagent/opa:0.45.0-rootless
@@ -643,7 +583,6 @@ services:
       - --set=bundles.cvat.polling.min_delay_seconds=5
       - --set=bundles.cvat.polling.max_delay_seconds=15
     profiles: ["annotation"]
-
   # CVAT Nuclio (Auto Annotation)
   nuclio:
     image: "quay.io/nuclio/dashboard:${NUCLIO_VERSION}-amd64"
@@ -676,7 +615,6 @@ services:
       - traefik.http.middlewares.nuclio-auth.basicauth.users=${REALM_SERVICE_ACCOUNT_USERNAME}:${REALM_SERVICE_ACCOUNT_HTPASSWD}
       - traefik.http.services.nuclio.loadbalancer.server.port=8070
     profiles: ["annotation"]
-
   ##### MONITORING #####
 
   # Prometheus
@@ -705,7 +643,6 @@ services:
       - traefik.http.routers.prometheus.middlewares=security-headers
       - traefik.http.routers.prometheus.entrypoints=https
     profiles: ["monitoring"]
-
   # Host System Monitoring
   node-exporter:
     image: prom/node-exporter
@@ -719,7 +656,6 @@ services:
     expose:
       - "9100"
     profiles: ["monitoring"]
-
   # Container Monitoring
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.45.0
@@ -735,7 +671,6 @@ services:
     expose:
       - "8080"
     profiles: ["monitoring"]
-
   # Grafana
   grafana:
     image: grafana/grafana-oss
@@ -761,7 +696,6 @@ services:
       - traefik.http.routers.grafana.entrypoints=https
       - traefik.http.routers.grafana.rule=Host(`monitoring.${PROJECT_BASE_URL}`)
     profiles: ["monitoring"]
-
   ##EDC Provider
   edc_provider:
     build:
@@ -777,7 +711,6 @@ services:
       - ./secrets/edc:/home/secrets
     labels:
       - traefik.enable=true
-
       - traefik.http.routers.edc-provider.service=edc-provider
       - traefik.http.routers.edc-provider.tls=true
       - traefik.http.routers.edc-provider.tls.options=default
@@ -785,7 +718,6 @@ services:
       - traefik.http.routers.edc-provider.entrypoints=https
       - traefik.http.routers.edc-provider.rule=Host(`edc-provider.${PROJECT_BASE_URL}`)
       - traefik.http.services.edc-provider.loadbalancer.server.port=8182
-
       - traefik.http.routers.edc-provider-web.service=edc-provider-web
       - traefik.http.routers.edc-provider-web.tls=true
       - traefik.http.routers.edc-provider-web.tls.options=default
@@ -793,7 +725,6 @@ services:
       - traefik.http.routers.edc-provider-web.entrypoints=https
       - traefik.http.routers.edc-provider-web.rule=Host(`edc-provider-web.${PROJECT_BASE_URL}`)
       - traefik.http.services.edc-provider-web.loadbalancer.server.port=8181
-
       - traefik.http.routers.edc-provider-ids.service=edc-provider-ids
       - traefik.http.routers.edc-provider-ids.tls=true
       - traefik.http.routers.edc-provider-ids.tls.options=default
@@ -802,7 +733,6 @@ services:
       - traefik.http.routers.edc-provider-ids.rule=Host(`edc-provider-ids.${PROJECT_BASE_URL}`)
       - traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282
     profiles: ["edc"]
-
   triton:
     image: nvcr.io/nvidia/tritonserver:23.12-py3
     environment:
@@ -815,14 +745,8 @@ services:
     depends_on:
       - minio
     restart: unless-stopped
-    command:
-      [
-        "tritonserver",
-        "--model-repository=s3://minio:9000/triton",
-        "--model-control-mode=poll",
-      ]
+    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll"]
     profiles: ["triton"]
-
 volumes:
   fuseki-data:
   minio-data:

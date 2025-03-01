@@ -10,11 +10,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 FROM registry:2
+ARG KEYCLOAK_REALM_NAME
 
 RUN apk add --no-cache curl jq gettext
 RUN mkdir -p ./script/init
 
 COPY . ./script/init
+RUN sed -i "s/test-realm/${KEYCLOAK_REALM_NAME}/g" ./script/init/get_keycloak_cert.sh
 
 ENTRYPOINT ["./script/init/get_keycloak_cert.sh", "registry"]
 CMD ["serve", "/etc/docker/registry/config.yml"]
