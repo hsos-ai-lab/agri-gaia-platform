@@ -11,7 +11,7 @@
 
 [submodule "services/backend"]
 	path = services/backend
-	url = https://github.com/hsos-ai-lab/agri-gaia-backend.git
+	url = https://github.com/ROB-ernst/agri-gaia-backend.git
 [submodule "services/frontend"]
 	path = services/frontend
-	url = https://github.com/hsos-ai-lab/agri-gaia-frontend.git
+	url = https://github.com/ROB-ernst/agri-gaia-frontend.git
