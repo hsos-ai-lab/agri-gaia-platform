@@ -9,6 +9,6 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 update-ca-certificates && jupyterhub -f /srv/jupyterhub/config/config.py

@@ -7,7 +7,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 ARG MINIO_IMAGE_TAG="RELEASE.2024-08-03T04-33-23Z"
 FROM minio/minio:"${MINIO_IMAGE_TAG}"

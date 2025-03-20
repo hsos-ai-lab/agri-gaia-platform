@@ -7,7 +7,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix grddl: <http://www.w3.org/2003/g/data-view#> .

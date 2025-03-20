@@ -7,7 +7,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 @prefix gax-trust-framework: <http://w3id.org/gaia-x/gax-trust-framework#> .
 @prefix vcard: <https://www.w3.org/2006/vcard/ns#> .

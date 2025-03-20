@@ -9,7 +9,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 usage() {
   echo "Usage: ${0} -t OID_ACCESS_TOKEN -s HOST -b BUCKET_NAME -m MOUNTPOINT"

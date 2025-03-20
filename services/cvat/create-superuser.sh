@@ -9,7 +9,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 python3 "${HOME}/manage.py" createsuperuser --email "${CVAT_SUPERUSER_EMAIL}" --username "${CVAT_SUPERUSER}" --noinput && \
   /bin/bash /change-user-password.sh "${CVAT_SUPERUSER}" "${CVAT_SUPERUSER_PASSWORD}"
