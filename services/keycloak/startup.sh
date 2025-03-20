@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileCopyrightText: 2024 Osnabrück University of Applied Sciences
 # SPDX-FileContributor: Andreas Schliebitz
 # SPDX-FileContributor: Henri Graf
 # SPDX-FileContributor: Jonas Tüpker
@@ -9,7 +9,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 REALM_IMPORT_PATH=/opt/keycloak/data/import/realm-export.json
 

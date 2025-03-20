@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+# SPDX-FileCopyrightText: 2024 Osnabrück University of Applied Sciences
 # SPDX-FileContributor: Andreas Schliebitz
 # SPDX-FileContributor: Henri Graf
 # SPDX-FileContributor: Jonas Tüpker
@@ -9,7 +9,7 @@
 # SPDX-FileContributor: Prof. Dr.-Ing. Heiko Tapken
 # SPDX-FileContributor: Tobias Wamhof
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 jupyterhub_images_path="./services/jupyterhub/images"
 jupyterhub_version="$(grep "JUPYTERHUB_VERSION=" .env | cut -d "=" -f 2)"
