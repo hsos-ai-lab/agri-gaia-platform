@@ -771,6 +771,7 @@ services:
         - MINIO_ROOT_USER=${MINIO_ROOT_USER}
         - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
         - CONNECTOR_PASSWORD=${CONNECTOR_PASSWORD}
+        - KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}
     restart: on-failure:3
     volumes:
       - ./secrets/edc:/home/secrets
