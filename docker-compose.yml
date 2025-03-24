@@ -84,6 +84,7 @@ services:
         - DOCKER_VERSION=${DOCKER_VERSION}
         - NUCLIO_VERSION=${NUCLIO_VERSION}
         - NVIDIA_NGC_API_KEY=${NVIDIA_NGC_API_KEY}
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     expose:
       - "8000"
@@ -422,6 +423,8 @@ services:
   registry:
     build:
       context: services/docker-registry
+      args:
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     volumes:
       - registry-data:/data
@@ -429,15 +432,15 @@ services:
     expose:
       - 5000
     environment:
-      CERT_ENDPOINT: http://keycloak:8080/realms/test-realm/protocol/openid-connect/certs
+      CERT_ENDPOINT: http://keycloak:8080/realms/${KEYCLOAK_REALM_NAME}/protocol/openid-connect/certs
 
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
 
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /opt/certs/registry_trust_chain.pem
-      REGISTRY_AUTH_TOKEN_REALM: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm/protocol/docker-v2/auth
+      REGISTRY_AUTH_TOKEN_REALM: https://keycloak.${PROJECT_BASE_URL}/realms/${KEYCLOAK_REALM_NAME}/protocol/docker-v2/auth
       REGISTRY_AUTH_TOKEN_SERVICE: docker-registry
-      REGISTRY_AUTH_TOKEN_ISSUER: https://keycloak.${PROJECT_BASE_URL}/realms/test-realm
+      REGISTRY_AUTH_TOKEN_ISSUER: https://keycloak.${PROJECT_BASE_URL}/realms/${KEYCLOAK_REALM_NAME}
 
       LOG_LEVEL: debug
 
@@ -815,12 +818,7 @@ services:
     depends_on:
       - minio
     restart: unless-stopped
-    command:
-      [
-        "tritonserver",
-        "--model-repository=s3://minio:9000/triton",
-        "--model-control-mode=poll",
-      ]
+    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll"]
     profiles: ["triton"]
 
 volumes:
