@@ -92,6 +92,7 @@ services:
         - DOCKER_VERSION=${DOCKER_VERSION}
         - NUCLIO_VERSION=${NUCLIO_VERSION}
         - NVIDIA_NGC_API_KEY=${NVIDIA_NGC_API_KEY}
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     expose:
       - "8000"
@@ -417,6 +418,8 @@ services:
   registry:
     build:
       context: services/docker-registry
+      args:
+        - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
     restart: unless-stopped
     volumes:
       - registry-data:/data
@@ -788,10 +791,7 @@ services:
     depends_on:
       - minio
     restart: unless-stopped
-    command:
-      - "tritonserver"
-      - "--model-repository=s3://minio:9000/triton"
-      - "--model-control-mode=poll"
+    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll"]
     profiles: ["triton"]
 
 volumes:
