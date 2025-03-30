@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 University of Applied Sciences Osnabrück
+// SPDX-FileCopyrightText: 2024 Osnabrück University of Applied Sciences
 // SPDX-FileContributor: Andreas Schliebitz
 // SPDX-FileContributor: Henri Graf
 // SPDX-FileContributor: Jonas Tüpker
