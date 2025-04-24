@@ -42,7 +42,7 @@ if [[ -z "${project_base_url}" ]]; then
   project_base_url="agri-gaia.localhost"
 fi
 
-compose_profiles="edge,annotation,semantics,monitoring,edc,triton"
+compose_profiles="edge,annotation,semantics,monitoring,edc,triton,pontusx"
 
 if [[ -n "${exclude_profiles}" ]]; then
   IFS=','
