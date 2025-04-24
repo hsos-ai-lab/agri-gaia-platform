@@ -30,7 +30,7 @@ done
 
 COMPOSE_PROJECT_NAME="$(grep "COMPOSE_PROJECT_NAME=" .env | cut -d "=" -f 2)"
 
-export COMPOSE_PROFILES=edge,annotation,semantics,monitoring,edc,triton
+export COMPOSE_PROFILES=edge,annotation,semantics,monitoring,edc,triton,pontusx
 
 COMPOSE_DOWN_CMD="docker compose down --remove-orphans"
 

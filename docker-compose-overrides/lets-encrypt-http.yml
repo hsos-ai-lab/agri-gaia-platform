@@ -107,6 +107,10 @@ services:
       - "traefik.http.routers.edc-provider-web.tls.certresolver=httpresolver"
       - "traefik.http.routers.edc-provider-ids.tls.certresolver=httpresolver"
 
+  pontusx_provider:
+    labels:
+      - "traefik.http.routers.pontusx-provider.tls.certresolver=httpresolver"
+
   nuclio:
     labels:
       - "traefik.http.routers.nuclio.tls.certresolver=httpresolver"

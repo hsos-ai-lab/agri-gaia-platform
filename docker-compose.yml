@@ -779,6 +779,31 @@ services:
       - "traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282"
     profiles: [ "edc" ]
 
+  ##PontusX Provider
+  pontusx_provider:
+    build:
+      context: services/pontusx
+      args:
+        - PROVIDER_PRIVATE_KEY=${PROVIDER_PRIVATE_KEY}
+        - PROVIDER_ADDRESS=${PROVIDER_ADDRESS}
+    restart: on-failure:3
+    volumes:
+      - ./secrets/pontusx:/home/secrets
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.pontusx-provider.service=pontusx-provider
+      - traefik.http.routers.pontusx-provider.tls=true
+      - traefik.http.routers.pontusx-provider.tls.options=default
+      - traefik.http.routers.pontusx-provider.middlewares=security-headers
+      - traefik.http.routers.pontusx-provider.entrypoints=https
+      - traefik.http.routers.pontusx-provider.rule=Host(`pontusx-provider.${PROJECT_BASE_URL}`)
+      - traefik.http.services.pontusx-provider.loadbalancer.server.port=8030
+
+    profiles: [ "pontusx" ]
+
+
+
   triton:
     image: nvcr.io/nvidia/tritonserver:24.09-py3
     environment:
