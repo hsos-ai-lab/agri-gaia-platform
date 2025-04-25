@@ -112,7 +112,7 @@ services:
       - "traefik.http.routers.edc-provider-web.tls.certresolver=cloudflare"
       - "traefik.http.routers.edc-provider-ids.tls.certresolver=cloudflare"
 
-    pontusx_provider:
+  pontusx_provider:
     labels:
       - "traefik.http.routers.edc-provider-ids.tls.certresolver=cloudflare"
 
