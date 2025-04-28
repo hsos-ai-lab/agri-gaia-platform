@@ -15,6 +15,3 @@
 [submodule "services/frontend"]
 	path = services/frontend
 	url = https://github.com/hsos-ai-lab/agri-gaia-frontend.git
-[submodule "services/pontusx"]
-	path = services/pontusx
-	url = https://github.com/hsos-ai-lab/agri-gaia-pontusx-provider.git
