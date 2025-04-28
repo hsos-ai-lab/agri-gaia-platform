@@ -17,4 +17,4 @@
 	url = https://github.com/hsos-ai-lab/agri-gaia-frontend.git
 [submodule "services/pontusx"]
 	path = services/pontusx
-	url = https://github.com/twamhof/pontusxprovider.git
+	url = https://github.com/hsos-ai-lab/agri-gaia-pontusx-provider.git
