@@ -94,7 +94,7 @@ LABEL org.opencontainers.image.title="Portainer" \
 
 COPY --from=build-stage /work/portainer/dist/docker /
 COPY --from=build-stage /work/portainer/dist/docker-compose /
-COPY --from=build-stage /work/portainer/dist/helm /
+#COPY --from=build-stage /work/portainer/dist/helm /
 COPY --from=build-stage /work/portainer/dist/kubectl /
 COPY --from=build-stage /work/portainer/dist/mustache-templates /mustache-templates/
 COPY --from=build-stage /work/portainer/dist/portainer /
