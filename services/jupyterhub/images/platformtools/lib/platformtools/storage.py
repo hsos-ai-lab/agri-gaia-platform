@@ -35,7 +35,7 @@ class PlatformStorage(Minio):
         self._endpoint_url = f"http://{self._endpoint}"
 
         self._credentials = self._get_credentials_provider(
-            self._endpoint_url, load_tokens, secure=False
+            self._endpoint_url, load_tokens
         )
 
         super().__init__(
@@ -57,10 +57,9 @@ class PlatformStorage(Minio):
         self,
         s3_endpoint_url,
         credentials_func=None,
-        secure=True,
     ):
         assert credentials_func
-        return WebIdentityProvider(credentials_func, s3_endpoint_url, secure)
+        return WebIdentityProvider(jwt_provider_func=credentials_func, sts_endpoint=s3_endpoint_url)
 
     def mount_bucket(self, bucket_name):
         bucket_mount_point = os.path.join(MOUNT_POINT, bucket_name)
