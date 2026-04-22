@@ -184,7 +184,7 @@ services:
       args:
         - PROJECT_BASE_URL=${PROJECT_BASE_URL}
         - KEYCLOAK_REALM_NAME=${KEYCLOAK_REALM_NAME}
-        - REACT_APP_PORTAINER_VERSION=${PORTAINER_VERSION}
+        - VITE_PORTAINER_VERSION=${PORTAINER_VERSION}
     restart: unless-stopped
     expose:
       - "80"
