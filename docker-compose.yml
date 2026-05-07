@@ -807,7 +807,7 @@ services:
     profiles: ["edc"]
 
   triton:
-    image: nvcr.io/nvidia/tritonserver:23.12-py3
+    image: nvcr.io/nvidia/tritonserver:24.09-py3
     environment:
       - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
       - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
