@@ -17,3 +17,8 @@ services:
   build_container:
     volumes:
       - ./secrets/certs/self-signed/${PROJECT_BASE_URL}.crt:/etc/docker/certs.d/registry.${PROJECT_BASE_URL}/ca.crt
+  
+  minio:
+    volumes:
+      - ./secrets/certs/self-signed/${PROJECT_BASE_URL}.crt:/usr/local/share/ca-certificates/ca.crt
+
