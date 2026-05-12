@@ -39,14 +39,11 @@ class PlatformAuthenticator(GenericOAuthenticator):
         self.oauth_callback_url = f"https://jupyterhub.{ROOT_URL}/hub/oauth_callback"
         self.logout_redirect_url = f"https://jupyterhub.{ROOT_URL}"
 
-        self.username_key = "preferred_username"
+        self.username_claim = "preferred_username"
         self.userdata_params = {"state": "state"}
 
         self.scope = ["openid", "profile", "roles", "email", "offline_access"]
-        self.userdata_params = {"state": "state"}
         self.allow_all = True
 
         self.auto_login = True
-        self.check_signature = True
-        self.jwt_signing_algorithms = ["HS256", "RS256"]
         self.enable_auth_state = True

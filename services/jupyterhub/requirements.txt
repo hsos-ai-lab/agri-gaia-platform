@@ -9,5 +9,5 @@
 #
 # SPDX-License-Identifier: MIT
 
-dockerspawner~=12.1.0
-oauthenticator~=16.3.0
+dockerspawner>=13.0.0
+oauthenticator>=17.4.0
