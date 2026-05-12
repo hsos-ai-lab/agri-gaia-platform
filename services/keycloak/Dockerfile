@@ -17,7 +17,7 @@ COPY registration-hook-spi/pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 
 # Stage 2 - Package
-FROM quay.io/keycloak/keycloak:26.5.6
+FROM quay.io/keycloak/keycloak:26.6.0
 
 ARG PROJECT_BASE_URL
 ARG REALM_NAME
