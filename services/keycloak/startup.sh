@@ -23,19 +23,21 @@ fi
 
 # Starte den Keycloak-Server im Hintergrund
 /opt/keycloak/bin/kc.sh import --file $REALM_IMPORT_PATH --optimized --override false
-/opt/keycloak/bin/kc.sh start --proxy edge --optimized &
+/opt/keycloak/bin/kc.sh start --proxy-headers xforwarded --http-enabled true --optimized &
+KC_PID=$! # capture KC PID
 
 # Warte bis Keycloak vollständig gestartet ist
-while ! curl -sSf http://localhost:8080/health; do
+while ! curl -sSf http://localhost:9000/health; do
     echo "Waiting for Keycloak to start..."
     sleep 5
 done
 
 # Führe das Skript zum Anlegen des Realms und der Nutzer aus
-/opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user $KEYCLOAK_ADMIN --password $KEYCLOAK_ADMIN_PASSWORD
+/opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user $KEYCLOAK_ADMIN --password $KC_BOOTSTRAP_ADMIN_PASSWORD
 /opt/keycloak/bin/kcadm.sh create users -r ${REALM_NAME} -s username=$REALM_SERVICE_ACCOUNT_USERNAME -s enabled=true
 USER_ID=$(/opt/keycloak/bin/kcadm.sh get users -r ${REALM_NAME} -q username=$REALM_SERVICE_ACCOUNT_USERNAME --fields id | grep -o '"id" : "[^"]*' | sed 's/"id" : "//')
 /opt/keycloak/bin/kcadm.sh set-password -r ${REALM_NAME} --userid $USER_ID --new-password $REALM_SERVICE_ACCOUNT_PASSWORD
 
 # Halte den Container am Laufen
-tail -f /dev/null
+# tail -f /dev/null
+wait $KC_PID
