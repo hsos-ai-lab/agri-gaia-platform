@@ -62,9 +62,9 @@ class PlatformSpawner(DockerSpawner):
                 f"agri-gaia/jupyterhub-notebook-tf2:{NGC_IMAGE_TAG}"
             )
 
-        notebook_container_dir = f"{os.path.expanduser('~')}/work"
+        notebook_container_dir = "/home/jovyan/work"
         notebook_volume_name = PROJECT_NAME + "-jupyterhub-user-{username}"
-        self.notebook_dir = os.path.expanduser("~")
+        self.notebook_dir = "/home/jovyan"
         self.cmd = ["jupyterhub-singleuser", "--ip=0.0.0.0"]
 
         # Mount the real user's Docker volume on the host to the notebook user's

@@ -120,8 +120,8 @@ services:
       KEYCLOAK_INTERNAL_URL: "http://keycloak:8080"
       KEYCLOAK_REALM_NAME: ${KEYCLOAK_REALM_NAME}
 
-      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_USER}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_USER}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
 
       REALM_SERVICE_ACCOUNT_USERNAME: ${REALM_SERVICE_ACCOUNT_USERNAME}
       REALM_SERVICE_ACCOUNT_PASSWORD: ${REALM_SERVICE_ACCOUNT_PASSWORD}
@@ -325,6 +325,9 @@ services:
       timeout: 10s
       retries: 10
       start_period: 5s
+    depends_on:
+      keycloak:
+        condition: service_healthy
 
   # The DB for storing geographical data
   postgis_backend:
@@ -389,13 +392,14 @@ services:
       KC_METRICS_ENABLED: "true"
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
       KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
       KC_DB_VENDOR: postgres
       KC_DB_URL_HOST: postgres_keycloak
       KC_DB_DATABASE: keycloak
       KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HOSTNAME: keycloak.${PROJECT_BASE_URL}
+      KC_HOSTNAME: https://keycloak.${PROJECT_BASE_URL}
+      KC_HOSTNAME_STRICT: "false"
       # load exported config on startup
       REGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-registration
       DEREGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-deregistration
@@ -414,7 +418,7 @@ services:
     depends_on:
       - postgres_keycloak
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/realms/${KEYCLOAK_REALM_NAME}/.well-known/openid-configuration"]
       interval: 15s
       timeout: 10s
       retries: 100
@@ -807,18 +811,20 @@ services:
     profiles: ["edc"]
 
   triton:
-    image: nvcr.io/nvidia/tritonserver:23.12-py3
+    image: nvcr.io/nvidia/tritonserver:24.09-py3
     environment:
       - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
       - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
+      - AWS_DEFAULT_REGION=eu-central-1
     expose:
       - 8000
       - 8001
       - 8002
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     restart: unless-stopped
-    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll"]
+    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll", "--exit-on-error=false"]
     profiles: ["triton"]
 
 volumes:
