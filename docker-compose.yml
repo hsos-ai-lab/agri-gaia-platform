@@ -190,6 +190,7 @@ services:
     depends_on:
       - keycloak
       - cvat_server
+      - backend
 
   # Portainer
   portainer:
@@ -320,7 +321,7 @@ services:
       - traefik.http.routers.minio-console.rule=Host(`minio-console.${PROJECT_BASE_URL}`)
       - traefik.http.services.minio-console.loadbalancer.server.port=9001
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://minio:9000/minio/health/live"]
+      test: ["CMD", "curl", "--fail", "http://minio:9000/minio/health/ready"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -391,14 +392,14 @@ services:
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_USER}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
       KC_DB_VENDOR: postgres
       KC_DB_URL_HOST: postgres_keycloak
       KC_DB_DATABASE: keycloak
       KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HOSTNAME: https://keycloak.${PROJECT_BASE_URL}
+      KC_HOSTNAME: keycloak.${PROJECT_BASE_URL}
       KC_HOSTNAME_STRICT: "false"
       # load exported config on startup
       REGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-registration
@@ -421,8 +422,8 @@ services:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/realms/${KEYCLOAK_REALM_NAME}/.well-known/openid-configuration"]
       interval: 15s
       timeout: 10s
-      retries: 100
-      start_period: 15s
+      retries: 10
+      start_period: 30s
 
   registry:
     build:
@@ -815,16 +816,16 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
       - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
-      - AWS_DEFAULT_REGION=eu-central-1
+      - AWS_DEFAULT_REGION=us-east-1
     expose:
       - 8000
       - 8001
       - 8002
     depends_on:
-      minio:
+      backend:
         condition: service_healthy
     restart: unless-stopped
-    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll", "--exit-on-error=false"]
+    command: ["tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll"]
     profiles: ["triton"]
 
 volumes:
