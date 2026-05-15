@@ -104,10 +104,16 @@ services:
       - model-training:/code/model-training
       - model-inference:/code/model-inference
     depends_on:
-      - keycloak
-      - postgres_backend
-      - build_container
-      - registry
+      keycloak:
+        condition: service_healthy
+      postgres_backend:
+        condition: service_started
+      build_container:
+        condition: service_started
+      registry:
+        condition: service_started
+      fuseki:
+        condition: service_healthy
     environment:
       PROJECT_BASE_URL: ${PROJECT_BASE_URL}
       PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
@@ -188,9 +194,14 @@ services:
       - traefik.http.routers.frontend.middlewares[0]=security-headers
       - traefik.http.routers.frontend.entrypoints=https
     depends_on:
-      - keycloak
-      - cvat_server
-      - backend
+      keycloak:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      cvat_server:
+        condition: service_started
 
   # Portainer
   portainer:
@@ -254,6 +265,12 @@ services:
       - traefik.http.routers.fuseki.tls.options=default
       - traefik.http.routers.fuseki.middlewares=security-headers
       - traefik.http.routers.fuseki.entrypoints=https
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q 'http://localhost:3030/$$/ping' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
     profiles: ["semantics"]
 
   # The WebVOWL ontology visualizer
@@ -399,7 +416,7 @@ services:
       KC_DB_DATABASE: keycloak
       KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HOSTNAME: keycloak.${PROJECT_BASE_URL}
+      KC_HOSTNAME: https://keycloak.${PROJECT_BASE_URL}
       KC_HOSTNAME_STRICT: "false"
       # load exported config on startup
       REGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-registration
