@@ -17,6 +17,8 @@ services:
       - traefik.http.routers.traefik.tls.certresolver=httpresolver
     command:
       - --providers.docker=true
+      - --api.insecure=true
+      - --log.level=DEBUG
       - --providers.docker.exposedbydefault=false
       - --providers.file.directory=/etc/traefik
       - --providers.file.watch=true
