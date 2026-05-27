@@ -10,14 +10,14 @@
 # SPDX-License-Identifier: MIT
 
 # Stage 1 - Build
-FROM maven:3.9.2-eclipse-temurin-11 AS build
+FROM maven:3.9.8-eclipse-temurin-21 AS build
 
 COPY registration-hook-spi/src /home/app/src
 COPY registration-hook-spi/pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 
 # Stage 2 - Package
-FROM quay.io/keycloak/keycloak:24.0.4
+FROM quay.io/keycloak/keycloak:26.6.0
 
 ARG PROJECT_BASE_URL
 ARG REALM_NAME
@@ -32,11 +32,11 @@ WORKDIR /opt/keycloak
 COPY --from=build /home/app/target/keycloak-registration-eventlistener.jar /opt/keycloak/providers 
 
 # add the prometheus metrics api
-COPY ./metrics-spi/keycloak-metrics-spi-5.0.0.jar /opt/keycloak/providers
+COPY ./metrics-spi/keycloak-metrics-spi-7.0.0.jar /opt/keycloak/providers
 
 
 ###### BUILD ##############
-RUN /opt/keycloak/bin/kc.sh build --features="docker" --health-enabled=true --db postgres
+RUN /opt/keycloak/bin/kc.sh build --features="docker" --health-enabled=true --metrics-enabled=true --db postgres --cache=local
 #########################
 
 ADD --chown=root:root https://github.com/moparisthebest/static-curl/releases/latest/download/curl-amd64 /usr/bin/curl

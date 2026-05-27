@@ -11,6 +11,16 @@
 #
 # SPDX-License-Identifier: MIT
 
+CUSTOM_CA_CERT="/usr/local/share/ca-certificates/ca.crt"
+if [ -f "$CUSTOM_CA_CERT" ]; then
+    echo "Installing custom CA certificate..."
+    for bundle in /etc/pki/tls/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt; do
+        if [ -f "$bundle" ]; then
+            cat "$CUSTOM_CA_CERT" >> "$bundle"
+        fi
+    done
+fi
+
 retry_interval=5  # in seconds
 max_retries=60
 
