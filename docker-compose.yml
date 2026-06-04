@@ -669,13 +669,34 @@ services:
       - --set=bundles.cvat.polling.max_delay_seconds=15
     profiles: ["annotation"]
 
+  nuclio-templates-init:
+    image: busybox:1.36
+    volumes:
+      - /tmp:/tmp
+    command:
+      - sh
+      - -c
+      - |
+        if [ ! -s /tmp/templates.zip ]; then
+          echo 'UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==' | base64 -d > /tmp/templates.zip
+          echo "Created empty /tmp/templates.zip stub for Nuclio dashboard."
+        else
+          echo "/tmp/templates.zip already present; leaving it alone."
+        fi
+    restart: "no"
+    profiles: ["annotation"]
+
   # CVAT Nuclio (Auto Annotation)
   nuclio:
     image: "quay.io/nuclio/dashboard:${NUCLIO_VERSION}-amd64"
     restart: unless-stopped
+    depends_on:
+      nuclio-templates-init:
+        condition: service_completed_successfully
     volumes:
       - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./services/nuclio/platform.yaml:/etc/nuclio/config/platform/platform.yaml:ro
     environment:
       http_proxy:
       https_proxy:
