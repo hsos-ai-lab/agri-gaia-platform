@@ -145,7 +145,7 @@ services:
 
       CONNECTOR_PASSWORD: ${CONNECTOR_PASSWORD}
 
-      PROVIDER_DATA_ENDPOINT: "http://edc_provider:8182"
+      PROVIDER_DATA_ENDPOINT: "http://edc:8182"
 
       POSTGRES_DB: ${BACKEND_POSTGRES_DB}
       POSTGRES_USER: ${BACKEND_POSTGRES_USER}
@@ -809,7 +809,7 @@ services:
     profiles: ["monitoring"]
 
   ##EDC Provider
-  edc_provider:
+  edc:
     build:
       context: services/edc
       args:
@@ -824,29 +824,29 @@ services:
     labels:
       - traefik.enable=true
 
-      - traefik.http.routers.edc-provider.service=edc-provider
-      - traefik.http.routers.edc-provider.tls=true
-      - traefik.http.routers.edc-provider.tls.options=default
-      - traefik.http.routers.edc-provider.middlewares=security-headers
-      - traefik.http.routers.edc-provider.entrypoints=https
-      - traefik.http.routers.edc-provider.rule=Host(`edc-provider.${PROJECT_BASE_URL}`)
-      - traefik.http.services.edc-provider.loadbalancer.server.port=8182
+      - traefik.http.routers.edc.service=edc
+      - traefik.http.routers.edc.tls=true
+      - traefik.http.routers.edc.tls.options=default
+      - traefik.http.routers.edc.middlewares=security-headers
+      - traefik.http.routers.edc.entrypoints=https
+      - traefik.http.routers.edc.rule=Host(`edc.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc.loadbalancer.server.port=8182
 
-      - traefik.http.routers.edc-provider-web.service=edc-provider-web
-      - traefik.http.routers.edc-provider-web.tls=true
-      - traefik.http.routers.edc-provider-web.tls.options=default
-      - traefik.http.routers.edc-provider-web.middlewares=security-headers
-      - traefik.http.routers.edc-provider-web.entrypoints=https
-      - traefik.http.routers.edc-provider-web.rule=Host(`edc-provider-web.${PROJECT_BASE_URL}`)
-      - traefik.http.services.edc-provider-web.loadbalancer.server.port=8181
+      - traefik.http.routers.edc-web.service=edc-web
+      - traefik.http.routers.edc-web.tls=true
+      - traefik.http.routers.edc-web.tls.options=default
+      - traefik.http.routers.edc-web.middlewares=security-headers
+      - traefik.http.routers.edc-web.entrypoints=https
+      - traefik.http.routers.edc-web.rule=Host(`edc-web.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc-web.loadbalancer.server.port=8181
 
-      - traefik.http.routers.edc-provider-ids.service=edc-provider-ids
-      - traefik.http.routers.edc-provider-ids.tls=true
-      - traefik.http.routers.edc-provider-ids.tls.options=default
-      - traefik.http.routers.edc-provider-ids.middlewares=security-headers
-      - traefik.http.routers.edc-provider-ids.entrypoints=https
-      - traefik.http.routers.edc-provider-ids.rule=Host(`edc-provider-ids.${PROJECT_BASE_URL}`)
-      - traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282
+      - traefik.http.routers.edc-ids.service=edc-ids
+      - traefik.http.routers.edc-ids.tls=true
+      - traefik.http.routers.edc-ids.tls.options=default
+      - traefik.http.routers.edc-ids.middlewares=security-headers
+      - traefik.http.routers.edc-ids.entrypoints=https
+      - traefik.http.routers.edc-ids.rule=Host(`edc-ids.${PROJECT_BASE_URL}`)
+      - traefik.http.services.edc-ids.loadbalancer.server.port=8282
     profiles: ["edc"]
 
   triton:
