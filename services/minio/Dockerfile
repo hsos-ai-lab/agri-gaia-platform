@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG MINIO_IMAGE_TAG
+ARG MINIO_IMAGE_TAG="RELEASE.2023-08-16T20-17-30Z"
 FROM minio/minio:"${MINIO_IMAGE_TAG}"
 COPY wait-for-keycloak.sh .
 ENTRYPOINT [ "./wait-for-keycloak.sh", "/usr/bin/docker-entrypoint.sh" ]

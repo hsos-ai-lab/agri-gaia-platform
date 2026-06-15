@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG JUPYTERHUB_VERSION
+ARG JUPYTERHUB_VERSION=5.4.5
 
 FROM jupyterhub/jupyterhub:${JUPYTERHUB_VERSION}
 

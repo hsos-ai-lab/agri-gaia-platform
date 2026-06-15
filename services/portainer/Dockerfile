@@ -12,7 +12,7 @@
 ##################################
 ### Build the portainer executable
 ##################################
-FROM ubuntu:22.04 as build-stage
+FROM ubuntu:22.04 AS build-stage
 
 ARG PORTAINER_EDITION
 ARG PORTAINER_VERSION
@@ -67,7 +67,7 @@ RUN bash -c 'CONTAINER_IMAGE_TAG=${PORTAINER_VERSION} NODE_VERSION=$(node -v) YA
 ##################################
 ### Create admin password for portainer
 ##################################
-FROM httpd:2.4-alpine as password-stage
+FROM httpd:2.4-alpine AS password-stage
 ARG ADMIN_PASSWORD
 
 # generate the hashed password
@@ -76,7 +76,7 @@ RUN mkdir -p /tmp && htpasswd -nbB admin $ADMIN_PASSWORD | cut -d ":" -f 2 | tr 
 ##################################
 ### Get come CLI tools
 ##################################
-FROM busybox:1.34.1-uclibc as busybox-stage
+FROM busybox:1.34.1-uclibc AS busybox-stage
 
 ##################################
 ### build the portainer image
