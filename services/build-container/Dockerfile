@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM alpine as config_stage
+FROM alpine AS config_stage
 
 RUN apk update && apk add jq moreutils
 
