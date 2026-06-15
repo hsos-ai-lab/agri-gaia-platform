@@ -30,7 +30,7 @@ RUN sed -i "\
     " /home/config.properties
 
 RUN sed -i "\
-    s,EDC_PROVIDER_IDS_URL,https://edc-provider-ids.${PROJECT_BASE_URL},g; \
+    s,EDC_PROVIDER_IDS_URL,https://edc-ids.${PROJECT_BASE_URL},g; \
     " /home/config.properties
 
 RUN sed -i "\
