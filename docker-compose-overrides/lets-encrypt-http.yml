@@ -39,9 +39,11 @@ services:
       - "--entrypoints.websecure.http.tls=true"
       - "--entrypoints.websecure.http.tls.options=default"
       - "--entrypoints.websecure.http3"
+      - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=0"
 
       - "--entrypoints.edge.address=:8000/tcp"
       - "--entrypoints.edge.reuseport=true"
+      - "--entryPoints.edge.transport.respondingTimeouts.readTimeout=0"
 
       - "--certificatesresolvers.httpresolver.acme.email=${ACME_EMAIL}"
       - "--certificatesresolvers.httpresolver.acme.storage=/acme/acme.json"
