@@ -136,7 +136,7 @@ class BenchmarkStorage:
         self.mc = mc
 
     def list(self):
-        r = requests.get(f"{BACKEND_URL}/edge-benchmark", auth=BackendAuth())
+        r = requests.get(f"{BACKEND_URL}/edge-benchmark/jobs", auth=BackendAuth())
         r.raise_for_status()
         return r.json()
 
