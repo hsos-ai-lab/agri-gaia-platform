@@ -9,7 +9,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-
 @prefix vcard: <https://www.w3.org/2006/vcard/ns#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix schema:         <http://schema.org/> .

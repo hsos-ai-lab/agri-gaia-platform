@@ -31,6 +31,8 @@ services:
       - "443:443/tcp" # HTTPS
       - "443:443/udp" # HTTP/3
       - "8000:8000/tcp" # Portainer Edge
+      # The Traefik Web UI (enabled by --api.insecure=true)
+      - "11000:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
@@ -41,8 +43,6 @@ services:
       # Dashboard
       - "traefik.http.routers.traefik.rule=Host(`traefik.${PROJECT_BASE_URL}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.tls.options=default"
       - "traefik.http.routers.traefik.middlewares=security-headers,traefik-auth"
 
       - "traefik.http.routers.traefik.service=api@internal"
@@ -75,8 +75,6 @@ services:
 
       - "--entrypoints.websecure.address=:443/tcp"
       - "--entrypoints.websecure.reuseport=true"
-      - "--entrypoints.websecure.http.tls=true"
-      - "--entrypoints.websecure.http.tls.options=default"
       - "--entrypoints.websecure.http3"
       - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=0"
 
@@ -142,7 +140,7 @@ services:
       FUSEKI_ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD}
 
       CONNECTOR_PASSWORD: ${CONNECTOR_PASSWORD}
-      PROVIDER_DATA_ENDPOINT: "http://edc_provider:8182"
+      PROVIDER_DATA_ENDPOINT: "http://edc:8182"
 
       POSTGRES_DB: ${BACKEND_POSTGRES_DB}
       POSTGRES_USER: ${BACKEND_POSTGRES_USER}
@@ -189,13 +187,19 @@ services:
     expose:
       - "80"
     depends_on:
-      - keycloak
-      - cvat_server
+      keycloak:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      cvat_server:
+        condition: service_started
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`app.${PROJECT_BASE_URL}`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.middlewares=security-headers"
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`app.${PROJECT_BASE_URL}`)
+      - traefik.http.routers.frontend.middlewares[0]=security-headers
+      - traefik.http.routers.frontend.entrypoints=websecure
 
   # Portainer
   portainer:
@@ -217,16 +221,14 @@ services:
       - "traefik.http.routers.portainer.rule=Host(`portainer.${PROJECT_BASE_URL}`)"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.middlewares=security-headers"
-
       - "traefik.http.routers.portainer.service=portainer"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
       # Edge
+      - "traefik.http.routers.edge.service=edge"
       - "traefik.http.routers.edge.rule=Host(`edge.${PROJECT_BASE_URL}`)"
       - "traefik.http.routers.edge.entrypoints=edge"
       - "traefik.http.routers.edge.tls=false"
-
-      - "traefik.http.routers.edge.service=edge"
       - "traefik.http.services.edge.loadbalancer.server.port=8000"
     profiles: [ "edge" ]
 
@@ -310,7 +312,6 @@ services:
       start_period: 5s
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.minio.rule=Host(`minio.${PROJECT_BASE_URL}`)"
       - "traefik.http.routers.minio.entrypoints=websecure"
       - "traefik.http.routers.minio.middlewares=security-headers"
@@ -324,6 +325,10 @@ services:
 
       - "traefik.http.routers.minio-console.service=minio-console"
       - "traefik.http.services.minio-console.loadbalancer.server.port=9001"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
 
   # The DB for storing geographical data
   postgis_backend:
@@ -384,6 +389,7 @@ services:
       REALM_SERVICE_ACCOUNT_PASSWORD: ${REALM_SERVICE_ACCOUNT_PASSWORD}
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
+      KC_HTTP_ENABLED: "true"
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
       KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
@@ -392,7 +398,7 @@ services:
       KC_DB_DATABASE: keycloak
       KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HOSTNAME: keycloak.${PROJECT_BASE_URL}
+      KC_HOSTNAME: https://keycloak.${PROJECT_BASE_URL}
       # load exported config on startup
       REGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-registration
       DEREGISTRATION_EVENT_WEBHOOKURL: http://backend:8000/service/user-deregistration
@@ -401,11 +407,11 @@ services:
     depends_on:
       - postgres_keycloak
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/realms/${KEYCLOAK_REALM_NAME}/.well-known/openid-configuration"]
       interval: 15s
       timeout: 10s
       retries: 100
-      start_period: 15s
+      start_period: 30s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.keycloak.rule=Host(`keycloak.${PROJECT_BASE_URL}`)"
@@ -632,13 +638,35 @@ services:
       - "--set=bundles.cvat.polling.max_delay_seconds=15"
     profiles: [ "annotation" ]
 
+  nuclio-templates-init:
+    image: busybox:1.36
+    volumes:
+      - /tmp:/tmp
+    command:
+      - sh
+      - -c
+      - |
+        if [ ! -s /tmp/templates.zip ]; then
+          echo 'UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==' | base64 -d > /tmp/templates.zip
+          echo "Created empty /tmp/templates.zip stub for Nuclio dashboard."
+        else
+          echo "/tmp/templates.zip already present; leaving it alone."
+        fi
+    restart: "no"
+    profiles: ["annotation"]
+
   # CVAT Nuclio (Auto Annotation)
   nuclio:
     image: "quay.io/nuclio/dashboard:${NUCLIO_VERSION}-amd64"
     restart: unless-stopped
+    depends_on:
+      nuclio-templates-init:
+        condition: service_completed_successfully
     volumes:
       - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
+      # might be wrong. #
+      - ./services/nuclio/platform.yaml:/etc/nuclio/config/platform/platform.yaml:ro 
     environment:
       http_proxy:
       https_proxy:
@@ -658,6 +686,8 @@ services:
       - "traefik.http.routers.nuclio.entrypoints=websecure"
       - "traefik.http.routers.nuclio.middlewares=security-headers,nuclio-auth"
       - "traefik.http.middlewares.nuclio-auth.basicauth.users=${REALM_SERVICE_ACCOUNT_USERNAME}:${REALM_SERVICE_ACCOUNT_HTPASSWD}"
+      # might be required
+      # - traefik.http.middlewares.nuclio-auth.basicauth.removeHeader=true
 
       - "traefik.http.routers.nuclio.service=nuclio"
       - "traefik.http.services.nuclio.loadbalancer.server.port=8070"
@@ -742,7 +772,7 @@ services:
     profiles: [ "monitoring" ]
 
   ##EDC Provider
-  edc_provider:
+  edc:
     build:
       context: services/edc
       args:
@@ -757,26 +787,26 @@ services:
     labels:
       - "traefik.enable=true"
 
-      - "traefik.http.routers.edc-provider.rule=Host(`edc-provider.${PROJECT_BASE_URL}`)"
-      - "traefik.http.routers.edc-provider.entrypoints=websecure"
-      - "traefik.http.routers.edc-provider.middlewares=security-headers"
+      - "traefik.http.routers.edc.rule=Host(`edc.${PROJECT_BASE_URL}`)"
+      - "traefik.http.routers.edc.entrypoints=websecure"
+      - "traefik.http.routers.edc.middlewares=security-headers"
 
-      - "traefik.http.routers.edc-provider.service=edc-provider"
-      - "traefik.http.services.edc-provider.loadbalancer.server.port=8182"
+      - "traefik.http.routers.edc.service=edc"
+      - "traefik.http.services.edc.loadbalancer.server.port=8182"
 
-      - "traefik.http.routers.edc-provider-web.rule=Host(`edc-provider-web.${PROJECT_BASE_URL}`)"
-      - "traefik.http.routers.edc-provider-web.entrypoints=websecure"
-      - "traefik.http.routers.edc-provider-web.middlewares=security-headers"
+      - "traefik.http.routers.edc-web.rule=Host(`edc-web.${PROJECT_BASE_URL}`)"
+      - "traefik.http.routers.edc-web.entrypoints=websecure"
+      - "traefik.http.routers.edc-web.middlewares=security-headers"
 
-      - "traefik.http.routers.edc-provider-web.service=edc-provider-web"
-      - "traefik.http.services.edc-provider-web.loadbalancer.server.port=8181"
+      - "traefik.http.routers.edc-web.service=edc-web"
+      - "traefik.http.services.edc-web.loadbalancer.server.port=8181"
 
-      - "traefik.http.routers.edc-provider-ids.rule=Host(`edc-provider-ids.${PROJECT_BASE_URL}`)"
-      - "traefik.http.routers.edc-provider-ids.entrypoints=websecure"
-      - "traefik.http.routers.edc-provider-ids.middlewares=security-headers"
+      - "traefik.http.routers.edc-ids.rule=Host(`edc-ids.${PROJECT_BASE_URL}`)"
+      - "traefik.http.routers.edc-ids.entrypoints=websecure"
+      - "traefik.http.routers.edc-ids.middlewares=security-headers"
 
-      - "traefik.http.routers.edc-provider-ids.service=edc-provider-ids"
-      - "traefik.http.services.edc-provider-ids.loadbalancer.server.port=8282"
+      - "traefik.http.routers.edc-ids.service=edc-ids"
+      - "traefik.http.services.edc-ids.loadbalancer.server.port=8282"
     profiles: [ "edc" ]
 
   triton:
@@ -784,12 +814,14 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
       AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      AWS_DEFAULT_REGION: us-east-1
     expose:
       - "8000"
       - "8001"
       - "8002"
     depends_on:
-      - minio
+      backend:
+        condition: service_healthy
     restart: unless-stopped
     command: [ "tritonserver", "--model-repository=s3://minio:9000/triton", "--model-control-mode=poll" ]
     profiles: [ "triton" ]

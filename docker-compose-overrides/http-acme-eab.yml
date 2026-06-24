@@ -102,11 +102,11 @@ services:
     labels:
       - "traefik.http.routers.grafana.tls.certresolver=httpresolver"
 
-  edc_provider:
+  edc:
     labels:
-      - "traefik.http.routers.edc-provider.tls.certresolver=httpresolver"
-      - "traefik.http.routers.edc-provider-web.tls.certresolver=httpresolver"
-      - "traefik.http.routers.edc-provider-ids.tls.certresolver=httpresolver"
+      - "traefik.http.routers.edc.tls.certresolver=httpresolver"
+      - "traefik.http.routers.edc-web.tls.certresolver=httpresolver"
+      - "traefik.http.routers.edc-ids.tls.certresolver=httpresolver"
 
   nuclio:
     labels:

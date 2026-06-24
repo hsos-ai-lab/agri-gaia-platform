@@ -1,0 +1,10 @@
+logger:
+  sinks:
+    stdout:
+      kind: stdout
+  system:
+    - level: debug
+      sink: stdout
+  functions:
+    - level: debug
+      sink: stdout

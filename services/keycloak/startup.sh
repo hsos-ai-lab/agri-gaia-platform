@@ -28,11 +28,11 @@ fi
     --override false
 
 /opt/keycloak/bin/kc.sh start \
-    --proxy edge \
+    --proxy-headers xforwarded \
     --optimized &
 
 # Warte bis Keycloak vollständig gestartet ist
-while ! curl -sSf http://localhost:8080/health; do
+while ! curl -sSf http://localhost:9000/health; do
     echo "Waiting for Keycloak to start..."
     sleep 5
 done

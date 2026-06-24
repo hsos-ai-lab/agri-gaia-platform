@@ -12,4 +12,4 @@
 services:
   prometheus:
     labels:
-      - "traefik.enable=false"
+      - traefik.enable=false

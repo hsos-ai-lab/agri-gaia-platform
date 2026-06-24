@@ -9,19 +9,18 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG NGC_IMAGE_TAG="24.07"
+
+ARG NGC_IMAGE_TAG=23.04
 
 FROM nvcr.io/nvidia/pytorch:${NGC_IMAGE_TAG}-py3
 
-ARG JUPYTERHUB_VERSION="5.1.0"
-ARG DEBIAN_FRONTEND="noninteractive"
+ARG JUPYTERHUB_VERSION=5.4.5
+ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
-RUN apt install -y s3fs libxml2-utils
+RUN apt update && apt install -y s3fs libxml2-utils
 RUN sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
 
 COPY mount-s3.sh /usr/bin/
-RUN chmod +x /usr/bin/mount-s3.sh
 
 WORKDIR /root
 
@@ -30,8 +29,8 @@ COPY platformtools/examples examples
 
 RUN pip3 install \
     jupyterhub==${JUPYTERHUB_VERSION} \
-    ipywidgets~=8.1.3 \
+    ipywidgets~=8.0.6 \
     .platformtools/lib
 
-ENTRYPOINT ["/bin/bash", "/opt/nvidia/nvidia_entrypoint.sh"]
+ENTRYPOINT ["/opt/nvidia/nvidia_entrypoint.sh"]
 CMD ["jupyterhub-singleuser", "--ip=0.0.0.0"]

@@ -106,11 +106,11 @@ services:
     labels:
       - "traefik.http.routers.grafana.tls.certresolver=cloudflare"
 
-  edc_provider:
+  edc:
     labels:
-      - "traefik.http.routers.edc-provider.tls.certresolver=cloudflare"
-      - "traefik.http.routers.edc-provider-web.tls.certresolver=cloudflare"
-      - "traefik.http.routers.edc-provider-ids.tls.certresolver=cloudflare"
+      - "traefik.http.routers.edc.tls.certresolver=cloudflare"
+      - "traefik.http.routers.edc-web.tls.certresolver=cloudflare"
+      - "traefik.http.routers.edc-ids.tls.certresolver=cloudflare"
 
   nuclio:
     labels:

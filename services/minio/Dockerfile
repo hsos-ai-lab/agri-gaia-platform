@@ -11,7 +11,5 @@
 
 ARG MINIO_IMAGE_TAG="RELEASE.2024-08-03T04-33-23Z"
 FROM minio/minio:"${MINIO_IMAGE_TAG}"
-
 COPY wait-for-keycloak.sh .
-
 ENTRYPOINT [ "./wait-for-keycloak.sh", "/usr/bin/docker-entrypoint.sh" ]

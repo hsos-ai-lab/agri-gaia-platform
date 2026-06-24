@@ -9,11 +9,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG JUPYTERHUB_VERSION="5"
+ARG JUPYTERHUB_VERSION="5.4.5"
 
 FROM jupyterhub/jupyterhub:${JUPYTERHUB_VERSION}
 
 COPY requirements.txt .
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+
+# Install dockerspawner
+RUN python3 -m pip install \
+    --no-cache-dir \
+    -r requirements.txt
 
 CMD ["jupyterhub", "-f", "/srv/jupyterhub/config/config.py"]

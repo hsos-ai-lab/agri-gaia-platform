@@ -8,7 +8,9 @@
 # SPDX-FileContributor: Tobias Wamhof
 #
 # SPDX-License-Identifier: MIT
-ARG JUPYTERHUB_VERSION="5.1.0"
+
+
+ARG JUPYTERHUB_VERSION="5.4.5"
 ARG NOTEBOOK_TYPE="minimal"
 
 FROM quay.io/jupyter/${NOTEBOOK_TYPE}-notebook:hub-${JUPYTERHUB_VERSION}
@@ -31,5 +33,5 @@ WORKDIR /home/jovyan
 USER jovyan
 
 COPY jupyter_server_config.py .jupyter/
-RUN pip3 install ipywidgets~=8.1.3 .platformtools/lib
+RUN pip3 install ipywidgets~=8.0.6 .platformtools/lib
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"

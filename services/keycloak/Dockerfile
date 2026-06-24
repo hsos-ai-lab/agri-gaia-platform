@@ -17,7 +17,7 @@ COPY registration-hook-spi/pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 
 # Stage 2 - Package
-FROM quay.io/keycloak/keycloak:24.0.5
+FROM quay.io/keycloak/keycloak:26.6.0
 
 ARG PROJECT_BASE_URL
 ARG REALM_NAME
@@ -29,13 +29,13 @@ ARG CVAT_KEYCLOAK_CLIENT_SECRET
 WORKDIR /opt/keycloak
 
 # add the registration hook listener
-COPY --from=build /home/app/target/keycloak-registration-eventlistener.jar /opt/keycloak/providers
+COPY --from=build /home/app/target/keycloak-registration-eventlistener.jar /opt/keycloak/providers 
 
 # add the prometheus metrics api
-COPY ./metrics-spi/keycloak-metrics-spi-5.0.0.jar /opt/keycloak/providers
+COPY ./metrics-spi/keycloak-metrics-spi-7.0.0.jar /opt/keycloak/providers
 
 ###### BUILD ##############
-RUN /opt/keycloak/bin/kc.sh build --features="docker" --health-enabled=true --db postgres
+RUN /opt/keycloak/bin/kc.sh build --features="docker" --health-enabled=true --metrics-enabled=true --db postgres --cache=local
 #########################
 
 ADD --chown=root:root https://github.com/moparisthebest/static-curl/releases/latest/download/curl-amd64 /usr/bin/curl
