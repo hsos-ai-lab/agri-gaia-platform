@@ -163,6 +163,12 @@ services:
 
       GPUS: ${GPUS}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+
+      # Edge-benchmark concurrency limits (optional; safe defaults in code).
+      # Cap concurrent benchmark/auto-search tasks and per-user active tasks so
+      # benchmarks cannot starve other background work.
+      EDGE_BENCHMARK_MAX_WORKERS: ${EDGE_BENCHMARK_MAX_WORKERS:-4}
+      EDGE_BENCHMARK_MAX_ACTIVE_PER_USER: ${EDGE_BENCHMARK_MAX_ACTIVE_PER_USER:-3}
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8000/metrics" ]
       interval: 10s
