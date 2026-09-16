@@ -15,6 +15,32 @@ SPDX-License-Identifier: MIT
 
 The Agri-Gaia platform created by the Working Group of Prof. Tapken at the University of Applied Sciences Osnabrück
 
+## AgDaFair: NFDI4Plants ARC Integration
+
+The platform integrates with [NFDI4Plants](https://nfdi4plants.de/) Annotated Research Contexts (ARCs) hosted on GitLab: a dataset can be imported from an ARC, used to train a model on the platform, and the resulting model can be pushed back into the same ARC.
+
+### Importing a dataset from an ARC
+
+The flow starts in the NFDI4Plants **DataHub**: clicking the AgDaFair tag on an ARC there triggers a GitLab CI pipeline in that ARC's repository, which calls the platform's `POST /agdafair/import` endpoint (see [`agri_gaia_backend/routers/agdafair.py`](services/backend/agri_gaia_backend/routers/agdafair.py)) with the ARC's GitLab project ID, API URL, branch, and a short-lived access token.
+
+The backend then:
+
+- Downloads the ARC's RO-Crate metadata (`arc-ro-crate-metadata.json`) and every LFS-tracked file it references.
+- Creates a `Dataset` entry for it and uploads the files to MinIO.
+- Stores the RO-Crate's title/description as DCAT metadata, and the ARC's GitLab project ID, API URL and branch as platform-specific triples, in the shared Fuseki metadata store, so the dataset's GitLab origin can be looked up again later.
+
+### Linking models to their source dataset
+
+A `Model` can be linked to the `Dataset` it is based on:
+
+- Models produced by training on the platform are linked automatically.
+- Models uploaded manually can be linked via a dataset picker in the upload dialog.
+- Models created from a JupyterHub notebook via the `platformtools` library (`s3.models.create(...)`, see [`platformtools/storage.py`](services/jupyterhub/images/platformtools/lib/platformtools/storage.py)) can pass a `dataset_id` for the same purpose.
+
+### Pushing a model back to the ARC
+
+If a model's linked dataset has a recorded GitLab reference, the model list shows a "Push to GitLab" action. Clicking it prompts for a GitLab access token (never stored by the platform) and lets the user attach any number of additional files. The model, along with any attachments, is then uploaded as Git LFS objects and committed under `runs/<upload timestamp>/` in the branch the dataset was originally imported from (falling back to the ARC's default branch if that wasn't recorded).
+
 ## Installation
 
 The platform uses docker compose as deployment tool.
