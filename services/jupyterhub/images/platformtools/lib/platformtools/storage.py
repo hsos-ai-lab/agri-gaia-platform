@@ -19,7 +19,7 @@ from glob import glob
 from minio import Minio
 from minio.credentials import WebIdentityProvider
 
-from platformtools.constants import BACKEND_URL, MOUNT_POINT
+from platformtools.constants import BACKEND_URL, MOUNT_POINT, MODEL_FORMATS
 from platformtools.auth import (
     get_access_token,
     fetch_auth_tokens,
@@ -113,6 +113,52 @@ class ModelStorage:
 
     def list(self):
         r = requests.get(f"{BACKEND_URL}/models", auth=BackendAuth())
+        r.raise_for_status()
+        return r.json()
+
+    def create(
+        self,
+        name,
+        model_file_path,
+        description,
+        format,
+        labels=None,
+        dataset_id=None,
+    ):
+        """Creates a new model entry in the platform from a local model file.
+
+        Args:
+            name: Display name for the model. Required.
+            model_file_path: Path to the model file to upload. Required.
+            description: Human-readable description of the model. Required.
+            format: One of MODEL_FORMATS. Required.
+            labels: Optional list of Agrovoc keyword URIs to attach to the model.
+            dataset_id: Optional ID of the dataset (see `PlatformStorage.datasets.list()`)
+                this model was trained on or derived from.
+
+        Returns:
+            The created model's JSON representation, as returned by the platform API.
+        """
+        if not name or not name.strip():
+            raise ValueError("name is required.")
+        if not description or not description.strip():
+            raise ValueError("description is required.")
+        if format not in MODEL_FORMATS:
+            raise ValueError(f"format must be one of {MODEL_FORMATS}, got '{format}'.")
+        if not model_file_path or not os.path.isfile(model_file_path):
+            raise ValueError(f"model_file_path '{model_file_path}' does not exist.")
+
+        data = [("name", name), ("description", description), ("format", format)]
+        if dataset_id is not None:
+            data.append(("dataset_id", dataset_id))
+        for label in labels or []:
+            data.append(("labels", label))
+
+        with open(model_file_path, "rb") as model_file:
+            files = {"modelfile": (os.path.basename(model_file_path), model_file)}
+            r = requests.post(
+                f"{BACKEND_URL}/models", auth=BackendAuth(), data=data, files=files
+            )
         r.raise_for_status()
         return r.json()
 

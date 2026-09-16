@@ -15,3 +15,5 @@ BACKEND_URL = "http://backend:8000"
 HOME_DIR = os.path.expanduser("~")
 MOUNT_POINT = f"{HOME_DIR}/.buckets"
 AUTH_FILE_PATH = f"{HOME_DIR}/.auth.json"
+
+MODEL_FORMATS = ["onnx", "pytorch", "tensorflow", "tensorrt"]
