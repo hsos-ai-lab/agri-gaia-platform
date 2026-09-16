@@ -22,7 +22,7 @@ RUN sed -i '/user_allow_other/s/^#//g' /etc/fuse.conf
 
 COPY mount-s3.sh /usr/bin/
 
-WORKDIR /root
+WORKDIR /home/jovyan
 
 COPY platformtools/lib .platformtools/lib
 COPY platformtools/examples examples
