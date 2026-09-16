@@ -30,6 +30,9 @@ COPY platformtools/examples examples
 RUN pip3 install \
     jupyterhub==${JUPYTERHUB_VERSION} \
     ipywidgets~=8.0.6 \
+    pytorch-lightning \
+    lightning \
+    torchmetrics \
     .platformtools/lib
 
 ENTRYPOINT ["/opt/nvidia/nvidia_entrypoint.sh"]
