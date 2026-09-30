@@ -19,6 +19,35 @@ The Agri-Gaia platform created by the Working Group of Prof. Tapken at the Unive
 
 The platform integrates with [NFDI4Plants](https://nfdi4plants.de/) Annotated Research Contexts (ARCs) hosted on GitLab: a dataset can be imported from an ARC, used to train a model on the platform, and the resulting model can be pushed back into the same ARC.
 
+### Walkthrough: from an ARC dataset to a trained model back in GitLab
+
+1. **Get the dataset into the platform.** Open your ARC in the NFDI4Plants DataHub and click its AgDaFair tag. This triggers a GitLab CI pipeline in the ARC's own repository, which imports the dataset into the platform (see [Importing a dataset from an ARC](#importing-a-dataset-from-an-arc) below). Once the pipeline finishes, the dataset shows up in the platform's Dataset Management page.
+
+2. **Train a model in JupyterHub.** Open JupyterHub and, if you need a GPU, start a server using the **pytorch** (or **tf2**) profile. From a notebook, use the `platformtools` library to find and mount the dataset from MinIO:
+
+   ```python
+   from platformtools.storage import PlatformStorage
+
+   s3 = PlatformStorage()
+   dataset = next(d for d in s3.datasets.list() if d["name"] == "<your dataset name>")
+   s3.mount_bucket_for_object(dataset)
+   dataset_path = s3.get_mounted_path_for_object(dataset)
+   ```
+
+   [`platformtools/examples/train_classifier.ipynb`](services/jupyterhub/images/platformtools/examples/train_classifier.ipynb) is a full worked example built on exactly this dataset, training a ResNet101 classifier with PyTorch Lightning. Once training is done, register the resulting model with the platform, linking it to the dataset it was trained on:
+
+   ```python
+   s3.models.create(
+       name="My Model",
+       model_file_path="./model.pt",
+       description="Trained on <your dataset name>.",
+       format="pytorch",  # or "onnx", "tensorflow", "tensorrt"
+       dataset_id=dataset["id"],
+   )
+   ```
+
+3. **Push the trained model back into the ARC.** Because the model is linked to a dataset with GitLab origin info, it now shows a **Push to GitLab** button in the platform's Model Management page. Before clicking it, create a GitLab **Personal Access Token (PAT)** on the ARC's GitLab instance (e.g. `git.nfdi4plants.org`) under _User Settings → Access Tokens_, with `write_repository` and `write_package` scope. Click **Push to GitLab**, paste the PAT into the dialog (it's used only for this one request and never stored by the platform), optionally attach any extra files (e.g. training logs), and confirm. The model and any attachments are committed as Git LFS objects under `runs/<upload timestamp>/`, on the branch the dataset was originally imported from, directly into the ARC's GitLab repository.
+
 ### Importing a dataset from an ARC
 
 The flow starts in the NFDI4Plants **DataHub**: clicking the AgDaFair tag on an ARC there triggers a GitLab CI pipeline in that ARC's repository, which calls the platform's `POST /agdafair/import` endpoint (see [`agri_gaia_backend/routers/agdafair.py`](services/backend/agri_gaia_backend/routers/agdafair.py)) with the ARC's GitLab project ID, API URL, branch, and a short-lived access token.
