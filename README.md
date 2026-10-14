@@ -46,7 +46,7 @@ The platform integrates with [NFDI4Plants](https://nfdi4plants.de/) Annotated Re
    )
    ```
 
-3. **Push the trained model back into the ARC.** Because the model is linked to a dataset with GitLab origin info, it now shows a **Push to GitLab** button in the platform's Model Management page. Before clicking it, create a GitLab **Personal Access Token (PAT)** on the ARC's GitLab instance (e.g. `git.nfdi4plants.org`) under _User Settings → Access Tokens_, with `write_repository` and `write_package` scope. Click **Push to GitLab**, paste the PAT into the dialog (it's used only for this one request and never stored by the platform), optionally attach any extra files (e.g. training logs), and confirm. The model and any attachments are committed as Git LFS objects under `runs/<upload timestamp>/`, on the branch the dataset was originally imported from, directly into the ARC's GitLab repository — alongside a `source_commit.txt` recording the exact commit of the ARC the dataset was imported from.
+3. **Push the trained model back into the ARC.** Because the model is linked to a dataset with GitLab origin info, it now shows a **Push to GitLab** button in the platform's Model Management page. Before clicking it, create a GitLab **Personal Access Token (PAT)** on the ARC's GitLab instance (e.g. `git.nfdi4plants.org`) under _User Settings → Access Tokens_, with `write_repository` and `write_package` scope. Click **Push to GitLab**, paste the PAT into the dialog (it's used only for this one request and never stored by the platform), optionally attach any extra files (e.g. training logs), and confirm. The model and any attachments are committed as Git LFS objects under `runs/<upload timestamp>/`, on the branch the dataset was originally imported from, directly into the ARC's GitLab repository — alongside a `source_commit.txt` recording the exact commit of the ARC the dataset was imported from, and the dataset's CVAT annotations (`annotations.xml`), refreshed from CVAT and included automatically whenever the dataset was annotated.
 
 ### Importing a dataset from an ARC
 
@@ -68,7 +68,7 @@ A `Model` can be linked to the `Dataset` it is based on:
 
 ### Pushing a model back to the ARC
 
-If a model's linked dataset has a recorded GitLab reference, the model list shows a "Push to GitLab" action. Clicking it prompts for a GitLab access token (never stored by the platform) and lets the user attach any number of additional files. The model, along with any attachments and a `source_commit.txt` recording the dataset's source commit ID, is then uploaded as Git LFS objects and committed under `runs/<upload timestamp>/` in the branch the dataset was originally imported from (falling back to the ARC's default branch if that wasn't recorded).
+If a model's linked dataset has a recorded GitLab reference, the model list shows a "Push to GitLab" action. Clicking it prompts for a GitLab access token (never stored by the platform) and lets the user attach any number of additional files. The model, along with any attachments, a `source_commit.txt` recording the dataset's source commit ID, and — if the dataset was annotated in CVAT — its annotations (re-fetched from CVAT and uploaded as `annotations.xml`, same CVAT-XML format and path convention used elsewhere in the platform), is then uploaded as Git LFS objects and committed under `runs/<upload timestamp>/` in the branch the dataset was originally imported from (falling back to the ARC's default branch if that wasn't recorded).
 
 ## Installation
 
