@@ -34,7 +34,7 @@ The platform integrates with [NFDI4Plants](https://nfdi4plants.de/) Annotated Re
    dataset_path = s3.get_mounted_path_for_object(dataset)
    ```
 
-   [`platformtools/examples/train_classifier.ipynb`](services/jupyterhub/images/platformtools/examples/train_classifier.ipynb) is a full worked example built on exactly this dataset, training a ResNet101 classifier with PyTorch Lightning. Once training is done, register the resulting model with the platform, linking it to the dataset it was trained on:
+   [`platformtools/examples/train_classifier.ipynb`](services/jupyterhub/images/platformtools/examples/train_classifier.ipynb) is a full worked example built on exactly this dataset, training a ResNet101 classifier with PyTorch Lightning and labeling images by their folder names. [`train_classifier_from_metadata.ipynb`](services/jupyterhub/images/platformtools/examples/train_classifier_from_metadata.ipynb) does the same, but takes each image's label from the ARC's own metadata instead (the "Infection Label" characteristic of the plot sample it shows), via `s3.datasets.file_metadata(dataset)`, which also returns per-image parameters like GPS position and capture time. Once training is done, register the resulting model with the platform, linking it to the dataset it was trained on:
 
    ```python
    s3.models.create(
@@ -57,6 +57,7 @@ The backend then:
 - Downloads the ARC's RO-Crate metadata (`arc-ro-crate-metadata.json`) and every LFS-tracked file it references.
 - Creates a `Dataset` entry for it and uploads the files to MinIO.
 - Stores the RO-Crate's title/description as DCAT metadata, and the ARC's GitLab project ID, API URL, branch and commit ID as platform-specific triples, in the shared Fuseki metadata store, so the dataset's GitLab origin can be looked up again later.
+- Stores the complete RO-Crate itself as its own named graph (`<dataset URI>#_ROCrate`) in the same persistent store. Its per-file metadata (sample, sample characteristics such as labels, and capture parameters) is exposed via `GET /datasets/{id}/ro-crate/files`.
 
 ### Linking models to their source dataset
 

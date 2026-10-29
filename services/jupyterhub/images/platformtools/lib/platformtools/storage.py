@@ -106,6 +106,21 @@ class DatasetStorage:
         r.raise_for_status()
         return r.json()
 
+    def file_metadata(self, dataset):
+        """Returns per-file metadata from the RO-Crate the dataset was imported with.
+
+        Only available for datasets imported from an ARC. Each entry has the
+        file's ``path`` (relative to the dataset's mounted root, see
+        ``PlatformStorage.get_mounted_path_for_object``), the ``sample`` it was
+        taken from, that sample's ``characteristics`` (e.g. "Infection Label")
+        and the ``parameters`` of the process that produced it (e.g. "Latitude").
+        """
+        r = requests.get(
+            f"{BACKEND_URL}/datasets/{dataset['id']}/ro-crate/files", auth=BackendAuth()
+        )
+        r.raise_for_status()
+        return r.json()
+
 
 class ModelStorage:
     def __init__(self, mc: PlatformStorage) -> None:
