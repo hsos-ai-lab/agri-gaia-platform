@@ -14,6 +14,7 @@ secrets/**/*
 !secrets/
 !secrets/**/
 !**.gitkeep
+!secrets/certs/self-signed/generate.sh
 
 services/keycloak/registration-hook-spi/target/*
 ./cvat/
