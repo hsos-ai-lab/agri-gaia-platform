@@ -11,15 +11,17 @@
 #
 # SPDX-License-Identifier: MIT
 
-docker compose down -v
+# Stop all services of all compose profiles and remove their volumes,
+# including spawned Jupyter and Nuclio containers.
+./stop.sh -v
 
 compose_project_name="$(grep "^COMPOSE_PROJECT_NAME=" .env | cut -f 2 -d '=')"
 
-containers=$(docker container ls -a --filter name="${compose_project_name}" -q)
-[[ -n "${containers}" ]] && docker container rm "${containers}"
+docker container ls -a --filter name="${compose_project_name}" -q \
+  | xargs -r docker container rm --force
 
-volumes=$(docker volume ls --filter name="${compose_project_name}" -q)
-[[ -n "${volumes}" ]] && docker volume rm "${volumes}"
+docker volume ls --filter name="${compose_project_name}" -q \
+  | xargs -r docker volume rm --force
 
 project_base_url="$(grep "^PROJECT_BASE_URL=" .env | cut -f 2 -d '=')"
 if [[ -n "${project_base_url}" ]]; then
