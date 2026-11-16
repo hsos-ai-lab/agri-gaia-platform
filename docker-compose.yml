@@ -292,9 +292,9 @@ services:
       args:
         # Both are optional: the Dockerfile carries defaults, and an unset
         # variable here expands to empty, which would break the FROM line. Set
-        # MINIO_IMAGE in .env only to point at a different mirror.
-        - MINIO_IMAGE=${MINIO_IMAGE:-quay.io/minio/minio}
-        - MINIO_IMAGE_TAG=${MINIO_IMAGE_TAG:-RELEASE.2024-08-03T04-33-23Z}
+        # MINIO_IMAGE in .env only to use a different image or mirror.
+        - MINIO_IMAGE=${MINIO_IMAGE:-docker.io/pgsty/silo}
+        - MINIO_IMAGE_TAG=${MINIO_IMAGE_TAG:-RELEASE.2026-11-12T00-00-00Z}
     restart: unless-stopped
     expose:
       - "9000"
