@@ -134,7 +134,7 @@ The services are organized in [Compose profiles](https://docs.docker.com/compose
 | `frontend` | [`services/frontend`](services/frontend) (Node 20) | `app.` | – |
 | `backend` | [`services/backend`](services/backend) (Python 3.12) | `api.` | – |
 | `keycloak` | `quay.io/keycloak/keycloak:26.6.0` | `keycloak.` | – |
-| `minio` | `minio/minio:RELEASE.2023-08-16T20-17-30Z` | `minio.`, `minio-console.` | – |
+| `minio` | `pgsty/silo:RELEASE.2026-11-12T00-00-00Z` (MinIO fork) | `minio.`, `minio-console.` | – |
 | `registry` | `registry:2` | `registry.` | – |
 | `build_container` | `docker:24-dind` with BuildKit | – | – |
 | `jupyterhub` | `jupyterhub/jupyterhub:5.4.5` | `jupyterhub.` | – |
@@ -284,7 +284,7 @@ The platform is configured mainly through environment variables in the [`.env`](
 | `KEYCLOAK_USER`, `KEYCLOAK_PASSWORD` | Keycloak administrator (master realm) |
 | `REALM_SERVICE_ACCOUNT_USERNAME`, `REALM_SERVICE_ACCOUNT_PASSWORD` | Technical realm user, also used as CVAT superuser and for Nuclio basic authentication |
 | `BACKEND_*` | Backend OIDC client, PostgreSQL/PostGIS credentials, registry webhook token and TLS verification |
-| `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, `MINIO_IMAGE_TAG` | MinIO root credentials and image tag |
+| `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, `MINIO_IMAGE`, `MINIO_IMAGE_TAG` | MinIO root credentials, image (default: `docker.io/pgsty/silo`) and image tag |
 | `FUSEKI_ADMIN_USER`, `FUSEKI_ADMIN_PASSWORD` | Apache Jena Fuseki administrator |
 | `CONNECTOR_PASSWORD`, `KEYSTORE_PASSWORD` | EDC management API key and keystore password |
 | `ACME_*`, `DUCKDNS_TOKEN` | Settings for ACME (Let's Encrypt / External Account Binding) certificates |

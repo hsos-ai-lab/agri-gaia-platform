@@ -9,7 +9,13 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG MINIO_IMAGE_TAG="RELEASE.2023-08-16T20-17-30Z"
-FROM minio/minio:"${MINIO_IMAGE_TAG}"
+# MinIO ended community image distribution: docker.io/minio/minio and
+# quay.io/minio/minio refuse anonymous pulls for every tag. pgsty/silo is a
+# maintained MinIO fork with the same image layout: its entrypoint turns
+# `server ...` into `silo server ...`, and MINIO_* variables, /minio/* routes,
+# curl and the CA bundle path are unchanged. Overridable via .env.
+ARG MINIO_IMAGE="docker.io/pgsty/silo"
+ARG MINIO_IMAGE_TAG="RELEASE.2026-11-12T00-00-00Z"
+FROM ${MINIO_IMAGE}:"${MINIO_IMAGE_TAG}"
 COPY wait-for-keycloak.sh .
 ENTRYPOINT [ "./wait-for-keycloak.sh", "/usr/bin/docker-entrypoint.sh" ]
