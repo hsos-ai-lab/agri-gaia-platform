@@ -11,6 +11,11 @@
 #
 # SPDX-License-Identifier: MIT
 
+usage() {
+  echo "Usage: ${0} [-v]"
+  echo "  -v  Also remove all Docker volumes of the platform"
+}
+
 while getopts :v OPT
 do
   case "${OPT}" in
