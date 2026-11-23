@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM amazoncorretto:17-alpine3.17-jdk AS base
+FROM eclipse-temurin:17.0.21.1_2-jdk-alpine-3.24 AS base
 
 ARG JENA_VERSION=4.6.0
 
@@ -35,7 +35,7 @@ RUN \
 
 RUN adduser -H -D fuseki fuseki
 
-FROM alpine:3.17
+FROM alpine:3.24
 
 ARG FUSEKI_ADMIN_USER=user
 ARG FUSEKI_ADMIN_PASSWORD=pass
