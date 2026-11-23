@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-v2-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
 [![Traefik](https://img.shields.io/badge/Traefik-v3.6-24A1C1?logo=traefikproxy&logoColor=white)](https://traefik.io/)
-[![Keycloak](https://img.shields.io/badge/Keycloak-26.6-4D4D4D?logo=keycloak&logoColor=white)](https://www.keycloak.org/)
+[![Keycloak](https://img.shields.io/badge/Keycloak-26.8-4D4D4D?logo=keycloak&logoColor=white)](https://www.keycloak.org/)
 [![Platform](https://img.shields.io/badge/platform-linux%2Famd64-lightgrey?logo=linux&logoColor=white)](#-requirements)
 
 [Getting Started](#-getting-started) ·
@@ -140,7 +140,7 @@ The services are organized in [Compose profiles](https://docs.docker.com/compose
 | `traefik` | `traefik:v3.6` | `traefik.` | – |
 | `frontend` | [`services/frontend`](services/frontend) (Node 20) | `app.` | – |
 | `backend` | [`services/backend`](services/backend) (Python 3.12) | `api.` | – |
-| `keycloak` | `quay.io/keycloak/keycloak:26.6.0` | `keycloak.` | – |
+| `keycloak` | `quay.io/keycloak/keycloak:26.8.2-3` | `keycloak.` | – |
 | `minio` | `pgsty/silo:RELEASE.2026-11-12T00-00-00Z` (MinIO fork) | `minio.`, `minio-console.` | – |
 | `registry` | `registry:2` | `registry.` | – |
 | `build_container` | `docker:27-dind` with BuildKit 0.15.1 | – | – |
