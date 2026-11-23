@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM eclipse-temurin:17
+FROM eclipse-temurin:17.0.21.1_2-jdk
 
 ARG PROJECT_BASE_URL
 ARG CONNECTOR_PASSWORD
