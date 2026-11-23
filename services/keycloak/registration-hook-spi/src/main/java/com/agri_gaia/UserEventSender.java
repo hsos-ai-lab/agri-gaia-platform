@@ -68,7 +68,7 @@ public class UserEventSender {
 
             this.sendEventRequest(this.registrationWebhookUri, accessToken, payload);
         } catch (IOException | InterruptedException e) {
-            LOGGER.error("ERROR: Error sending deregistration event request: " + e);
+            LOGGER.error("ERROR: Error sending registration event request: " + e);
         }
     }
 
@@ -83,7 +83,7 @@ public class UserEventSender {
 
             this.sendEventRequest(this.deregistrationWebhookUri, accessToken, payload);
         } catch (IOException | InterruptedException e) {
-            LOGGER.error("ERROR: Error sending registration event request: " + e);
+            LOGGER.error("ERROR: Error sending deregistration event request: " + e);
         }
     }
 
